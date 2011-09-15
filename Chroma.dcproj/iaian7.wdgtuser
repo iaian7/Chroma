@@ -8,20 +8,16 @@
 		<integer>8</integer>
 		<key>SplitViewConfig</key>
 		<integer>3</integer>
-		<key>_collapsingFrameDimension</key>
-		<real>0.0</real>
 		<key>_indexOfCollapsedView</key>
 		<integer>0</integer>
-		<key>_percentageOfCollapsedView</key>
-		<real>0.0</real>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {1581, 416}}</string>
-			<string>{{0, 426}, {1581, 673}}</string>
+			<string>{{0, 0}, {1435, 331}}</string>
+			<string>{{0, 341}, {1435, 549}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
-	<integer>5</integer>
+	<integer>0</integer>
 	<key>Dashboard Widget Prefs</key>
 	<dict>
 		<key>id</key>
@@ -49,43 +45,41 @@
 	</dict>
 	<key>DeploymentOptions</key>
 	<dict>
+		<key>Destination</key>
+		<string>aos.default</string>
 		<key>SavePath</key>
 		<string>/Users/iaian7/Dropbox/Documents/Widgets/VF Chroma</string>
+		<key>enableSimulation</key>
+		<true/>
+		<key>simulatedHost</key>
+		<string>web.me.com</string>
 	</dict>
 	<key>Design time language</key>
 	<string>en.lproj</string>
 	<key>MainSplitViewGeometry</key>
 	<dict>
-		<key>_collapsingFrameDimension</key>
-		<real>0.0</real>
 		<key>_indexOfCollapsedView</key>
 		<integer>0</integer>
-		<key>_percentageOfCollapsedView</key>
-		<real>0.0</real>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {338, 1120}}</string>
-			<string>{{339, 0}, {1582, 1120}}</string>
+			<string>{{0, 0}, {244, 911}}</string>
+			<string>{{245, 0}, {1436, 911}}</string>
 		</array>
 	</dict>
 	<key>MainWindowFrame</key>
-	<string>1280 -40 1920 1141 1280 -99 1920 1200 </string>
+	<string>0 96 1680 932 0 0 1680 1028 </string>
 	<key>NavigatorSplitViewGeometry</key>
 	<dict>
 		<key>ContentSplitViewConfig</key>
 		<integer>5</integer>
 		<key>SplitViewConfig</key>
-		<integer>1</integer>
-		<key>_collapsingFrameDimension</key>
-		<real>0.0</real>
+		<integer>3</integer>
 		<key>_indexOfCollapsedView</key>
 		<integer>0</integer>
-		<key>_percentageOfCollapsedView</key>
-		<real>0.0</real>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {340, 577}}</string>
-			<string>{{0, 587}, {340, 512}}</string>
+			<string>{{0, 0}, {246, 353}}</string>
+			<string>{{0, 363}, {246, 527}}</string>
 		</array>
 	</dict>
 	<key>Objects view expanded items</key>
@@ -415,5 +409,16 @@
 		<string>main</string>
 		<string>names</string>
 	</array>
+	<key>Widget</key>
+	<dict>
+		<key>Objects view last selections</key>
+		<array/>
+		<key>Visible StackLayout Views</key>
+		<array>
+			<string>front</string>
+			<string>main</string>
+			<string>values</string>
+		</array>
+	</dict>
 </dict>
 </plist>
