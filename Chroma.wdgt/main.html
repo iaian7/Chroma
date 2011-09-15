@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" type="text/css" href="Parts/Transitions.css">
+    <script type="text/javascript" src="Parts/parts.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleAnimator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleInfoButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="localizedStrings.js" charset="utf-8"></script>
+    <script type="text/javascript" src="main.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleScrollbar.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleScrollArea.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/ButtonHandler.js" charset="utf-8"></script>
+</head>
+<body onload="load();">
+    <div id="front">
+        <img id="frontImg" src="Parts/Images/front.png" alt="">
+        <div id="info"></div>
+        <div id="stack"><div id="main">
+                <div id="library">
+                    <div id="scrollArea">
+                        <div id="content" class="content" style="position: absolute; left: 0px; top: -2px; right: 0px; bottom: -2px; overflow-x: hidden; overflow-y: hidden; ">
+                            <ul id="list">
+                                <li id="listRowTemplate" class="listRowTemplate_template first" style="">
+                                    <div id="swatchList" class="swatchList_template">
+                                        <div id="image" class="image_template image1_template"><img class="inner_image_template inner_image1_template" src="Images/button-23px.png" id="inner_image"></div>
+                                        <img src="Images/Button-Use.png" id="imgUse" class="imgUse_template" onmouseout="buttonOut(event)" onmouseover="buttonOver(event)">
+                                    </div>
+                                    <img src="Images/Button-Delete.png" id="imgDelete" class="imgDelete_template" onmouseout="buttonOut(event)" onmouseover="buttonOver(event)">
+                                    <div id="label" class="label_template"></div>
+                                    <div id="labelHSV" class="labelHSV_template"></div>
+                                    <div id="labelRGB" class="labelRGB_template"></div>
+                                    <div id="labelHEX" class="labelHEX_template"></div>
+                                </li>
+                            </ul>
+                        </div></div>
+                    <div id="libraryToggleBox">
+                        <img src="Images/Button-Toggle.png" id="imgToggle" onclick="libraryToggle(event)" onmouseout="buttonOut(event)" onmouseover="buttonOver(event)">
+                    </div>
+                </div>
+                <div id="stack2"><div id="values">
+                        <div id="HSV">
+                            <div id="textHSV"></div>
+                            <input type="text" name="H" value="0" id="H" onkeyup="updateInput(event)" maxlength="3">
+                            <input type="text" name="S" value="0" id="S" onkeyup="updateInput(event)" maxlength="3">
+                            <input type="text" name="V" value="50" id="V" onkeyup="updateInput(event)" maxlength="3">
+                        </div>
+                        <div id="RGB">
+                            <div id="textRGB"></div>
+                            <input type="text" name="R" value="128" id="R" onkeyup="updateInput(event)" maxlength="3">
+                            <input type="text" name="G" value="128" id="G" onkeyup="updateInput(event)" maxlength="3">
+                            <input type="text" name="B" value="128" id="B" onkeyup="updateInput(event)" maxlength="3">
+                        </div>
+                        <div id="HEX">
+                            <div id="textHEX"></div>
+                            <input type="text" name="X" value="#808080" id="X" maxlength="7" onkeyup="updateInput(event)">
+                        </div>
+                        <div id="swatch">
+                            <div id="swatchShine"></div>
+                            <img src="Images/Button-Add-Bar.png" id="imgAdd" onclick="showNames(event)" onmouseout="buttonOut(event)" onmouseover="buttonOver(event)">
+                        </div>
+                    </div><div id="names">
+                        <div id="groupBox">
+                            <input type="text" name="groupTitle" value="group" id="groupTitle" onfocus="selectIt(event)" maxlength="0" onkeyup="updateGroup(event)">
+                        </div>
+                        <div id="nameBox">
+                            <input type="text" name="nameTitle" value="name" id="nameTitle" onfocus="selectIt(event)" maxlength="0" onkeyup="updateName(event)">
+                        </div>
+                        <div id="swatchSave">
+                            <div id="swatchShineSave"></div>
+                            <img src="Images/Button-Cancel.png" id="imgCancel" onclick="showValues(event)" onmouseout="buttonOut(event)" onmouseover="buttonOver(event)">
+                        </div>
+                        <div id="saveSwatch"></div>
+                    </div><div id="alert">
+                        <div id="saveAlert"></div>
+                        <div id="tryButton2"></div>
+                    </div></div>
+            </div><div id="success">
+                <div id="successText"></div>
+                <div id="successButton"></div>
+            </div><div id="fail" style="display: block; ">
+                <div id="failText"></div>
+                <div id="failRepeat"></div>
+                <div id="cancelButton"></div>
+                <div id="tryButton"></div>
+            </div><div id="truncated">
+                <div id="truncatedText"></div>
+                <div id="cancelButton1"></div>
+                <div id="tryButton1"></div>
+            </div><div id="create" style="display: block; ">
+                <div id="createText"></div>
+                <div id="setupButton"></div>
+                <div id="createButton"></div>
+            </div><div id="update">
+                <div id="new"></div>
+                <div id="newVersion"></div>
+                <div id="skipButton"></div>
+                <div id="downloadButton"></div>
+            </div></div>
+    </div>
+    <div id="back">
+        <img id="backImg" src="Parts/Images/back.png" alt="">
+        <div id="sort"></div>
+        <div id="show"></div>
+        <div id="locationText"></div>
+        <input type="text" name="location" value="~/Library/Preferences/" id="location" onkeyup="updateLocation(event)" onchange="updateLocation(event)">
+        <div id="explanation"></div>
+        <div id="doneSave"></div>
+        <div id="iaian7com" onclick="iaian7(event)"></div>
+        <div id="text"></div>
+    </div>
+</body>
+</html>
