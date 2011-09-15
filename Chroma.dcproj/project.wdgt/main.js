@@ -34,6 +34,7 @@ function remove()
 function hide()
 {
 	// Stop any timers to prevent CPU usage
+	updateScroll();
 	savePrefs();
 }
 
@@ -68,6 +69,7 @@ function sync()
 //
 function showBack(event)
 {
+	updateScroll();
 	var front = document.getElementById("front");
 	var back = document.getElementById("back");
 
@@ -132,6 +134,7 @@ prefShow = loadPref(wid+"show",0);
 prefLocation = loadPref(wid+"location","~/Library/Preferences/");
 prefGroup = loadPref(wid+"group","group");
 prefName = loadPref(wid+"name","name");
+prefScroll = loadPref(wid+"scroll",0);
 
 var busy = false;
 var add = false;
@@ -181,6 +184,7 @@ function updatePrefs() {
 		widget.setPreferenceForKey(prefLocation,wid+"location");
 		widget.setPreferenceForKey(prefGroup,wid+"group");
 		widget.setPreferenceForKey(prefName,wid+"name");
+		widget.setPreferenceForKey(prefScroll,wid+"scroll");
 	}
 }
 
@@ -198,6 +202,7 @@ function erasePrefs() {
 		widget.setPreferenceForKey(null,wid+"location");
 		widget.setPreferenceForKey(null,wid+"group");
 		widget.setPreferenceForKey(null,wid+"name");
+		widget.setPreferenceForKey(null,wid+"scroll");
 	}
 }
 
@@ -234,6 +239,26 @@ function updateShow(event) {
 
 function updateLocation(event) {
 	prefLocation = document.getElementById("location").value;
+}
+
+function updateGroup(event) {
+	prefGroup = document.getElementById("groupTitle").value;
+}
+
+function updateName(event) {
+	prefName = document.getElementById("nameTitle").value;
+}
+
+function updateScroll() {
+	prefScroll = document.getElementById("scrollArea").object.content.scrollTop;
+	widget.setPreferenceForKey(prefScroll,wid+"scroll");
+//	alert("updateScroll = "+prefScroll);
+}
+
+function updateScrollArea() {
+	var scrollArea = document.getElementById("scrollArea").object
+	scrollArea.refresh();
+	scrollArea.verticalScrollTo(prefScroll);
 }
 
 function updateInput(event) {
@@ -347,12 +372,15 @@ function checkDirEnd(event) {
 // Library management
 
 function addLibrary(event) {
-	add = [document.getElementById("groupTitle").value,document.getElementById("nameTitle").value,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()];
+	updateScroll();
+	if (prefGroup.search(/[a-z]/i)<0 || prefName.search(/[a-z]/i)<0) return showAlert();
+	add = [prefGroup,prefName,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()];
 	getLibrary();
 	showValues();
 }
 
 function editLibrary(event) {
+	updateScroll();
 	del = event;
 	getLibrary();
 }
@@ -412,11 +440,11 @@ function processLibrary(event) {
 		del = false;
 	}
 
+	libArray = arrayGroups(libArray);
+//	alert("3 = libArray after groups: "+libArray[libArray.length-1]);
+
 	if (libArray[1]) {
 		switch (prefSort) {
-		case 0:
-			libArray.sort(sortName);
-			break;
 		case 1:
 			libArray.sort(sortHue);
 			break;
@@ -430,15 +458,16 @@ function processLibrary(event) {
 			libArray.sort(sortDate);
 			break;
 		default:
-			alert("prefSort error:\n"+prefSort);
+			libArray.sort(sortName);
 		}
 	}
 
-//	alert("3 = libArray after processing: "+libArray[libArray.length-1]);
+//	alert("4 = libArray after processing: "+libArray[libArray.length-1]);
 	if (busy != "newVersion") showMain();
 	listDataSource._rowData = libArray;
 	list.object.reloadData();
-	document.getElementById("scrollArea").object.refresh();
+//	document.getElementById("scrollArea").object.refresh();
+	updateScrollArea();
 	busy = false;
 	setLibrary();
 }
@@ -446,6 +475,13 @@ function processLibrary(event) {
 function arrayMatch(arr,ind,str) {
 	for(var i in arr) {
 		if (arr[i][ind] == str) return i;
+	}
+	return false;
+}
+
+function arraySearch(arr,str) {
+	for(var i in arr) {
+		if (arr[i] == str) return i;
 	}
 	return false;
 }
@@ -461,15 +497,24 @@ function arrayClean(arr) {
 //			} else
 			if (isFinite(arr[i][0])) {
 				arr[i] = [arr[i][7],arr[i][8],arr[i][0],arr[i][1],arr[i][2],arr[i][3],arr[i][4],arr[i][5],arr[i][6],arr[i][9]];
-//				alert("wrong order: "+arr[i]);
 				arr2.push(arr[i]);
 			} else {
-//				alert("clean: "+arr[i]);
 				arr2.push(arr[i]);
 			}
 		}
 	}
 	return arr2;
+}
+
+function arrayGroups(arr) {
+	var arrGroup = [];
+	for(var i in arr) {
+		if (!arraySearch(arrGroup,arr[i][0])) {
+			arrGroup.push(arr[i][0]);
+			arr.push([arr[i][0]]);
+		}
+	}
+	return arr;
 }
 
 function arrayReformat(arr) {
@@ -480,6 +525,7 @@ function arrayReformat(arr) {
 function sortName(a, b) {
 	var x = a[0].toLowerCase();
 	var y = b[0].toLowerCase();
+	if (x==y && !a[1]) { return -1; } else if (x==y && !b[1]) { return 1; }
 	if (x==y) x = a[1].toLowerCase(), y = b[1].toLowerCase();
 	return (x < y) ? -1 : ((x > y) ? 1 : 0);
 }
@@ -487,29 +533,33 @@ function sortName(a, b) {
 function sortHue(a, b){
 	var x = a[0].toLowerCase();
 	var y = b[0].toLowerCase();
+	if (x==y && !a[1]) { return -1; } else if (x==y && !b[1]) { return 1; }
 	return (x < y) ? 1 : ((x > y) ? -1 : a[2] - b[2]);
 }
 
 function sortSaturation(a, b){
 	var x = a[0].toLowerCase();
 	var y = b[0].toLowerCase();
+	if (x==y && !a[1]) { return -1; } else if (x==y && !b[1]) { return 1; }
 	return (x < y) ? 1 : ((x > y) ? -1 : a[3] - b[3]);
 }
 
 function sortValue(a, b){
 	var x = a[0].toLowerCase();
 	var y = b[0].toLowerCase();
+	if (x==y && !a[1]) { return -1; } else if (x==y && !b[1]) { return 1; }
 	return (x < y) ? 1 : ((x > y) ? -1 : a[4] - b[4]);
 }
 
 function sortDate(a, b){
+	if (x==y && !a[1]) { return -1; } else if (x==y && !b[1]) { return 1; }
 	return a[9] - b[9];
 }
 
 function setLibrary(event) {
 	if (busy == "setProcessing") return showFail();
 	busy = "setProcessing";
-//	alert("4 = libArray before writing file: "+libArray[libArray.length-1]);
+//	alert("5 = libArray before writing file: "+libArray[libArray.length-1]);
 	var myCommand = widget.system("cat > "+prefLocation+"chromaLibrary.txt", setLibraryEnd);
 	for(var i in libArray) {
 		if (i == 0) {
@@ -545,8 +595,6 @@ function createLibrary(event) {
 	getLibrary();
 	showMain();
 }
-
-
 
 // Clipboard
 
@@ -590,11 +638,21 @@ var listDataSource = {
 		// templateElements contains references to all elements that have an id in the template row.
 		// Ex: set the value of an element with id="label".
 		if (!this._rowData[rowIndex][9]) {
-			templateElements.label.innerText = this._rowData[rowIndex];
-			templateElements.labelHSV.innerText = "";
-			templateElements.labelRGB.innerText = "";
-			templateElements.labelHEX.innerText = "";
-			templateElements.swatchList.style.opacity = 0;
+			if (templateElements.label) {
+				templateElements.label.innerText = this._rowData[rowIndex];
+				templateElements.label.style.opacity = 1.0;
+				templateElements.listRowTemplate.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
+				templateElements.label.style.left = "6px";
+				templateElements.label.style.right = "6px";
+				templateElements.label.style.fontSize = "12px";
+				templateElements.label.style.lineHeight = "24px";
+				templateElements.label.style.fontFamily = "HelveticaNeue-Bold";
+				templateElements.labelHSV.innerText = "";
+				templateElements.labelRGB.innerText = "";
+				templateElements.labelHEX.innerText = "";
+				templateElements.swatchList.style.opacity = 0;
+				templateElements.imgDelete.style.visibility = "hidden";
+			}
 		} else {
 			if (templateElements.swatchList) {
 				templateElements.swatchList.style.backgroundColor = "#"+this._rowData[rowIndex][8];
@@ -605,24 +663,23 @@ var listDataSource = {
 			if (templateElements.imgDelete) {
 				templateElements.imgDelete.onclick = function(event) { editLibrary(_this._rowData[rowIndex][9]) };
 			}
+
+			var tempHSV = parseInt(this._rowData[rowIndex][2])+" "+parseInt(this._rowData[rowIndex][3])+" "+parseInt(this._rowData[rowIndex][4]);
+			var tempRGB = parseInt(this._rowData[rowIndex][5])+" "+parseInt(this._rowData[rowIndex][6])+" "+parseInt(this._rowData[rowIndex][7]);
+			var tempHEX = _this._rowData[rowIndex][8];
+
 			if (prefShow == 0) {
-//				if (templateElements.label) {
-//					templateElements.label.innerText = this._rowData[rowIndex][1];
-//					templateElements.label.style.opacity = 0;
-//				}
 				if (templateElements.labelHSV) {
-					var tempHSV = parseInt(this._rowData[rowIndex][2])+" "+parseInt(this._rowData[rowIndex][3])+" "+parseInt(this._rowData[rowIndex][4]);
 					templateElements.labelHSV.innerText = tempHSV;
 					templateElements.labelHSV.onclick = function(event) { copy(event,tempHSV) };
 				}
 				if (templateElements.labelRGB) {
-					var tempRGB = parseInt(this._rowData[rowIndex][5])+" "+parseInt(this._rowData[rowIndex][6])+" "+parseInt(this._rowData[rowIndex][7]);
 					templateElements.labelRGB.innerText = tempRGB;
 					templateElements.labelRGB.onclick = function(event) { copy(event,tempRGB) };
 				}
 				if (templateElements.labelHEX) {
-					templateElements.labelHEX.innerText = "#"+this._rowData[rowIndex][8];
-					templateElements.labelHEX.onclick = function(event) { copy(event,_this._rowData[rowIndex][8]) };
+					templateElements.labelHEX.innerText = "#"+tempHEX;
+					templateElements.labelHEX.onclick = function(event) { copy(event,tempHEX) };
 				}
 			} else {
 				if (templateElements.label) {
@@ -631,21 +688,17 @@ var listDataSource = {
 				if (templateElements.labelHSV) {
 					templateElements.labelHSV.innerText = "";
 				}
-				if (templateElements.labelRGB) {
-					templateElements.labelRGB.innerText = "";
-				}
-				if (templateElements.labelHEX) {
+				if (templateElements.labelRGB && templateElements.labelHEX) {
 					if (prefShow == 1) {
-						var tempHSV = parseInt(this._rowData[rowIndex][2])+" "+parseInt(this._rowData[rowIndex][3])+" "+parseInt(this._rowData[rowIndex][4]);
-						templateElements.labelHEX.innerText = tempHSV;
-						templateElements.labelHEX.onclick = function(event) { copy(event,tempHSV) };
+						templateElements.labelRGB.innerText = tempHSV;
+						templateElements.labelRGB.onclick = function(event) { copy(event,tempHSV) };
+						templateElements.labelHEX.innerText = "#"+tempHEX;
+						templateElements.labelHEX.onclick = function(event) { copy(event,tempHEX) };
 					} else if (prefShow == 2) {
-						var tempRGB = parseInt(this._rowData[rowIndex][5])+" "+parseInt(this._rowData[rowIndex][6])+" "+parseInt(this._rowData[rowIndex][7]);
-						templateElements.labelHEX.innerText = tempRGB;
-						templateElements.labelHEX.onclick = function(event) { copy(event,tempRGB) };
-					} else if (prefShow == 3) {
-						templateElements.labelHEX.innerText = "#"+this._rowData[rowIndex][8];
-						templateElements.labelHEX.onclick = function(event) { copy(event,_this._rowData[rowIndex][8]) };
+						templateElements.labelRGB.innerText = tempRGB;
+						templateElements.labelRGB.onclick = function(event) { copy(event,tempRGB) };
+						templateElements.labelHEX.innerText = "#"+tempHEX;
+						templateElements.labelHEX.onclick = function(event) { copy(event,tempHEX) };
 					}
 				}
 			}
@@ -809,6 +862,14 @@ function showNames(event) {
 	document.getElementById("stack2").object.setCurrentView("names", false, true);
 }
 
+function showNames2(event) {
+	document.getElementById("stack2").object.setCurrentView("names", true, true);
+}
+
+function showAlert(event) {
+	document.getElementById("stack2").object.setCurrentView("alert", false, true);
+}
+
 // Element animations
 
 function buttonOver(event) {
@@ -826,7 +887,7 @@ function buttonOut(event) {
 function copyFlash(event) {
 	var itemToFadeIn = event.target;
 	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
-	new AppleAnimator(400, 10, 0.30, 1, fadeHandler).start();
+	new AppleAnimator(600, 15, 0.30, 1, fadeHandler).start();
 }
 
 function libraryToggle(event) {

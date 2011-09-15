@@ -22,6 +22,7 @@ var localizedStrings = {
     "ItemHSV": "30 90 100",
     "ItemRGB": "255 140 25",
     "locationText": "library location",
+    "mustContain": "group and name must\ncontain at least one letter",
     "newText": "new update available!",
     "newVersion": "version number\nversion description",
     "saveSwatch": "save to library",

@@ -23,14 +23,15 @@ var dashcodePartSpecs = {
     "locationText": { "creationFunction": "CreateText", "text": "locationText" },
     "new": { "creationFunction": "CreateText", "text": "newText" },
     "newVersion": { "creationFunction": "CreateText", "text": "newVersion" },
+    "saveAlert": { "creationFunction": "CreateText", "text": "mustContain" },
     "saveSwatch": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "addLibrary", "rightImageWidth": 5, "text": "saveSwatch" },
     "scrollArea": { "bottomMargin": -2, "creationFunction": "CreateScrollArea", "hasVerticalScrollbar": true, "scrollbarDivSize": 18, "scrollbarMargin": 6, "spacing": -18, "topMargin": -2 },
     "setupButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showBack", "rightImageWidth": 5, "text": "settingsButton" },
-    "show": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "show", "onchange": "updateShow", "options": [["show hsv + rgb + hex", "all"], ["show name + hsv", "hsv"], ["show name + rgb", "rgb"], ["show name + hex", "hex"]], "rightImageWidth": 16 },
+    "show": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "show", "onchange": "updateShow", "options": [["show hsv, rgb, hex", "all"], ["show name, hsv, hex", "hex"], ["show name, rgb, hex", "rgb"]], "rightImageWidth": 16 },
     "skipButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "versionSkip", "rightImageWidth": 5, "text": "skipButton" },
     "sort": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "sort", "onchange": "updateSort", "options": [["sort by name", "name"], ["sort by hue", "hue"], ["sort by saturation", "saturation"], ["sort by value", "value"], ["sort by date added", "date"]], "rightImageWidth": 16 },
     "stack": { "creationFunction": "CreateStackLayout", "subviewsTransitions": [{ "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }] },
-    "stack2": { "creationFunction": "CreateStackLayout", "subviewsTransitions": [{ "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }] },
+    "stack2": { "creationFunction": "CreateStackLayout", "subviewsTransitions": [{ "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }] },
     "successButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showMain", "rightImageWidth": 5, "text": "doneButton" },
     "successText": { "creationFunction": "CreateText", "text": "successText" },
     "swatchShine": { "creationFunction": "CreateShape", "leftImageWidth": 5, "rightImageWidth": 5 },
@@ -42,5 +43,6 @@ var dashcodePartSpecs = {
     "textRGB": { "creationFunction": "CreateText", "text": "textRGB\nG\nB" },
     "truncatedText": { "creationFunction": "CreateText", "text": "truncatedText" },
     "tryButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "getLibrary", "rightImageWidth": 5, "text": "tryButton" },
-    "tryButton1": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "getLibrary", "rightImageWidth": 5, "text": "tryButton" }
+    "tryButton1": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "getLibrary", "rightImageWidth": 5, "text": "tryButton" },
+    "tryButton2": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showNames2", "rightImageWidth": 5, "text": "tryButton" }
 };

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Breakpoints</key>
+	<dict/>
 	<key>ContentSplitViewGeometry</key>
 	<dict>
 		<key>ContentSplitViewConfig</key>
@@ -21,25 +23,25 @@
 	<key>Dashboard Widget Prefs</key>
 	<dict>
 		<key>id</key>
-		<string>99470e12e073b041</string>
+		<string>e04a8ae9ca83b041</string>
 		<key>in-layer</key>
 		<true/>
 		<key>path</key>
-		<string>/private/var/folders/Un/UnxUHwCPHWKctaUXGCL53k+++TI/-Tmp-/Dashcode/.Chroma.dcprojjhnOrK/Chroma.dcproj/project.wdgt/</string>
+		<string>/private/var/folders/Un/UnxUHwCPHWKctaUXGCL53k+++TI/-Tmp-/Dashcode/.Chroma.dcprojexNdJv/Chroma.dcproj/project.wdgt/</string>
 		<key>percent-offset-x</key>
 		<integer>0</integer>
 		<key>percent-offset-y</key>
 		<integer>0</integer>
 		<key>percent-type</key>
-		<integer>1</integer>
+		<integer>2</integer>
 		<key>percent-x</key>
-		<real>0.40156251192092896</real>
+		<real>0.39427083730697632</real>
 		<key>percent-y</key>
-		<real>0.1666666716337204</real>
+		<real>0.19166666269302368</real>
 		<key>pos-x</key>
-		<integer>771</integer>
+		<integer>863</integer>
 		<key>pos-y</key>
-		<integer>200</integer>
+		<integer>230</integer>
 		<key>rosetta</key>
 		<false/>
 	</dict>
@@ -418,9 +420,21 @@
 			<integer>1</integer>
 			<integer>1</integer>
 		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+		</array>
 	</array>
 	<key>Objects view last selections</key>
-	<array/>
+	<array>
+		<array>
+			<integer>5</integer>
+		</array>
+	</array>
 	<key>Opened Steps</key>
 	<array>
 		<integer>0</integer>
