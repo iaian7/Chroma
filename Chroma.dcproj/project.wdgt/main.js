@@ -97,6 +97,7 @@ function showFront(event)
 	if (window.widget) {
 		widget.prepareForTransition("ToFront");
 		updatePrefs();
+		getLibrary();
 	}
 
 	front.style.display="block";
@@ -117,8 +118,25 @@ if (window.widget) {
 // Begin app-specific functions
 
 var wid = widget.identifier;
-var prefFPS = loadPref(wid+"fps",30);
-var prefKeyframe = loadPref(wid+"keyframe",0);
+var pref = [];
+pref[0] = loadPref(wid+"H",30);
+pref[1] = loadPref(wid+"S",90);
+pref[2] = loadPref(wid+"V",100);
+pref[3] = loadPref(wid+"R",255);
+pref[4] = loadPref(wid+"G",140);
+pref[5] = loadPref(wid+"B",25);
+pref[6] = loadPref(wid+"HEX","#FF8C19");
+prefSort = loadPref(wid+"sort",0);
+prefLocation = loadPref(wid+"location","~/Dropbox/Sync/");
+prefGroup = loadPref(wid+"group","group");
+prefName = loadPref(wid+"name","name");
+
+var busy = false;
+var add = false;
+var del = false;
+var libArray = [[0, 0, 0, 0, 0, 0, "#000000", "grayscale", "black", 2], [0, 0, 50, 128, 128, 128, "#656565", "grayscale", "gray", 3], [0, 0, 100, 255, 255, 255, "#FFFFFF", "grayscale", "white", 4], [30, 90, 100, 255, 140, 25, "#FF8C19", "group", "orange", 1]];
+
+var libString = "0,0,0,0,0,0,#000000,grayscale,black,2\n0,0,50,128,128,128,#656565,grayscale,gray,3\n0,0,100,255,255,255,#FFFFFF,grayscale,white,4\n30,90,100,255,140,25,#FF8C19,group,orange,1";
 
 // Preference Saving
 
@@ -133,8 +151,20 @@ function loadPref(key,value) {
 }
 
 function loadPrefs() {
-//	document.getElementById("fps").value = prefFPS;
-//	document.getElementById("keyframe").object.setSelectedIndex(prefKeyframe);
+//	document.getElementById("H").value = parseInt(pref[0]);
+//	document.getElementById("S").value = parseInt(pref[1]);
+//	document.getElementById("V").value = parseInt(pref[2]);
+//	document.getElementById("R").value = parseInt(pref[3]);
+//	document.getElementById("G").value = parseInt(pref[4]);
+//	document.getElementById("B").value = parseInt(pref[5]);
+//	document.getElementById("X").value = pref[6];
+	document.getElementById("sort").object.setSelectedIndex(prefSort);
+	document.getElementById("location").value = prefLocation;
+//	document.getElementById("groupTitle").value = prefGroup;
+//	document.getElementById("nameTitle").value = prefName;
+
+	updateAll();
+	getLibrary();
 }
 
 function savePref(key,value) {
@@ -145,170 +175,312 @@ function savePref(key,value) {
 
 function updatePrefs() {
 	if (window.widget) {
-//		widget.setPreferenceForKey(prefFPS,wid+"fps");
-//		widget.setPreferenceForKey(prefKeyframe,wid+"keyframe");
+		widget.setPreferenceForKey(pref[0],wid+"H");
+		widget.setPreferenceForKey(pref[1],wid+"S");
+		widget.setPreferenceForKey(pref[2],wid+"V");
+		widget.setPreferenceForKey(pref[3],wid+"R");
+		widget.setPreferenceForKey(pref[4],wid+"G");
+		widget.setPreferenceForKey(pref[5],wid+"B");
+		widget.setPreferenceForKey(pref[6],wid+"X");
+		widget.setPreferenceForKey(prefSort,wid+"sort");
+		widget.setPreferenceForKey(prefLocation,wid+"location");
+		widget.setPreferenceForKey(prefGroup,wid+"group");
+		widget.setPreferenceForKey(prefName,wid+"name");
 	}
 }
 
 function erasePrefs() {
 	if (window.widget) {
-//		widget.setPreferenceForKey(null,wid+"fps");
-//		widget.setPreferenceForKey(null,wid+"keyframe");
+		widget.setPreferenceForKey(null,wid+"H");
+		widget.setPreferenceForKey(null,wid+"S");
+		widget.setPreferenceForKey(null,wid+"V");
+		widget.setPreferenceForKey(null,wid+"R");
+		widget.setPreferenceForKey(null,wid+"G");
+		widget.setPreferenceForKey(null,wid+"B");
+		widget.setPreferenceForKey(null,wid+"X");
+		widget.setPreferenceForKey(null,wid+"sort");
+		widget.setPreferenceForKey(null,wid+"location");
+		widget.setPreferenceForKey(null,wid+"group");
+		widget.setPreferenceForKey(null,wid+"name");
 	}
 }
 
 // Basic Functions
 
-function updateH(event) {
-	// Insert Code Here
-}
-
-function updateS(event) {
-	// Insert Code Here
-}
-
-function updateV(event) {
-	// Insert Code Here
-}
-
-function updateR(event) {
-	// Insert Code Here
-}
-
-
-function updateG(event) {
-	// Insert Code Here
-}
-
-function updateB(event) {
-	// Insert Code Here
-}
-
-function updateHEX(event) {
-	// Insert Code Here
-}
-
-
-
-
-
-function updateFPS(event) {
-	var fps = document.getElementById("fps");
-	prefFPS = parseInt(fps.value);
-//	fps.value = prefFPS+"fps";
-
-	if (event.type == "keyup") {
-		if (event.keyCode == "13" || event.keyCode == "38" || event.keyCode == "40") {
-			fps.value = prefFPS+"fps";
-//			fps.focus();
-//			fps.select();
-			selectIt(fps);
-		}
-	} else {
-		fps.value = prefFPS+"fps";
+function updateAll(event) {
+	if (event != "HSV") {
+		document.getElementById("H").value = parseInt(pref[0]);
+		document.getElementById("S").value = parseInt(pref[1]);
+		document.getElementById("V").value = parseInt(pref[2]);
 	}
-}
-
-function updateKeyframe(event) {
-	prefKeyframe = document.getElementById("keyframe").object.getSelectedIndex();
-}
-
-function updatePhoneme(event) {
-	prefPhoneme = document.getElementById("phoneme").object.getSelectedIndex();
-	alert("prefPhoneme = "+prefPhoneme);
-	if (prefPhoneme > 1) {
-		var preset = "preset"+(prefPhoneme-1);
-		prefPhonemeString = document.getElementById(preset).value;
-		alert("prefPhonemeString = "+prefPhonemeString);
-	} else if (prefPhoneme == 1) {
-		prefPhonemeString = Flash;
-		alert("prefPhonemeString = "+prefPhonemeString);
-	} else {
-		prefPhonemeString = PrestonBlair;
-		alert("prefPhonemeString = "+prefPhonemeString);
+	if (event != "RGB") {
+		document.getElementById("R").value = parseInt(pref[3]);
+		document.getElementById("G").value = parseInt(pref[4]);
+		document.getElementById("B").value = parseInt(pref[5]);
 	}
-	updatePrefs();
-}
-
-function updatePreset(event) {
-//	var fps = document.getElementById("fps");
-//	prefKeyframe = parseFloat(fps.value);
-}
-
-// Be sure to assign these handlers for the ondragenter and ondragover events on your drop target. These handlers prevent Web Kit from processing drag events so you can handle the drop when it occurs.
-
-function dragEnter(event) {
-	event.stopPropagation();
-	event.preventDefault();
-}
-
-function dragOver(event) {
-	event.stopPropagation();
-	event.preventDefault();
-}
-
-function dragDrop(event) {
-	try {
-		uri = event.dataTransfer.getData("text/uri-list");	
-		uri = uri.replace(/file:\/\/localhost/, "");
-		uri = uri.replace(/\%20/g, "\\ ");
-		uri = uri.replace(/\n/g, " ");
-
-		widget.system("cat "+uri, processInput).outputString;
-	} catch (ex) {
-		alert("Problem fetching URI: " + ex);
-		showFail(event);
+	if (event != "HEX") {
+		document.getElementById("X").value = pref[6];
 	}
+	if (document.getElementById("swatch")) document.getElementById("swatch").style.backgroundColor = pref[6];
+	if (document.getElementById("swatchSave")) document.getElementById("swatchSave").style.backgroundColor = pref[6];
 
-	event.stopPropagation();
-	event.preventDefault();
+	document.getElementById("groupTitle").value = prefGroup;
+	document.getElementById("nameTitle").value = prefName;
+//	alert("update all");
 }
 
-function processInput(event) {
-	input = event.outputString.replace(/\r\n|\n|\r/gi," ");
+function updateSort(event) {
+	prefSort = document.getElementById("sort").object.getSelectedIndex();
+}
 
-	if (input.search(/MohoSwitch/i)<0) {
-		return showWrong(event);
-	}
+function updateLocation(event) {
+	prefLocation = document.getElementById("location").value;
+}
 
-	var string = prefPhonemeString.split(',');
-	var keytype = document.getElementById("keyframe").object.getValue();
-	var keydex = document.getElementById("keyframe").object.getSelectedIndex();
+function updateInput(event) {
+	var data = parseFloat(event.target.value);
+	var limit = 255;
+	var increment = 8;
+	var prefId = 6;
 
-	if (keydex >= 4) {
-		keyframeAE(string,keytype)
-	} else {
-		for(var i in string) {
-			keyframeLW(string[i],keytype);
+	switch (event.target.id) {
+	case "H":
+		prefId = 0;
+		limit = 360;
+		increment = 10;
+		break;
+	case "S":
+		prefId = 1;
+		limit = 100;
+		increment = 10;
+		break;
+	case "V":
+		prefId = 2;
+		limit = 100;
+		increment = 10;
+		break;
+	case "R":
+		prefId = 3;
+		break;
+	case "G":
+		prefId = 4;
+		break;
+	case "B":
+		prefId = 5;
+		break;
+	default:
+		increment = false;
+		data = event.target.value.match(/([0-9a-f]{6})/i);
+//		data = event.target.value.match(/^#?([0-9a-f]{6})$/i);
+		if (data && event.keyCode>40) {
+			pref[6] = "#"+data[1].toUpperCase();
+			if (!data[0].match("#")) event.target.value = pref[6];
+			HEXtoRGB();
+			RGBtoHSV();
+			return updateAll("HEX");
+		} else {
+			return false;
 		}
 	}
+
+	if (event.keyCode == 38 && increment) {
+		if (event.shiftKey == true) {
+			data += increment;
+			event.target.value = data;
+		} else {
+			data += 1;
+			event.target.value = data;
+		}
+	} else if (event.keyCode == 40 && increment) {
+		if (event.shiftKey == true) {
+			data -= increment;
+			event.target.value = data;
+		} else {
+			data -= 1;
+			event.target.value = data;
+		}
+	}
+
+	if (data>=0 && ((data % 1) == 0)) {
+		if (data>limit) {
+//			alert("met limit");
+			data = limit;
+			event.target.value = data;
+		}
+		pref[prefId] = data;
+	} else {
+//		alert("invalid");
+		event.target.value = parseInt(pref[prefId]);
+	}
+
+	if (increment == 10) {
+		HSVtoRGB();
+		RGBtoHEX();
+		return updateAll("HSV");
+	} else {
+		RGBtoHSV();
+		RGBtoHEX();
+		return updateAll("RGB");
+	}
 }
 
-function keyframeLW(phoneme,keytype) {
-	var a1 = input.split(" ");
-	var len = a1.length-1;
-	var len2 = Math.round((len/2)-0.25);
-	var output = "	" + len2 + "\n";
-	for (i=0;i<len;i++){
-		if (i%2==1){
-		var a2 = a1[i+1];
-			if (a2 == phoneme) {
-			var keyvalue = "1";
+
+
+// Library management
+
+function fromLibrary(event) {
+	pref[0] = event[0];
+	pref[1] = event[1];
+	pref[2] = event[2];
+	pref[3] = event[3];
+	pref[4] = event[4];
+	pref[5] = event[5];
+	pref[6] = event[6];
+	prefGroup = event[7];
+	prefName = event[8];
+	updateAll();
+}
+
+function addLibrary(event) {
+	add = [pref[0],pref[1],pref[2],pref[3],pref[4],pref[5],pref[6],document.getElementById("groupTitle").value,document.getElementById("nameTitle").value,new Date().getTime()];
+	getLibrary();
+	showValues();
+}
+
+function editLibrary(event) {
+	del = event;
+	getLibrary();
+}
+
+function getLibrary(event) {
+	var commandString = "cat "+prefLocation+"chromaLibrary.txt";
+	widget.system(commandString, processLibrary).outputString;
+}
+
+function processLibrary(event) {
+	if (busy) {
+		return showFail();
+	} else if (event.status>0) {
+//		busy = false;
+//		alert("processLibrary error = "+event.errorString);
+		return showCreate();
+	} else {
+//		if (!event.outputString) return;
+		event.outputString = event.outputString || libString;
+
+		busy = true;
+		libArray = event.outputString.split("\n");
+		for(var i in libArray) {
+			libArray[i] = libArray[i].split(",");
+		}
+
+		if (add) {
+			if (!libArray[0][1]) {
+				libArray = [""];
+				libArray[0] = add;
 			} else {
-			var keyvalue = "0";
+				libArray.push(add);
 			}
-		output = output + "	 Key " + keyvalue + " " + (a1[i]/prefFPS) + keytype + " 0 0 0 0 0\n";
+			add = false;
 		}
+
+		if (del) {
+			del = arrayMatch(libArray,9,del);
+			if (del) libArray.splice(del,1);
+			del = false;
+		}
+
+//		alert("libArray:\n"+libArray+"\nlength:\n"+libArray.length);
+
+		if (libArray[1]) {
+			switch (prefSort) {
+			case 0:
+				libArray.sort(sortName);
+				break;
+			case 1:
+				libArray.sort(sortHue);
+				break;
+			case 2:
+				libArray.sort(sortSaturation);
+				break;
+			case 3:
+				libArray.sort(sortValue);
+				break;
+			case 4:
+				libArray.sort(sortDate);
+				break;
+			default:
+				alert("prefSort error:\n"+prefSort);
+			}
+		}
+
+		listDataSource._rowData = libArray;
+		list.object.reloadData();
+		document.getElementById("scrollArea").object.refresh();
+		busy = false;
+		setLibrary();
 	}
+}
 
-	var myCommand = widget.system("cat > "+uri+"."+phoneme+".env", endHandler);
-	myCommand.write("{ Envelope\n"+output+"	 Behaviors 1 1\n}");
+function arrayMatch(arr,ind,str) {
+	for(var i in arr) {
+		if (arr[i][ind] == str) return i;
+	}
+	return false;
+}
+
+function sortName(a, b) {
+	var x = a[7].toLowerCase();
+	var y = b[7].toLowerCase();
+	if (x==y) x = a[8].toLowerCase(), y = b[8].toLowerCase();
+	return (x < y) ? -1 : ((x > y) ? 1 : 0);
+}
+
+function sortHue(a, b){
+	var x = a[7].toLowerCase();
+	var y = b[7].toLowerCase();
+	return (x < y) ? 1 : ((x > y) ? -1 : a[0] - b[0]);
+}
+
+function sortSaturation(a, b){
+	var x = a[7].toLowerCase();
+	var y = b[7].toLowerCase();
+	return (x < y) ? 1 : ((x > y) ? -1 : a[1] - b[1]);
+}
+
+function sortValue(a, b){
+	var x = a[7].toLowerCase();
+	var y = b[7].toLowerCase();
+	return (x < y) ? 1 : ((x > y) ? -1 : a[2] - b[2]);
+}
+
+function sortDate(a, b){
+	return a[9] - b[9];
+}
+
+function setLibrary(event) {
+	if (busy) return showFail();
+	busy = true;
+	libString = [];
+	for(var i in libArray) {
+		libString[i] = libArray[i].join(",");
+	}
+	libString = libString.join("\n");
+	var myCommand = widget.system("cat > "+prefLocation+"chromaLibrary.txt", endHandler);
+	myCommand.write(libString);
 	myCommand.close();
+	busy = false;
+}
 
-	return	showSuccess();
+function createLibrary(event) {
+//alert("createLibrary");
+	setLibrary();
+	getLibrary();
+	showMain();
 }
 
 function endHandler(event) {
+//alert("endHandler = "+event);
 }
 
 // Clipboard
@@ -318,27 +490,6 @@ function copy(value){
 }
 
 // Key listeners
-
-function keyboard(event) {
-	var data = parseFloat(event.target.value);
-	if (event.keyCode == 38) {
-		if (event.shiftKey == true) {
-			event.target.value = data+10
-		} else {
-			event.target.value = data+1
-		}
-		return true;
-	} else if (event.keyCode == 40) {
-		if (event.shiftKey == true) {
-			event.target.value = data-10
-		} else {
-			event.target.value = data-1
-		}
-		return true;
-	} else {
-		return true;
-	}
-}
 
 function selectIt(event) {
 	if(event.target){
@@ -350,65 +501,75 @@ function selectIt(event) {
 
 
 
+//// LIST BOX
+
+var _this = [];
+
+// This object implements the dataSource methods for the list.
+var listDataSource = {
+
+	// Sample data for the content of the list. 
+	// Your application may also fetch this data remotely via XMLHttpRequest.
+	_rowData: [["empty library"]],
+
+	// The List calls this method to find out how many rows should be in the list.
+	numberOfRows: function() {
+		return this._rowData.length;
+	},
+
+	// The List calls this method once for every row.
+	prepareRow: function(rowElement, rowIndex, templateElements) {
+		// templateElements contains references to all elements that have an id in the template row.
+		// Ex: set the value of an element with id="label".
+		if (!this._rowData[rowIndex][9]) {
+			templateElements.label.innerText = this._rowData[rowIndex];
+			templateElements.labelHSV.innerText = "";
+			templateElements.labelRGB.innerText = "";
+			templateElements.labelHEX.innerText = "";
+			templateElements.swatchList.style.opacity = 0;
+		} else {
+			if (templateElements.label) {
+				templateElements.label.innerText = this._rowData[rowIndex][7];
+				templateElements.label.style.opacity = 0;
+			}
+			if (templateElements.labelHSV) {
+				var tempHSV = parseInt(this._rowData[rowIndex][0])+" "+parseInt(this._rowData[rowIndex][1])+" "+parseInt(this._rowData[rowIndex][2]);
+				templateElements.labelHSV.innerText = tempHSV;
+				templateElements.labelHSV.onclick = function(event) { copy(tempHSV) };
+			}
+			if (templateElements.labelRGB) {
+				var tempRGB = parseInt(this._rowData[rowIndex][3])+" "+parseInt(this._rowData[rowIndex][4])+" "+parseInt(this._rowData[rowIndex][5]);
+				templateElements.labelRGB.innerText = tempRGB;
+				templateElements.labelRGB.onclick = function(event) { copy(tempRGB) };
+			}
+			if (templateElements.labelHEX) {
+				templateElements.labelHEX.innerText = this._rowData[rowIndex][6];
+				templateElements.labelHEX.onclick = function(event) { copy(_this._rowData[rowIndex][6]) };
+			}
+			if (templateElements.swatchList) {
+				templateElements.swatchList.style.backgroundColor = this._rowData[rowIndex][6];
+			}
+			if (templateElements.imgUse) {
+				templateElements.imgUse.onclick = function(event) { fromLibrary(_this._rowData[rowIndex]) };
+			}
+			if (templateElements.imgDelete) {
+				templateElements.imgDelete.onclick = function(event) { editLibrary(_this._rowData[rowIndex][9]) };
+			}
+		}
+
+		_this = this;
+//		rowElement.onclick = function(event) { alert(_this._rowData[0]); };
+
+		// Assign a click event handler for the row.
+//		rowElement.onclick = function(event) {
+//			alert("Row "+rowIndex);
+//		};
+	}
+};
+
+
+
 // Conversion Processes
-
-/*
- * Converts an RGB color value to HSL. Conversion formula
- * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
- * Assumes r, g, and b are contained in the set [0, 255] and
- * returns h, s, and l in the set [0, 1].
- */
-function RGBtoHSL(r, g, b){
-	r /= 255, g /= 255, b /= 255;
-	var max = Math.max(r, g, b), min = Math.min(r, g, b);
-	var h, s, l = (max + min) / 2;
-
-	if(max == min){
-		h = s = 0; // achromatic
-	}else{
-		var d = max - min;
-		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-		switch(max){
-			case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-			case g: h = (b - r) / d + 2; break;
-			case b: h = (r - g) / d + 4; break;
-		}
-		h /= 6;
-	}
-
-	return [h, s, l];
-}
-
-/*
- * Converts an HSL color value to RGB. Conversion formula
- * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
- * Assumes h, s, and l are contained in the set [0, 1] and
- * returns r, g, and b in the set [0, 255].
- */
-function HSLtoRGB(h, s, l){
-	var r, g, b;
-
-	if(s == 0){
-		r = g = b = l; // achromatic
-	}else{
-		function hue2RGB(p, q, t){
-			if(t < 0) t += 1;
-			if(t > 1) t -= 1;
-			if(t < 1/6) return p + (q - p) * 6 * t;
-			if(t < 1/2) return q;
-			if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-			return p;
-		}
-
-		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-		var p = 2 * l - q;
-		r = hue2RGB(p, q, h + 1/3);
-		g = hue2RGB(p, q, h);
-		b = hue2RGB(p, q, h - 1/3);
-	}
-
-	return [r * 255, g * 255, b * 255];
-}
 
 /*
  * Converts an RGB color value to HSV. Conversion formula
@@ -417,6 +578,10 @@ function HSLtoRGB(h, s, l){
  * returns h, s, and v in the set [0, 1].
  */
 function RGBtoHSV(r, g, b){
+	r = r || pref[3];
+	g = g || pref[4];
+	b = b || pref[5];
+
 	r = r/255, g = g/255, b = b/255;
 	var max = Math.max(r, g, b), min = Math.min(r, g, b);
 	var h, s, v = max;
@@ -435,6 +600,10 @@ function RGBtoHSV(r, g, b){
 		h /= 6;
 	}
 
+	h = h*360, s = s*100, v = v*100;
+	pref[0] = h;
+	pref[1] = s;
+	pref[2] = v;
 	return [h, s, v];
 }
 
@@ -445,6 +614,9 @@ function RGBtoHSV(r, g, b){
  * returns r, g, and b in the set [0, 255].
  */
 function HSVtoRGB(h, s, v){
+	h = h || pref[0]/360;
+	s = s || pref[1]/100;
+	v = v || pref[2]/100;
 	var r, g, b;
 
 	var i = Math.floor(h * 6);
@@ -462,45 +634,44 @@ function HSVtoRGB(h, s, v){
 		case 5: r = v, g = p, b = q; break;
 	}
 
-	return [r * 255, g * 255, b * 255];
+	r = r*255, g = g*255, b = b*255;
+	pref[3] = r;
+	pref[4] = g;
+	pref[5] = b;
+	return [r, g, b];
 }
 
-
-
-alert(RGBtoHEX([255,128,20]));
-
 function RGBtoHEX(rgb) {
+	rgb = rgb || [pref[3],pref[4],pref[5]];
 	var hex = [];
-	hex[0] = DECtoHEX(rgb[0]);
-	hex[1] = DECtoHEX(rgb[1]);
-	hex[2] = DECtoHEX(rgb[2]);
+	hex[0] = DECtoHEX(parseInt(rgb[0]));
+	hex[1] = DECtoHEX(parseInt(rgb[1]));
+	hex[2] = DECtoHEX(parseInt(rgb[2]));
 
-	return (hex[0]+""+hex[1]+""+hex[2]).toUpperCase();
+	pref[6] = hex = "#"+(hex[0]+""+hex[1]+""+hex[2]).toUpperCase();
+	return hex;
 }
 
 function DECtoHEX(dec) {
 	return dec.toString(16);
 }
 
-
-
-alert("#FD8012 = "+HEXtoRGB("FF8014"));
-
 function HEXtoRGB(hex) {
+	hex = hex || pref[6];
+	hex = hex.replace("#","");
 	var r = HEXtoDEC(hex.substring(0,2));
 	var g = HEXtoDEC(hex.substring(2,4));
 	var b = HEXtoDEC(hex.substring(4,6));
+
+	pref[3] = r;
+	pref[4] = g;
+	pref[5] = b;
 	return [r, g, b];
 }
 
 function HEXtoDEC(hex) {
 	return parseInt(hex, 16);
 }
-
-//var test = document.getElementById('swatch').style.backgroundColor = "#"+RGBtoHEX([255,20,20]);
-var test = swatch.style.backgroundColor;
-
-var test2 = document.getElementById('swatch').style.background-color: rgb(111, 111, 111);
 
 
 
@@ -518,27 +689,36 @@ function showFail(event) {
 	document.getElementById("stack").object.setCurrentView("fail", true, true);
 }
 
-function showWrong(event) {
-	document.getElementById("stack").object.setCurrentView("wrong", true, true);
+function showCreate(event) {
+	document.getElementById("stack").object.setCurrentView("create", true, true);
 }
 
 function showUpdate(event) {
 	document.getElementById("stack").object.setCurrentView("update", true, true);
 }
 
-// Other animations
-
-function showAddButton(event) {
-	var itemToFadeIn = document.getElementById("add");
-	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
-	new AppleAnimator(200, 5, 0.1, 0.5, fadeHandler).start();
+function showValues(event) {
+	document.getElementById("stack2").object.setCurrentView("values", true, true);
 }
 
-function hideAddButton(event) {
-	var itemToFadeIn = document.getElementById("add");
-	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
-	new AppleAnimator(400, 10, 0.5, 0.1, fadeHandler).start();
+function showNames(event) {
+	document.getElementById("stack2").object.setCurrentView("names", false, true);
 }
+
+// Element animations
+
+function buttonOver(event) {
+	var itemToFadeIn = event.target;
+	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
+	new AppleAnimator(200, 5, 0.15, 0.65, fadeHandler).start();
+}
+
+function buttonOut(event) {
+	var itemToFadeIn = event.target;
+	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
+	new AppleAnimator(400, 10, 0.65, 0.15, fadeHandler).start();
+}
+
 
 // Get Key Value
 
@@ -555,24 +735,17 @@ function getKeyValue(plist, key) {
 // Auto Update
 
 function versionCheck(event) {
-
-return
-// REMOVE THE ABOVE LINE OR AUTO UPDATE WILL BE BROKEN
-// REMOVE THE ABOVE LINE OR AUTO UPDATE WILL BE BROKEN
-// REMOVE THE ABOVE LINE OR AUTO UPDATE WILL BE BROKEN
-// REMOVE THE ABOVE LINE OR AUTO UPDATE WILL BE BROKEN
-
 	var request = new XMLHttpRequest();
 	var address = "http://iaian7.com/files/dashboard/chroma/version.php?RandomKey=" + Date.parse(new Date());
-	alert(address);
+//	alert(address);
 	request.open("GET", address,false);
 	request.send(null);
 	var versions = request.responseText.split("\n");
 
 	var bundleVersion = getKeyValue("Info.plist", "CFBundleVersion"); 
 	var websiteVersion = versions[0];
-	alert("bundleVersion: "+bundleVersion);
-	alert("websiteVersion: "+websiteVersion);
+//	alert("bundleVersion: "+bundleVersion);
+//	alert("websiteVersion: "+websiteVersion);
 
 	if (websiteVersion != bundleVersion) {
 		document.getElementById("newVersion").innerHTML = "version "+versions[0]+"<br/>"+versions[1];
