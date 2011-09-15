@@ -16,8 +16,8 @@
 		<real>0.0</real>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {1581, 512}}</string>
-			<string>{{0, 522}, {1581, 577}}</string>
+			<string>{{0, 0}, {1581, 416}}</string>
+			<string>{{0, 426}, {1581, 673}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
@@ -25,25 +25,25 @@
 	<key>Dashboard Widget Prefs</key>
 	<dict>
 		<key>id</key>
-		<string>d730bb85e15cb041</string>
+		<string>bdfc7207a66eb041</string>
 		<key>in-layer</key>
 		<true/>
 		<key>path</key>
-		<string>/private/var/folders/vC/vCkFPVDQG38v-H9sp03iaE+++TI/-Tmp-/Dashcode/.Chroma.dcprojzzyRxY/Chroma.dcproj/project.wdgt/</string>
+		<string>/private/var/folders/vC/vCkFPVDQG38v-H9sp03iaE+++TI/-Tmp-/Dashcode/.Chroma.dcprojqDdUlU/Chroma.dcproj/project.wdgt/</string>
 		<key>percent-offset-x</key>
 		<integer>0</integer>
 		<key>percent-offset-y</key>
 		<integer>0</integer>
 		<key>percent-type</key>
-		<integer>1</integer>
+		<integer>2</integer>
 		<key>percent-x</key>
-		<real>0.37812501192092896</real>
+		<real>0.24166665971279144</real>
 		<key>percent-y</key>
-		<real>0.20000000298023224</real>
+		<real>0.12833333015441895</real>
 		<key>pos-x</key>
-		<integer>2006</integer>
+		<integer>2436</integer>
 		<key>pos-y</key>
-		<integer>-61</integer>
+		<integer>-147</integer>
 		<key>rosetta</key>
 		<false/>
 	</dict>
@@ -84,8 +84,8 @@
 		<real>0.0</real>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {245, 577}}</string>
-			<string>{{0, 587}, {245, 512}}</string>
+			<string>{{0, 0}, {340, 577}}</string>
+			<string>{{0, 587}, {340, 512}}</string>
 		</array>
 	</dict>
 	<key>Objects view expanded items</key>
@@ -115,12 +115,6 @@
 			<integer>0</integer>
 			<integer>0</integer>
 			<integer>2</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
 			<integer>1</integer>
 		</array>
 		<array>
@@ -149,13 +143,6 @@
 			<integer>0</integer>
 			<integer>0</integer>
 			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
 		</array>
 		<array>
 			<integer>0</integer>
@@ -193,21 +180,6 @@
 			<integer>0</integer>
 			<integer>2</integer>
 			<integer>2</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>0</integer>
 		</array>
 		<array>
 			<integer>0</integer>
@@ -230,15 +202,6 @@
 		<array>
 			<integer>0</integer>
 			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
 			<integer>3</integer>
 		</array>
 		<array>
@@ -254,72 +217,7 @@
 			<integer>0</integer>
 			<integer>1</integer>
 			<integer>0</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
 			<integer>1</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>0</integer>
-			<integer>3</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
 			<integer>0</integer>
 		</array>
 		<array>
@@ -351,18 +249,6 @@
 			<integer>0</integer>
 			<integer>0</integer>
 			<integer>0</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
 			<integer>1</integer>
 		</array>
 		<array>
@@ -373,23 +259,6 @@
 			<integer>1</integer>
 			<integer>0</integer>
 			<integer>2</integer>
-			<integer>0</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>1</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>1</integer>
 			<integer>0</integer>
 		</array>
 		<array>
@@ -400,24 +269,6 @@
 			<integer>1</integer>
 			<integer>1</integer>
 			<integer>3</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>1</integer>
-			<integer>2</integer>
-		</array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>2</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>1</integer>
-			<integer>1</integer>
 		</array>
 		<array>
 			<integer>0</integer>
@@ -436,6 +287,116 @@
 			<integer>0</integer>
 			<integer>2</integer>
 			<integer>4</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>3</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+			<integer>2</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+		</array>
+		<array>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>2</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>1</integer>
+			<integer>0</integer>
 		</array>
 	</array>
 	<key>Objects view last selections</key>
@@ -451,8 +412,8 @@
 	<key>Visible StackLayout Views</key>
 	<array>
 		<string>front</string>
-		<string>values</string>
 		<string>main</string>
+		<string>names</string>
 	</array>
 </dict>
 </plist>
