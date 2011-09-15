@@ -5,27 +5,22 @@
  code generator otherwise the changes will be lost.
  */
 var localizedStrings = {
-    "add": "+",
-    "Button": "⬇",
+    "cancel": "cancel",
     "cancelButton": "cancel",
-    "cancelSwatch": "x",
     "createButton": "create",
-    "createText": "\ndoes not exist",
+    "createText": "does not exist",
     "doneButton": "done",
     "downloadButton": "download",
     "explanation": "To sync multiple computers via Dropbox, use ~/Dropbox/ and the desired subfolder.\nRemote changes may not show up until you add, remove, or refresh by clicking \"done.\"",
     "explanationText": "To sync multiple computers via Dropbox, use ~/Dropbox/ and the desired subfolder.\nRemote changes may not show up until you add, remove, or refresh by clicking \"done.\"",
+    "failRepeat": "if you see this message more than once,\nplease restart the Dashboard",
     "failText": "library processing\nalready in progress",
     "iaian7com": "For more information, please visit iaian7.com/dashboard/chroma",
-    "ItemColor": "255 255 255",
-    "ItemHex": "#FFFFFF",
-    "ItemHEX": "#FF8C19",
-    "ItemHSV": "30 90 100",
-    "ItemRGB": "255 140 25",
     "locationText": "library location",
-    "mustContain": "error: group and name must\ncontain at least one letter",
+    "mustContain": "group and name fields must\ncontain at least one letter each",
     "newText": "new update available!",
     "newVersion": "version number\nversion description",
+    "newVersion1": "version number\nversion description",
     "saveSwatch": "save to library",
     "settingsButton": "settings",
     "setupButton": "cancel",
@@ -37,6 +32,7 @@ var localizedStrings = {
     "truncatedText": "library input truncated,\ncorruption prevented",
     "tryButton": "try again"
 };
+
 
 
 

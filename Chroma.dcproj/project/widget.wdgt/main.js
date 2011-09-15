@@ -414,7 +414,7 @@ function processLibrary(event) {
 		document.getElementById("createText").innerText = "library processing\nin progress";
 	}
 
-	alert("1 = libArray before processing: "+libArray[libArray.length-1]);
+//	alert("1 = libArray before processing: "+libArray[libArray.length-1]);
 	busy = "processing";
 	libArray = libString.split("\n");
 //	for(var i in libArray) {	// THIS SOMEHOW CORRUPTS DASHCODE'S JAVASCRIPT ENGINE???
@@ -423,7 +423,7 @@ function processLibrary(event) {
 	}
 
 	libArray = arrayClean(libArray);
-	alert("2 = libArray after clean: (last element only) "+libArray[libArray.length-1]);
+//	alert("2 = libArray after clean: (last element only) "+libArray[libArray.length-1]);
 
 	if (add) {
 		if (!libArray[0][1]) {
@@ -442,7 +442,7 @@ function processLibrary(event) {
 	}
 
 	libArray = arrayGroups(libArray);
-	alert("3 = libArray after groups: "+libArray[libArray.length-1]);
+//	alert("3 = libArray after groups: "+libArray[libArray.length-1]);
 
 	if (libArray[1]) {
 		switch (prefSort) {
@@ -463,7 +463,7 @@ function processLibrary(event) {
 		}
 	}
 
-	alert("4 = libArray after processing: "+libArray[libArray.length-1]);
+//	alert("4 = libArray after processing: "+libArray[libArray.length-1]);
 	if (busy != "newVersion") showMain();
 	listDataSource._rowData = libArray;
 	list.object.reloadData();
@@ -562,7 +562,7 @@ function sortDate(a, b){
 function setLibrary(event) {
 	if (busy == "setProcessing") return showFail();
 	busy = "setProcessing";
-	alert("5 = libArray before writing file: "+libArray[libArray.length-1]);
+//	alert("5 = libArray before writing file: "+libArray[libArray.length-1]);
 	var myCommand = widget.system("cat > "+prefLocation+"chromaLibrary.txt", setLibraryEnd);
 //	for(var i in libArray) {
 	for(var i=0; i<libArray.length; i++) {
