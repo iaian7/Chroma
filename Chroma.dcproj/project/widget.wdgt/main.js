@@ -953,7 +953,7 @@ function versionCheckEnd(request){
 		alert("bundleVersion: "+bundleVersion);
 		alert("websiteVersion: "+websiteVersion);
 
-		if (websiteVersion != bundleVersion) {
+		if (websiteVersion > bundleVersion) {
 			document.getElementById("newVersion").innerHTML = "version "+versions[0]+"<br/>"+versions[1];
 			busy = "newVersion";
 			return showUpdate();

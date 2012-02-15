@@ -7,20 +7,20 @@
 var localizedStrings = {
     "cancel": "cancel",
     "cancelButton": "cancel",
+    "copyright": "©2012 John Einselen, Vectorform LLC",
     "createButton": "create",
     "createText": "does not exist",
     "doneButton": "done",
     "downloadButton": "download",
     "explanation": "To sync multiple computers via Dropbox, use ~/Dropbox/ and the desired subfolder.\nRemote changes may not show up until you add, remove, or refresh by clicking \"done.\"",
     "explanationText": "To sync multiple computers via Dropbox, use ~/Dropbox/ and the desired subfolder.\nRemote changes may not show up until you add, remove, or refresh by clicking \"done.\"",
-    "failRepeat": "if you see this message more than once,\nplease restart the Dashboard",
+    "failRepeat": "if you see this message more than once, please restart the Dashboard",
     "failText": "library processing\nalready in progress",
     "iaian7com": "For more information, please visit iaian7.com/dashboard/chroma",
     "locationText": "library location",
     "mustContain": "group and name fields must\ncontain at least one letter each",
     "newText": "new update available!",
     "newVersion": "version number\nversion description",
-    "newVersion1": "version number\nversion description",
     "saveSwatch": "save to library",
     "settingsButton": "settings",
     "setupButton": "cancel",
@@ -32,6 +32,8 @@ var localizedStrings = {
     "truncatedText": "library input truncated,\ncorruption prevented",
     "tryButton": "try again"
 };
+
+
 
 
 

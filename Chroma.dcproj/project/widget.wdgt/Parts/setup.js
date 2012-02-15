@@ -38,7 +38,7 @@ var dashcodePartSpecs = {
     "successText": { "text": "successText", "view": "DC.Text" },
     "swatchShine": { "creationFunction": "CreateShape", "leftImageWidth": 5, "rightImageWidth": 5, "view": "DC.View" },
     "swatchShineSave": { "creationFunction": "CreateShape", "leftImageWidth": 5, "rightImageWidth": 5, "view": "DC.View" },
-    "text": { "text": "©2011 John Einselen / Vectorform LLC", "view": "DC.Text" },
+    "text": { "text": "copyright", "view": "DC.Text" },
     "textHEX": { "text": "textHEX\nE\nX", "view": "DC.Text" },
     "textHSV": { "text": "textHSV\nS\nV", "view": "DC.Text" },
     "textRGB": { "text": "textRGB\nG\nB", "view": "DC.Text" },
@@ -47,6 +47,9 @@ var dashcodePartSpecs = {
     "tryButton1": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "getLibrary", "rightImageWidth": 5, "text": "tryButton", "view": "DC.View" },
     "tryButton2": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showNames2", "rightImageWidth": 5, "text": "tryButton", "view": "DC.View" }
 };
+
+
+
 
 
 
