@@ -35,7 +35,7 @@ function hide()
 {
 	// Stop any timers to prevent CPU usage
 	updateScroll();
-	savePrefs();
+	updatePrefs();
 }
 
 //
@@ -162,12 +162,6 @@ function loadPrefs() {
 	document.getElementById("location").value = prefLocation;
 	updateAll("ALL");
 	checkDir();
-}
-
-function savePref(key,value) {
-	if (window.widget) {
-		widget.setPreferenceForKey(value,wid+key);
-	}
 }
 
 function updatePrefs() {
@@ -958,10 +952,10 @@ function versionCheckEnd(request){
 			busy = "newVersion";
 			return showUpdate();
 		} else {
-			alert("you have an up to date version");
+//			alert("you have an up to date version");
 		}
 	} else {
-		alert("there's been an error fetching HTTP data");
+//		alert("there's been an error fetching HTTP data");
 	}
 }
 
