@@ -250,7 +250,7 @@ function updateScroll() {
 }
 
 function updateScrollArea() {
-	var scrollArea = document.getElementById("scrollArea").object
+	var scrollArea = document.getElementById("scrollArea").object;
 	scrollArea.refresh();
 	scrollArea.verticalScrollTo(prefScroll);
 }
