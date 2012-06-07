@@ -14,6 +14,8 @@ var dashcodePartSpecs = {
     "explanation": { "text": "explanationText", "view": "DC.Text" },
     "failRepeat": { "text": "failRepeat", "view": "DC.Text" },
     "failText": { "text": "failText", "view": "DC.Text" },
+    "formatHSV": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "formatHSV", "onchange": "updateSort", "options": [["HSV: 360°", "degree"], ["HSV: 255", "integer"], ["HSV: 1.0", "float"], ["HSV: Lightwave", "special"]], "rightImageWidth": 16, "view": "DC.View" },
+    "formatRGB": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "formatRGB", "onchange": "updateSort", "options": [["RGB: 255", "integer"], ["RGB: 1.0", "float"], ["RGB: 100%", "percent"], ["RGB: +alpha", "special"]], "rightImageWidth": 16, "view": "DC.View" },
     "iaian7com": { "text": "iaian7com", "view": "DC.Text" },
     "image": { "view": "DC.ImageLayout" },
     "info": { "backgroundStyle": "black", "creationFunction": "CreateInfoButton", "foregroundStyle": "white", "frontID": "front", "onclick": "showBack", "view": "DC.View" },
@@ -27,9 +29,9 @@ var dashcodePartSpecs = {
     "newVersion": { "text": "newVersion", "view": "DC.Text" },
     "saveAlert": { "text": "mustContain", "view": "DC.Text" },
     "saveSwatch": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "addLibrary", "rightImageWidth": 5, "text": "saveSwatch", "view": "DC.View" },
-    "scrollArea": { "bottomMargin": -2, "creationFunction": "CreateScrollArea", "hasVerticalScrollbar": true, "scrollbarDivSize": 18, "scrollbarMargin": 6, "spacing": -18, "topMargin": -2, "view": "DC.View" },
+    "scrollArea": { "autoHideScrollbars": true, "bottomMargin": -2, "creationFunction": "CreateScrollArea", "scrollbarDivSize": 18, "scrollbarMargin": 6, "spacing": -18, "topMargin": -2, "view": "DC.View" },
     "setupButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showBack", "rightImageWidth": 5, "text": "settingsButton", "view": "DC.View" },
-    "show": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "show", "onchange": "updateShow", "options": [["show hsv, rgb, hex", "all"], ["show name, hsv, hex", "hex"], ["show name, rgb, hex", "rgb"]], "rightImageWidth": 16, "view": "DC.View" },
+    "show": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "show", "onchange": "updateShow", "options": [["hsv, rgb, hex", "all"], ["name, hsv, hex", "hex"], ["name, rgb, hex", "rgb"]], "rightImageWidth": 16, "view": "DC.View" },
     "skipButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "versionSkip", "rightImageWidth": 5, "text": "skipButton", "view": "DC.View" },
     "sort": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "sort", "onchange": "updateSort", "options": [["sort by name", "name"], ["sort by hue", "hue"], ["sort by saturation", "saturation"], ["sort by value", "value"], ["sort by date added", "date"]], "rightImageWidth": 16, "view": "DC.View" },
     "stack": { "subviewsTransitions": [{ "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }], "view": "DC.StackLayout" },
@@ -47,6 +49,7 @@ var dashcodePartSpecs = {
     "tryButton1": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "getLibrary", "rightImageWidth": 5, "text": "tryButton", "view": "DC.View" },
     "tryButton2": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showNames2", "rightImageWidth": 5, "text": "tryButton", "view": "DC.View" }
 };
+
 
 
 

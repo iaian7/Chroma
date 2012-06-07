@@ -649,6 +649,7 @@ var listDataSource = {
 				templateElements.labelRGB.innerText = "";
 				templateElements.labelHEX.innerText = "";
 				templateElements.swatchList.style.opacity = 0;
+				templateElements.swatchListBox.style.opacity = 0;
 //				templateElements.button.style.opacity = 0;
 				templateElements.imgDelete.style.visibility = "hidden";
 			}
@@ -656,8 +657,11 @@ var listDataSource = {
 			if (templateElements.swatchList) {
 				templateElements.swatchList.style.backgroundColor = "#"+this._rowData[rowIndex][8];
 			}
+			if (templateElements.swatchListBox) {
+				templateElements.swatchListBox.style.backgroundColor = "#"+this._rowData[rowIndex][8];
+			}
 			if (templateElements.imgUse) {
-				templateElements.imgUse.onclick = function(event) { fromLibrary(_this._rowData[rowIndex]) };
+				templateElements.imgUse.onmousedown = function(event) { fromLibrary(_this._rowData[rowIndex]) };
 			}
 //			if (templateElements.button) {
 //				templateElements.button.style.backgroundColor = "#"+this._rowData[rowIndex][8];
@@ -887,6 +891,14 @@ function buttonOut(event) {
 	var itemToFadeIn = event.target;
 	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
 	new AppleAnimator(400, 10, 0.70, 0.30, fadeHandler).start();
+}
+
+function backgroundOver(event) {
+	event.target.style.backgroundColor = "rgb(32,32,32)";
+}
+
+function backgroundOut(event) {
+	event.target.style.backgroundColor = "rgb(26,26,26)";
 }
 
 function copyFlash(event) {

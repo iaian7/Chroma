@@ -52,12 +52,12 @@ body {
     position: relative;
     margin-left: 0px;
     margin-top: 0px;
-    margin-right: 0px;
     margin-bottom: 0px;
-    width: auto;
     border-color: rgba(0, 0, 0, 0);
     height: 172px;
-    min-height: 200px;
+    width: auto;
+    margin-right: 0px;
+    min-height: 296px;
 }
 
 #explanation {
@@ -82,12 +82,11 @@ body {
     position: absolute;
     margin-top: 0px;
     text-overflow: clip;
-    width: auto;
-    height: auto;
     top: 20px;
     left: 20px;
-    bottom: 20px;
+    height: 296px;
     right: 20px;
+    width: auto;
 }
 
 #doneSave {
@@ -149,7 +148,7 @@ body {
     margin-bottom: 0px;
     width: auto;
     height: 164px;
-    min-height: 200px;
+    min-height: 296px;
 }
 
 #fail {
@@ -159,7 +158,7 @@ body {
     width: auto;
     margin-right: 0px;
     margin-left: 0px;
-    min-height: 200px;
+    min-height: 296px;
 }
 
 #failText {
@@ -216,7 +215,7 @@ body {
     width: auto;
     margin-right: 0px;
     margin-left: 0px;
-    min-height: 200px;
+    min-height: 296px;
 }
 
 #new {
@@ -297,10 +296,10 @@ body {
     position: absolute;
     font-family: HelveticaNeue;
     color: rgb(255, 255, 255);
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-width: 1px;
     overflow: hidden;
     text-align: left;
@@ -358,10 +357,10 @@ body {
 
 #RGB {
     position: absolute;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     margin-left: auto;
@@ -377,10 +376,10 @@ body {
 #HSV {
     position: absolute;
     margin-top: 0px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-style: solid;
     margin-bottom: auto;
     bottom: auto;
@@ -439,10 +438,10 @@ body {
 #library {
     position: absolute;
     margin-top: 0px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-style: solid;
     font-size: 13px;
     left: 0px;
@@ -450,10 +449,10 @@ body {
     border-color: rgb(0, 0, 0);
     border-width: 1px !important;
     background-color: rgb(13, 13, 13);
-    height: 128px;
     margin-bottom: auto;
     right: 0px;
     width: auto;
+    height: 223px;
 }
 
 #textHEX {
@@ -529,20 +528,20 @@ body {
     -khtml-margin-bottom-collapse: separate;
     position: absolute;
     left: 0px;
-    top: 140px;
+    margin-top: auto;
     right: 0px;
     width: auto;
     bottom: 0px;
-    margin-top: auto;
     height: 60px;
+    top: 140px;
 }
 
 #values {
     width: 100%;
     display: none;
     position: relative;
-    height: auto;
     min-height: 60px;
+    height: auto;
 }
 
 #names {
@@ -554,10 +553,10 @@ body {
 
 #HEX {
     position: absolute;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-style: solid;
     margin-top: auto;
     bottom: 0px;
@@ -594,10 +593,10 @@ body {
     margin-top: auto;
     bottom: 0px;
     background-color: rgb(128, 128, 128);
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-width: 1px !important;
     height: 23px;
     width: 123px;
@@ -611,10 +610,10 @@ body {
     margin-top: 0px;
     width: auto;
     height: auto;
-    top: 0px;
     left: 0px;
-    bottom: 0px;
     right: 0px;
+    top: 2px;
+    bottom: 2px;
 }
 
 #list {
@@ -626,7 +625,7 @@ body {
     top: 0px;
     margin-top: 0px;
     width: auto;
-    right: 18px;
+    right: 0px;
 }
 
 .listRowTemplate_template {
@@ -638,10 +637,10 @@ body {
     margin-top: 4px;
     margin-bottom: 4px;
     width: auto;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-color: rgb(0, 0, 0);
     background-color: rgb(26, 26, 26);
     height: 25px;
@@ -658,15 +657,15 @@ body {
     font-family: 'Helvetica Neue';
     height: auto;
     text-align: left;
-    top: 0px;
     bottom: 0px;
     line-height: 22px;
     font-size: 11px;
     opacity: 0.7;
-    left: 28px;
-    right: 130px;
-    width: auto;
     text-shadow: rgb(0, 0, 0) 0px -1px 0px;
+    margin-right: auto;
+    width: 90px;
+    left: 30px;
+    top: 1px;
 }
 
 .labelHSV_template {
@@ -682,11 +681,11 @@ body {
     margin-right: auto;
     height: auto;
     right: auto;
-    left: 24px;
     bottom: 0px;
     line-height: 22px;
     top: 1px;
     text-shadow: rgb(0, 0, 0) 0px -1px 0px;
+    left: 25px;
 }
 
 .labelRGB_template {
@@ -702,11 +701,11 @@ body {
     margin-right: auto;
     height: auto;
     right: auto;
-    left: 94px;
     line-height: 22px;
     bottom: 0px;
     top: 1px;
     text-shadow: rgb(0, 0, 0) 0px -1px 0px;
+    left: 100px;
 }
 
 .labelHEX_template {
@@ -718,14 +717,14 @@ body {
     font-family: 'Helvetica Neue';
     text-align: center;
     font-size: 10px;
-    width: 50px;
     line-height: 22px;
-    left: 163px;
-    margin-right: auto;
-    bottom: 0px;
-    height: auto;
     top: 1px;
     text-shadow: rgb(0, 0, 0) 0px -1px 0px;
+    bottom: 0px;
+    height: auto;
+    margin-right: auto;
+    left: 175px;
+    width: 55px;
 }
 
 #swatchSave {
@@ -740,10 +739,10 @@ body {
     margin-top: auto;
     bottom: 0px;
     background-color: rgb(128, 128, 128);
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-style: solid;
     width: 23px;
     height: 23px;
@@ -770,10 +769,10 @@ body {
 #groupBox {
     border-width: 1px;
     margin-top: 0px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-style: solid;
     -khtml-margin-top-collapse: separate;
     -khtml-margin-bottom-collapse: separate;
@@ -819,10 +818,10 @@ body {
 #nameBox {
     border-width: 1px;
     margin-top: 0px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-style: solid;
     -khtml-margin-top-collapse: separate;
     -khtml-margin-bottom-collapse: separate;
@@ -881,7 +880,7 @@ body {
     width: auto;
     margin-right: 0px;
     margin-left: 0px;
-    min-height: 200px;
+    min-height: 296px;
 }
 
 #sort {
@@ -892,12 +891,12 @@ body {
     text-shadow: rgb(0, 0, 0) 0px -1px 1px;
     text-align: center;
     left: 20px;
-    right: 20px;
-    width: auto;
     height: 25px;
     margin-bottom: auto;
     top: 20px;
     font-family: 'Helvetica Neue';
+    margin-right: auto;
+    width: 127px;
 }
 
 #imgCancel {
@@ -937,12 +936,12 @@ body {
     width: 24px;
     height: 24px;
     position: absolute;
-    bottom: auto;
     margin-top: 0px;
     top: 0px;
+    opacity: 0.3;
+    margin-bottom: auto;
     right: 0px;
     margin-left: auto;
-    opacity: 0.3;
 }
 
 .swatchList_template {
@@ -954,10 +953,10 @@ body {
     border-color: rgb(0, 0, 0);
     top: 0px;
     left: 0px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     background-color: rgb(128, 128, 128);
     width: 25px;
     height: 25px;
@@ -1004,32 +1003,6 @@ body {
     text-shadow: rgb(0, 0, 0) 0px -1px 0px;
 }
 
-#libraryToggleBox {
-    border-color: black;
-    position: absolute;
-    border-width: 0px;
-    text-overflow: clip;
-    overflow: hidden;
-    opacity: 1;
-    bottom: -10px;
-    margin-top: auto;
-    height: 10px;
-    width: auto;
-    left: 0px;
-    right: 0px;
-}
-
-#imgToggle {
-    position: absolute;
-    bottom: auto;
-    margin-top: 0px;
-    top: 0px;
-    opacity: 0.3;
-    height: 20px;
-    width: 254px;
-    left: 2px;
-}
-
 #truncated {
     display: none;
     position: relative;
@@ -1037,7 +1010,7 @@ body {
     width: auto;
     margin-right: 0px;
     margin-left: 0px;
-    min-height: 200px;
+    min-height: 296px;
 }
 
 #truncatedText {
@@ -1156,11 +1129,12 @@ body {
     text-align: center;
     left: 20px;
     right: 20px;
-    width: auto;
     margin-bottom: auto;
     height: 25px;
-    top: 50px;
     font-family: 'Helvetica Neue';
+    margin-left: auto;
+    top: 20px;
+    width: 127px;
 }
 
 #alert {
@@ -1198,12 +1172,12 @@ body {
     min-height: 28px;
     top: 0px;
     width: auto;
-    height: auto;
     left: 0px;
     right: 0px;
-    bottom: 24px;
     font-family: 'Helvetica Neue';
     font-size: 12px;
+    margin-bottom: auto;
+    height: 35px;
 }
 
 .image_template {
@@ -1215,11 +1189,13 @@ body {
     bottom: auto;
     margin-top: 0px;
     top: 0px;
-    border-top-left-radius: 0px 0px;
-    border-top-right-radius: 0px 0px;
-    border-bottom-left-radius: 0px 0px;
-    border-bottom-right-radius: 0px 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
     visibility: hidden;
+    margin-right: auto;
+    margin-bottom: auto;
 }
 
 .inner_image_template {
@@ -1262,4 +1238,50 @@ body {
     bottom: 0px;
     width: auto;
     height: auto;
+}
+
+#formatHSV {
+    position: absolute;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    opacity: 1;
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    text-align: center;
+    left: 20px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    top: 50px;
+    margin-right: auto;
+    margin-bottom: auto;
+    width: 127px;
+}
+
+#formatRGB {
+    position: absolute;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    opacity: 1;
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    text-align: center;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    top: 50px;
+    margin-bottom: auto;
+    right: 20px;
+    margin-left: auto;
+    width: 127px;
+}
+
+.swatchListBox_template {
+    border-color: black;
+    position: absolute;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-bottom: auto;
+    border-width: 0px;
+    background-color: rgb(128, 128, 128);
+    top: 0px;
+    height: 25px;
+    width: 10px;
+    left: 15px;
 }

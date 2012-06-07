@@ -18,7 +18,7 @@ var localizedStrings = {
     "failText": "library processing\nalready in progress",
     "iaian7com": "For more information, please visit iaian7.com/dashboard/chroma",
     "locationText": "library location",
-    "mustContain": "group and name fields must\ncontain at least one letter each",
+    "mustContain": "group and name fields must\ncontain at least one character each",
     "newText": "new update available!",
     "newVersion": "version number\nversion description",
     "saveSwatch": "save to library",
@@ -32,6 +32,7 @@ var localizedStrings = {
     "truncatedText": "library input truncated,\ncorruption prevented",
     "tryButton": "try again"
 };
+
 
 
 

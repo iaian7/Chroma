@@ -17,15 +17,15 @@
 	<key>CFBundleName</key>
 	<string>Ratio</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.1.1</string>
+	<string>3.5</string>
 	<key>CFBundleVersion</key>
-	<string>3.1.1</string>
+	<string>3.5</string>
 	<key>CloseBoxInsetX</key>
 	<integer>15</integer>
 	<key>CloseBoxInsetY</key>
 	<integer>15</integer>
 	<key>Height</key>
-	<integer>240</integer>
+	<integer>336</integer>
 	<key>MainHTML</key>
 	<string>main.html</string>
 	<key>Width</key>
