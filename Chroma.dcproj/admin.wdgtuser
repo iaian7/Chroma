@@ -896,22 +896,15 @@
 		<array>
 			<array>
 				<integer>0</integer>
-				<integer>0</integer>
 				<integer>1</integer>
-				<integer>0</integer>
-				<integer>0</integer>
-				<integer>0</integer>
-				<integer>0</integer>
-				<integer>0</integer>
-				<integer>0</integer>
-				<integer>4</integer>
+				<integer>5</integer>
 			</array>
 		</array>
 		<key>Visible StackLayout Views</key>
 		<array>
-			<string>main</string>
 			<string>values</string>
-			<string>front</string>
+			<string>main</string>
+			<string>back</string>
 		</array>
 	</dict>
 </dict>

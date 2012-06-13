@@ -270,12 +270,16 @@ function updateScrollArea() {
 	scrollArea.verticalScrollTo(prefScroll);
 }
 
+
+
+// Keyboard input
+
 function updateInput(event) {
 	var data = parseFloat(event.target.value);
 	var prefId = 8;
 	var limit = 1.0;
-	var increment = 0.03125;
-	var incrementShift = 0.0625;
+	var increment = (prefFormatRGB==0)? 0.015625 : 0.01; // 4/256
+	var incrementShift = (prefFormatRGB==0)? 0.0625 : 0.1; // 16/256
 
 	switch (event.target.id) {
 	case "H":
@@ -286,13 +290,13 @@ function updateInput(event) {
 		break;
 	case "S":
 		prefId = 3;
-		increment = 0.01;
-		incrementShift = 0.1;
+		increment = (prefFormatHSV==1)? 0.015625 : 0.01;
+		incrementShift = (prefFormatHSV==1)? 0.0625 : 0.1;
 		break;
 	case "V":
 		prefId = 4;
-		increment = 0.01;
-		incrementShift = 0.1;
+		increment = (prefFormatHSV==1)? 0.015625 : 0.01;
+		incrementShift = (prefFormatHSV==1)? 0.0625 : 0.1;
 		break;
 	case "R":
 		prefId = 5;
@@ -304,64 +308,80 @@ function updateInput(event) {
 		prefId = 7;
 		break;
 	default:
+		prefId = 8;
 		increment = false;
+		incrementShift = false;
 		data = event.target.value.match(/([0-9a-f]{6})/i);
 //		data = event.target.value.match(/^#?([0-9a-f]{6})$/i);
 		if (data && event.keyCode>40) {
 			pref[8] = data[1].replace("#","").toUpperCase();	// removes hashtag before saving to the preferences
-			if (!data[0].match("#")) event.target.value = "#"+pref[8];
+			if (!data[0].match("#")) event.target.value = "#"+pref[8];	// adds hashtag to display if not included already
 			HEXtoRGB();
 			RGBtoHSV();
-			return updateAll("HEX");
+//			return updateAll("HEX");
+			updateAll("HEX");
+			return selectIt(event.target);
 		} else {
 			return false;
 		}
 	}
 
+// If arrow keys are used, load preference value and adjust accordingly
 	if (event.keyCode == 38 && increment) {
+		data = pref[prefId];
 		if (event.shiftKey == true) {
+			data += incrementShift;
+		} else {
 			data += increment;
-		} else {
-			data += 1;
 		}
-		event.target.value = data;
-		selectIt(event.target);
+//		pref[prefId] = data;
+//		event.target.value = pref[prefId];
+//		selectIt(event.target);
 	} else if (event.keyCode == 40 && increment) {
+		data = pref[prefId];
 		if (event.shiftKey == true) {
-			data -= increment;
+			data -= incrementShift;
 		} else {
-			data -= 1;
+			data -= increment;
 		}
-		event.target.value = data;
-		selectIt(event.target);
+//		pref[prefId] = data;
+//		event.target.value = pref[prefId];
+//		selectIt(event.target);
 	}
 
-	if (data>=0 && ((data % 1) == 0)) {
+// If straight numbers are entered, convert to preference value and update
+	if (data>=0 && ((data % 1) >= 0)) {
 		if (data>limit) {
 //			alert("met limit");
 			data = limit;
 			event.target.value = data;
 		}
-		pref[prefId] = data;
-	} else {
+//		pref[prefId] = data;
+//	} else {
 //		alert("invalid");
-		event.target.value = pref[prefId];
+//		event.target.value = pref[prefId];
 	}
 
-	if (increment==1||increment==0.01) {
+	pref[prefId] = data;
+
+	if (prefId <= 4) {
 		HSVtoRGB();
 		RGBtoHEX();
-		return updateAll("HSV");
+//		return updateAll("HSV");
 	} else {
 		RGBtoHSV();
 		RGBtoHEX();
-		return updateAll("RGB");
+//		return updateAll("RGB");
 	}
+
+//	return updateAll();
+	updateAll();
+	return selectIt(event.target);
 }
 
 
 
-// Library management
+// Library processing
 
 function addLibrary(event) {
 	updateScroll();
@@ -376,10 +396,6 @@ function editLibrary(event) {
 	del = event;
 	processLibrary();
 }
-
-
-
-// Library processing
 
 function processLibrary(event) {
 	libArray = prefLibrary;
@@ -814,9 +830,7 @@ function HEXtoDEC(hex) {
 
 
 
-// Parse display and clipboard values
-
-// XXX
+// Parse values and convert to/from display formats
 
 function parseH(value) {
 	switch(prefFormatHSV){
@@ -824,6 +838,16 @@ function parseH(value) {
 		case 1: value = parseInt((value/360)*255); break;
 		case 2: value = parseInt((value/360)*100); break;
 		case 3: value = (value/360).toFixed(2); break;
+	}
+	return value;
+}
+
+function fromH(value) {
+	switch(prefFormatHSV){
+		case 0: value = parseFloat(value); break;
+		case 1: value = parseFloat((value/255)*360); break;
+		case 2: value = parseFloat((value/100)*360); break;
+		case 3: value = parseFloat(value)*360; break;
 	}
 	return value;
 }
@@ -838,6 +862,16 @@ function parseSV(value) {
 	return value;
 }
 
+function fromSV(value) {
+	switch(prefFormatHSV){
+		case 0: value = parseFloat(value/100); break;
+		case 1: value = parseFloat(value/255); break;
+		case 2: value = parseFloat(value/100); break;
+		case 3: value = parseFloat(value); break;
+	}
+	return value;
+}
+
 function parseRGB(value) {
 	switch(prefFormatHSV){
 		case 0: value = parseInt(value*255); break;
@@ -846,6 +880,16 @@ function parseRGB(value) {
 	}
 	return value;
 }
+
+function fromRGB(value) {
+	switch(prefFormatHSV){
+		case 0: value = parseFloat(value/255); break;
+		case 1: value = parseFloat(value/100); break;
+		case 2: value = parseFloat(value); break;
+	}
+	return value;
+}
+
 
 
 // CurrentView animations
