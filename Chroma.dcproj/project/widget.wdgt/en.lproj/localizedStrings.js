@@ -5,6 +5,11 @@
  code generator otherwise the changes will be lost.
  */
 var localizedStrings = {
+    "accuracyText": "floating point accuracy",
+    "accuracyText1": "clipboard accuracy:",
+    "accuracyText2": "RGB format",
+    "accuracyText3": "HSV format",
+    "accuracyText4": "floating point accuracy",
     "cancel": "cancel",
     "cancelButton": "cancel",
     "copyright": "©2012 John Einselen, Vectorform LLC",
@@ -16,15 +21,20 @@ var localizedStrings = {
     "explanationText": "To sync multiple computers via Dropbox, use ~/Dropbox/ and the desired subfolder.\nRemote changes may not show up until you add, remove, or refresh by clicking \"done.\"",
     "failRepeat": "if you see this message more than once, please restart the Dashboard",
     "failText": "library processing\nalready in progress",
+    "formatHSVText": "HSV format",
+    "formatRGBText": "RGB format",
     "iaian7com": "For more information, please visit iaian7.com/dashboard/chroma",
-    "locationText": "library location",
+    "locationText": "clipboard accuracy:",
     "mustContain": "group and name fields must\ncontain at least one character each",
     "newText": "new update available!",
     "newVersion": "version number\nversion description",
+    "preferenceText": "floating point values will be displayed with only two decimals of accuracy, but will be copied to the clipboard using the selected accuracy level.\n\nswatches will always include full precision values when saved to the library, so no colour data is ever lost, and conversions are reliable.",
     "saveSwatch": "save to library",
     "settingsButton": "settings",
     "setupButton": "cancel",
     "skipButton": "skip version",
+    "sortText": "library settings",
+    "sortText1": "swatch display:",
     "successText": "library creation successful",
     "textHEX\nE\nX": "H\nE\nX",
     "textHSV\nS\nV": "H\nS\nV",
@@ -32,6 +42,7 @@ var localizedStrings = {
     "truncatedText": "library input truncated,\ncorruption prevented",
     "tryButton": "try again"
 };
+
 
 
 

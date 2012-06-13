@@ -60,22 +60,6 @@ body {
     min-height: 296px;
 }
 
-#explanation {
-    font-family: HelveticaNeue;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    position: absolute;
-    color: rgb(255, 255, 255);
-    text-align: left;
-    font-size: 12px;
-    width: auto;
-    left: 20px;
-    margin-bottom: auto;
-    height: 60px;
-    right: 20px;
-    top: 120px;
-}
-
 #stack {
     overflow: hidden;
     z-index: 0;
@@ -275,42 +259,21 @@ body {
     margin-top: auto;
 }
 
-#locationText {
+#accuracyText {
     font-family: HelveticaNeue;
     text-overflow: ellipsis;
     overflow: hidden;
     position: absolute;
     color: rgb(255, 255, 255);
-    text-align: left;
-    min-height: 18px;
-    top: 80px;
     font-size: 12px;
+    width: 127px;
+    text-align: right;
+    top: 115px;
     left: 20px;
-    width: 260px;
+    margin-right: auto;
     margin-bottom: auto;
-    height: 18px;
-    margin-right: auto;
-}
-
-#location {
-    position: absolute;
-    font-family: HelveticaNeue;
-    color: rgb(255, 255, 255);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-width: 1px;
-    overflow: hidden;
-    text-align: left;
-    left: 20px;
-    margin-right: auto;
-    width: 256px;
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    font-size: 14px;
-    background-color: rgb(13, 13, 13);
-    top: 95px;
+    height: 20px;
+    min-height: 20px;
 }
 
 #R {
@@ -890,13 +853,13 @@ body {
     opacity: 1;
     text-shadow: rgb(0, 0, 0) 0px -1px 1px;
     text-align: center;
-    left: 20px;
     height: 25px;
-    margin-bottom: auto;
-    top: 20px;
     font-family: 'Helvetica Neue';
-    margin-right: auto;
     width: 127px;
+    left: 20px;
+    top: 20px;
+    margin-right: auto;
+    margin-bottom: auto;
 }
 
 #imgCancel {
@@ -1127,14 +1090,13 @@ body {
     opacity: 1;
     text-shadow: rgb(0, 0, 0) 0px -1px 1px;
     text-align: center;
-    left: 20px;
-    right: 20px;
-    margin-bottom: auto;
     height: 25px;
     font-family: 'Helvetica Neue';
-    margin-left: auto;
-    top: 20px;
     width: 127px;
+    top: 20px;
+    right: 20px;
+    margin-left: auto;
+    margin-bottom: auto;
 }
 
 #alert {
@@ -1240,22 +1202,6 @@ body {
     height: auto;
 }
 
-#formatHSV {
-    position: absolute;
-    font-size: 14px;
-    color: rgb(255, 255, 255);
-    opacity: 1;
-    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
-    text-align: center;
-    left: 20px;
-    height: 25px;
-    font-family: 'Helvetica Neue';
-    top: 50px;
-    margin-right: auto;
-    margin-bottom: auto;
-    width: 127px;
-}
-
 #formatRGB {
     position: absolute;
     font-size: 14px;
@@ -1265,11 +1211,11 @@ body {
     text-align: center;
     height: 25px;
     font-family: 'Helvetica Neue';
-    top: 50px;
-    margin-bottom: auto;
+    width: 127px;
+    top: 80px;
     right: 20px;
     margin-left: auto;
-    width: 127px;
+    margin-bottom: auto;
 }
 
 .swatchListBox_template {
@@ -1284,4 +1230,86 @@ body {
     height: 25px;
     width: 10px;
     left: 15px;
+}
+
+#accuracy {
+    position: absolute;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    opacity: 1;
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    text-align: center;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 127px;
+    top: 110px;
+    right: 20px;
+    margin-left: auto;
+    margin-bottom: auto;
+}
+
+#formatRGBText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    width: 127px;
+    text-align: right;
+    left: 20px;
+    height: 20px;
+    top: 85px;
+    margin-right: auto;
+    margin-bottom: auto;
+    min-height: 20px;
+}
+
+#formatHSVText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    width: 127px;
+    text-align: right;
+    left: 20px;
+    height: 20px;
+    top: 55px;
+    margin-right: auto;
+    margin-bottom: auto;
+}
+
+#formatHSV {
+    position: absolute;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    opacity: 1;
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    text-align: center;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 127px;
+    top: 50px;
+    right: 20px;
+    margin-left: auto;
+    margin-bottom: auto;
+}
+
+#preferenceText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    left: 20px;
+    min-height: 88px;
+    width: 260px;
+    height: 100px;
+    text-align: left;
+    top: 150px;
+    margin-right: auto;
+    margin-bottom: auto;
 }

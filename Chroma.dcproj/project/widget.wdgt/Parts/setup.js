@@ -5,17 +5,20 @@
  code generator otherwise the changes will be lost.
  */
 var dashcodePartSpecs = {
+    "accuracy": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "accuracy", "onchange": "updateAccuracy", "options": [["0.00", "2"], ["0.0000", "4", true], ["0.000000", "6"], ["0.00000000", "8"]], "rightImageWidth": 16, "view": "DC.View" },
+    "accuracyText": { "text": "accuracyText", "view": "DC.Text" },
     "cancelButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showMain", "rightImageWidth": 5, "text": "cancelButton", "view": "DC.View" },
     "cancelButton1": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showMain", "rightImageWidth": 5, "text": "cancelButton", "view": "DC.View" },
     "createButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "createLibrary", "rightImageWidth": 5, "text": "createButton", "view": "DC.View" },
     "createText": { "text": "createText", "view": "DC.Text" },
     "doneSave": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showFront", "rightImageWidth": 5, "text": "doneButton", "view": "DC.View" },
     "downloadButton": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "versionDownload", "rightImageWidth": 5, "text": "downloadButton", "view": "DC.View" },
-    "explanation": { "text": "explanationText", "view": "DC.Text" },
     "failRepeat": { "text": "failRepeat", "view": "DC.Text" },
     "failText": { "text": "failText", "view": "DC.Text" },
-    "formatHSV": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "formatHSV", "onchange": "updateSort", "options": [["HSV: 360°", "degree"], ["HSV: 255", "integer"], ["HSV: 1.0", "float"], ["HSV: Lightwave", "special"]], "rightImageWidth": 16, "view": "DC.View" },
-    "formatRGB": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "formatRGB", "onchange": "updateSort", "options": [["RGB: 255", "integer"], ["RGB: 1.0", "float"], ["RGB: 100%", "percent"], ["RGB: +alpha", "special"]], "rightImageWidth": 16, "view": "DC.View" },
+    "formatHSV": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "formatHSV", "onchange": "updateFormatHSV", "options": [["360, 100, 100", "degrees"], ["255, 255, 255", "integer"], ["100, 100, 100", "percent"], ["1.0, 1.0, 1.0", "float"]], "rightImageWidth": 16, "view": "DC.View" },
+    "formatHSVText": { "text": "formatHSVText", "view": "DC.Text" },
+    "formatRGB": { "creationFunction": "CreatePopupButton", "leftImageWidth": 5, "name": "formatRGB", "onchange": "updateFormatRGB", "options": [["255, 255, 255", "integer"], ["100, 100, 100", "percent"], ["1.0, 1.0, 1.0", "float"]], "rightImageWidth": 16, "view": "DC.View" },
+    "formatRGBText": { "text": "formatRGBText", "view": "DC.Text" },
     "iaian7com": { "text": "iaian7com", "view": "DC.Text" },
     "image": { "view": "DC.ImageLayout" },
     "info": { "backgroundStyle": "black", "creationFunction": "CreateInfoButton", "foregroundStyle": "white", "frontID": "front", "onclick": "showBack", "view": "DC.View" },
@@ -24,9 +27,9 @@ var dashcodePartSpecs = {
     "labelHSV": { "text": "ItemHSV", "view": "DC.Text" },
     "labelRGB": { "text": "ItemRGB", "view": "DC.Text" },
     "list": { "allowsEmptySelection": true, "dataArray": ["Item 1", "Item 2", "Item 3"], "dataSourceName": "listDataSource", "labelElementId": "label", "listStyle": "List.EDGE_TO_EDGE", "sampleRows": 3, "selectionEnabled": true, "useDataSource": true, "view": "DC.List" },
-    "locationText": { "text": "locationText", "view": "DC.Text" },
     "new": { "text": "newText", "view": "DC.Text" },
     "newVersion": { "text": "newVersion", "view": "DC.Text" },
+    "preferenceText": { "text": "preferenceText", "view": "DC.Text" },
     "saveAlert": { "text": "mustContain", "view": "DC.Text" },
     "saveSwatch": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "addLibrary", "rightImageWidth": 5, "text": "saveSwatch", "view": "DC.View" },
     "scrollArea": { "autoHideScrollbars": true, "bottomMargin": -2, "creationFunction": "CreateScrollArea", "scrollbarDivSize": 18, "scrollbarMargin": 6, "spacing": -18, "topMargin": -2, "view": "DC.View" },
@@ -49,6 +52,7 @@ var dashcodePartSpecs = {
     "tryButton1": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "getLibrary", "rightImageWidth": 5, "text": "tryButton", "view": "DC.View" },
     "tryButton2": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showNames2", "rightImageWidth": 5, "text": "tryButton", "view": "DC.View" }
 };
+
 
 
 
