@@ -13,6 +13,7 @@ function load()
 	dashcode.setupParts();
 	versionCheck();
 	loadPrefs();
+	processLibrary();
 }
 
 //
@@ -45,7 +46,8 @@ function hide()
 function show()
 {
 	// Restart any timers that were stopped on hide
-	updatePrefs()
+	updatePrefs();
+//	processLibrary();
 }
 
 //
@@ -100,6 +102,7 @@ function showFront(event)
 	if (window.widget) {
 		widget.prepareForTransition("ToFront");
 		updatePrefs();
+		processLibrary();
 	}
 
 	front.style.display="block";
@@ -128,7 +131,7 @@ pref[5] = loadPref(wid+"R",1.000000000);
 pref[6] = loadPref(wid+"G",0.549019608);
 pref[7] = loadPref(wid+"B",0.098039216);
 pref[8] = loadPref(wid+"X","FF8C19");
-prefLibrary = loadPref(wid+"library",[["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 2], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "orange", 30, 0.9, 1.0, 1.000000000, 0.549019608, 0.098039216, "FF8C19", 1]]);
+prefLibrary = loadPref(wid+"library",[["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 23], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "orange", 30, 0.9, 1.0, 1.000000000, 0.549019608, 0.098039216, "FF8C19", 1]]);
 prefSort = loadPref(wid+"sort",0);
 prefShow = loadPref(wid+"show",0);
 prefFormatHSV = loadPref(wid+"formatHSV",0);
@@ -140,8 +143,10 @@ prefScroll = loadPref(wid+"scroll",0);
 
 var add = false;
 var del = false;
+//alert("prefLibrary: "+prefLibrary);
 //var libArray = [["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 2], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "orange", 30, 0.9, 1.0, 1.000000000, 0.549019608, 0.098039216, "FF8C19", 1]];
 
+//updateAll();
 
 
 // Preference Saving
@@ -261,7 +266,6 @@ function updateName(event) {
 function updateScroll() {
 	prefScroll = document.getElementById("scrollArea").object.content.scrollTop;
 	widget.setPreferenceForKey(prefScroll,wid+"scroll");
-//	alert("updateScroll = "+prefScroll);
 }
 
 function updateScrollArea() {
@@ -352,21 +356,16 @@ function updateInput(event) {
 		alert("invalid text field input");
 	}
 
-//XXX
-
 	// rollover Hue, or limit to 1.0 floating point value
 	if (prefId == 2) {
 		data = data%360;
-		alert("rollover!");
 	} else if (data > 1) {
 		data = 1.0;
-		alert("clamp 1");
-	} else if (data < 0) {
-		data = 0;
-		alert("clamp 0");
 	}
 
-	alert("data: "+data);
+	if (data < 0) {
+		data = 0;
+	}
 
 	pref[prefId] = data;
 
@@ -393,6 +392,7 @@ function addLibrary(event) {
 	updateScroll();
 	if (prefGroup.search(/[a-z]/i)<0 || prefName.search(/[a-z]/i)<0) return showAlert("add to library error");
 	add = [prefGroup,prefName,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()];
+	prefLibrary.push(add);
 	processLibrary();
 	showValues();
 }
@@ -400,33 +400,43 @@ function addLibrary(event) {
 function editLibrary(event) {
 	updateScroll();
 	del = event;
+	del = arrayMatch(prefLibrary,9,del);
+//	alert("prefLibrary: "+prefLibrary.join(" - "));
+	alert("delete: "+del);
+	if (del) prefLibrary.splice(del,1);
+//	alert("prefLibrary edited: "+prefLibrary.join(" - "));
 	processLibrary();
 }
 
 function processLibrary(event) {
-	libArray = prefLibrary;
+	alert("prefLibrary: "+prefLibrary.join(" - "));
+
+	libArray = arrayClean(prefLibrary);
+
+	alert("libArray: "+libArray.join(" - "));
 
 //	for(var i in libArray) {	// THIS SOMEHOW CORRUPTS DASHCODE'S JAVASCRIPT ENGINE IN 10.6???
 //	for(var i=0; i<libArray.length; i++) {
 //		libArray[i] = libArray[i].replace(",#",",").split(",");	// replace function strips hash tag from hex values of older librarys
 //	}
 
-	libArray = arrayClean(libArray);
+//	libArray = arrayClean(libArray);
 //	alert("2 = libArray after clean: (last element only) "+libArray[libArray.length-1]);
 
 	if (add) {
-		if (!libArray[0][1]) {
-			libArray = [""];
-			libArray[0] = add;
-		} else {
-			libArray.push(add);
-		}
+//		libArray.push(add);
+//		if (!libArray[0][1]) {
+//			libArray = [""];
+//			libArray[0] = add;
+//		} else {
+//			libArray.push(add);
+//		}
 		add = false;
 	}
 
 	if (del) {
-		del = arrayMatch(libArray,9,del);
-		if (del) libArray.splice(del,1);
+//		del = arrayMatch(libArray,9,del);
+//		if (del) libArray.splice(del,1);
 		del = false;
 	}
 
@@ -495,11 +505,13 @@ function arraySearch(arr,str) {
 
 function arrayClean(arr) {
 	var arr2 = [];
+//	alert("array:\n"+arr.join("\n"));
 	for(var i=0; i<arr.length; i++) {
 		if (arr[i][9]) {
 			arr2.push(arr[i]);
 		}
 	}
+//	alert("arrayCleaned:\n"+arr2.join("\n"));
 	return arr2;
 }
 
@@ -620,7 +632,7 @@ var listDataSource = {
 		if (!this._rowData[rowIndex][9]) {
 			if (templateElements.label) {
 				templateElements.label.innerText = this._rowData[rowIndex];
-				templateElements.label.style.opacity = 1.0;
+				templateElements.label.style.visibility = "visible";
 				templateElements.listRowTemplate.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
 				templateElements.label.style.left = "6px";
 				templateElements.label.style.right = "6px";
@@ -630,31 +642,34 @@ var listDataSource = {
 				templateElements.labelHSV.innerText = "";
 				templateElements.labelRGB.innerText = "";
 				templateElements.labelHEX.innerText = "";
-				templateElements.swatchList.style.opacity = 0;
-				templateElements.swatchListBox.style.opacity = 0;
-//				templateElements.button.style.opacity = 0;
+				templateElements.swatchList.style.visibility = "hidden";
+				templateElements.swatchListBox.style.visibility = "hidden";
 				templateElements.imgDelete.style.visibility = "hidden";
 			}
 		} else {
+			if (templateElements.label) {
+				templateElements.label.style.visibility = "hidden";
+				templateElements.listRowTemplate.style.backgroundColor = "rgba(0.1, 0.1, 0.1, 0.0)";
+			}
 			if (templateElements.swatchList) {
+				templateElements.swatchList.style.visibility = "visible";
 				templateElements.swatchList.style.backgroundColor = "#"+this._rowData[rowIndex][8];
 			}
 			if (templateElements.swatchListBox) {
+				templateElements.swatchListBox.style.visibility = "visible";
 				templateElements.swatchListBox.style.backgroundColor = "#"+this._rowData[rowIndex][8];
 			}
 			if (templateElements.imgUse) {
 				templateElements.imgUse.onmousedown = function(event) { fromLibrary(_this._rowData[rowIndex]) };
 			}
-//			if (templateElements.button) {
-//				templateElements.button.style.backgroundColor = "#"+this._rowData[rowIndex][8];
-//				templateElements.button.style.imageTopColor = "#"+this._rowData[rowIndex][8];
-//				templateElements.button.style.imageBottomColor = "#"+this._rowData[rowIndex][8];
-//				templateElements.button.onclick = function(event) { fromLibrary(_this._rowData[rowIndex]) };
-//			}
 			if (templateElements.imgDelete) {
+				templateElements.imgDelete.style.visibility = "visible";
 				templateElements.imgDelete.onclick = function(event) { editLibrary(_this._rowData[rowIndex][9]) };
 			}
 
+//	alert("Row data:\n"+this._rowData[rowIndex].join("\n"));
+
+			// create values and clipboard elements
 			var decimal = (prefAccuracy*2)+2;
 			var tempHSV = parseH(this._rowData[rowIndex][2])+" "+parseSV(this._rowData[rowIndex][3])+" "+parseSV(this._rowData[rowIndex][4]);
 			var clipHSV = (prefFormatHSV==3)?(this._rowData[rowIndex][2]).toFixed(decimal)+" "+(this._rowData[rowIndex][3]).toFixed(decimal)+" "+(this._rowData[rowIndex][4]).toFixed(decimal):tempHSV;
@@ -748,9 +763,9 @@ function RGBtoHSV(r, g, b){
 
 //	s = s*100, h = (s <= 0.5) ? 0 : h*360, v = v*100;
 	h = (s==0.0)?0:h*360;
-	pref[2] = h;
-	pref[3] = s;
-	pref[4] = v;
+	pref[2] = parseFloat(h);
+	pref[3] = parseFloat(s);
+	pref[4] = parseFloat(v);
 	return [h, s, v];
 }
 
@@ -761,11 +776,13 @@ function RGBtoHSV(r, g, b){
  */
 function HSVtoRGB(h, s, v){
 	// load individual values, or pull from global preference
-	h = h/360 || pref[2]/360;
-alert("h: "+h)
+	h = h || pref[2]/360;
 	s = s || pref[3];
 	v = v || pref[4];
 	var r, g, b;
+
+//alert("HSVtoRGB Source:\n"+h+"\n"+s+"\n"+v);
+
 	var i = Math.floor(h * 6);
 	var f = h * 6 - i;
 	var p = v * (1 - s);
@@ -781,12 +798,11 @@ alert("h: "+h)
 		case 5: r = v, g = p, b = q; break;
 	}
 
-//XXX
-//alert("Pref hue: "+pref[2]);
-//alert("HSVtoRGB Red: "+r);
-	pref[5] = r;
-	pref[6] = g;
-	pref[7] = b;
+//alert("HSVtoRGB Output:\n"+r+"\n"+g+"\n"+b);
+
+	pref[5] = parseFloat(r);
+	pref[6] = parseFloat(g);
+	pref[7] = parseFloat(b);
 	return [r, g, b];
 }
 
@@ -798,9 +814,9 @@ function RGBtoHEX(rgb) {
 	rgb = rgb || [pref[5],pref[6],pref[7]];
 
 	var hex = [];
-	hex[0] = DECtoHEX(parseInt(rgb[0])*255);
-	hex[1] = DECtoHEX(parseInt(rgb[1])*255);
-	hex[2] = DECtoHEX(parseInt(rgb[2])*255);
+	hex[0] = DECtoHEX(parseInt(rgb[0]*255));
+	hex[1] = DECtoHEX(parseInt(rgb[1]*255));
+	hex[2] = DECtoHEX(parseInt(rgb[2]*255));
 
 	if (hex[0].length<2) hex[0] = "0"+hex[0];
 	if (hex[1].length<2) hex[1] = "0"+hex[1];
@@ -826,9 +842,9 @@ function HEXtoRGB(hex) {
 	var g = HEXtoDEC(hex.substring(2,4))/255;
 	var b = HEXtoDEC(hex.substring(4,6))/255;
 
-	pref[5] = r;
-	pref[6] = g;
-	pref[7] = b;
+	pref[5] = parseFloat(r);
+	pref[6] = parseFloat(g);
+	pref[7] = parseFloat(b);
 	return [r, g, b];
 }
 
@@ -842,7 +858,6 @@ function HEXtoDEC(hex) {
 // Parse values and convert to/from display formats
 
 function parseH(value) {
-//	alert("parseH 0: "+value);
 //	if (value > 360) value = value % 360; // rollover 360 range
 	switch(prefFormatHSV){
 		case 0: value = parseInt(value); break;
@@ -850,12 +865,10 @@ function parseH(value) {
 		case 2: value = parseInt((value/360)*100); break;
 		case 3: value = (value/360).toFixed(2); break;
 	}
-//	alert("parseH 1: "+value);
 	return value;
 }
 
 function fromH(value) {
-//alert("fromH Original: "+value);
 	switch(prefFormatHSV){
 		case 0: value = parseInt(value); break;
 		case 1: value = parseFloat((value/255)*360); break;
@@ -863,12 +876,10 @@ function fromH(value) {
 		case 3: value = parseFloat(value)*360; break;
 	}
 //	if (value > 360) value = value % 360; // rollover 360 range
-//alert("fromH Modified: "+value);
 	return value;
 }
 
 function parseSV(value) {
-//	alert("parseSV 0: "+value);
 //	if (value > 1) value = 1; // limited 0-1 range
 	switch(prefFormatHSV){
 		case 0: value = parseInt(value*100); break;
@@ -876,7 +887,6 @@ function parseSV(value) {
 		case 2: value = parseInt(value*100); break;
 		case 3: value = value.toFixed(2); break;
 	}
-//	alert("parseSV 1: "+value);
 	return value;
 }
 
@@ -892,19 +902,17 @@ function fromSV(value) {
 }
 
 function parseRGB(value) {
-//	alert("parseRGB 0: "+value);
 //	if (value > 1) value = 1; // limited 0-1 range
-	switch(prefFormatHSV){
+	switch(prefFormatRGB){
 		case 0: value = parseInt(value*255); break;
 		case 1: value = parseInt(value*100); break;
 		case 2: value = value.toFixed(2); break;
 	}
-//	alert("parseRGB 1: "+value);
 	return value;
 }
 
 function fromRGB(value) {
-	switch(prefFormatHSV){
+	switch(prefFormatRGB){
 		case 0: value = parseFloat(value/255); break;
 		case 1: value = parseFloat(value/100); break;
 		case 2: value = parseFloat(value); break;
@@ -1045,6 +1053,7 @@ function versionDownload() {
 
 function versionSkip() {
 	loadPrefs();
+//	processLibrary();
 }
 
 // Visit the website
