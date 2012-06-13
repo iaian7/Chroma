@@ -122,8 +122,8 @@ if (window.widget) {
 var wid = widget.identifier;
 var pref = [];
 pref[2] = loadPref(wid+"H",30);
-pref[3] = loadPref(wid+"S",90);
-pref[4] = loadPref(wid+"V",100);
+pref[3] = loadPref(wid+"S",0.9);
+pref[4] = loadPref(wid+"V",1.0);
 pref[5] = loadPref(wid+"R",1.000000000);
 pref[6] = loadPref(wid+"G",0.549019608);
 pref[7] = loadPref(wid+"B",0.098039216);
@@ -162,7 +162,7 @@ function loadPrefs() {
 	document.getElementById("formatHSV").object.setSelectedIndex(prefFormatHSV);
 	document.getElementById("formatRGB").object.setSelectedIndex(prefFormatRGB);
 	document.getElementById("accuracy").object.setSelectedIndex(prefAccuracy);
-	updateAll("ALL");
+	updateAll();
 }
 
 function updatePrefs() {
@@ -276,36 +276,41 @@ function updateScrollArea() {
 
 function updateInput(event) {
 	var data = parseFloat(event.target.value);
+	var dataFrom = data;
 	var prefId = 8;
-	var limit = 1.0;
 	var increment = (prefFormatRGB==0)? 0.015625 : 0.01; // 4/256
 	var incrementShift = (prefFormatRGB==0)? 0.0625 : 0.1; // 16/256
 
 	switch (event.target.id) {
 	case "H":
 		prefId = 2;
-		limit = 360;
+		dataFrom = fromH(data);
 		increment = 1;
 		incrementShift = 10;
 		break;
 	case "S":
 		prefId = 3;
+		dataFrom = fromSV(data);
 		increment = (prefFormatHSV==1)? 0.015625 : 0.01;
 		incrementShift = (prefFormatHSV==1)? 0.0625 : 0.1;
 		break;
 	case "V":
 		prefId = 4;
+		dataFrom = fromSV(data);
 		increment = (prefFormatHSV==1)? 0.015625 : 0.01;
 		incrementShift = (prefFormatHSV==1)? 0.0625 : 0.1;
 		break;
 	case "R":
 		prefId = 5;
+		dataFrom = fromRGB(data);
 		break;
 	case "G":
 		prefId = 6;
+		dataFrom = fromRGB(data);
 		break;
 	case "B":
 		prefId = 7;
+		dataFrom = fromRGB(data);
 		break;
 	default:
 		prefId = 8;
@@ -326,41 +331,42 @@ function updateInput(event) {
 		}
 	}
 
-// If arrow keys are used, load preference value and adjust accordingly
-	if (event.keyCode == 38 && increment) {
+	if (event.keyCode == 38 && increment) {			// If arrow keys are used, load preference value and adjust accordingly
 		data = pref[prefId];
-		if (event.shiftKey == true) {
-			data += incrementShift;
-		} else {
-			data += increment;
-		}
-//		pref[prefId] = data;
-//		event.target.value = pref[prefId];
-//		selectIt(event.target);
-	} else if (event.keyCode == 40 && increment) {
+		data += (event.shiftKey == true)?incrementShift:increment;
+	} else if (event.keyCode == 40 && increment) {	//
 		data = pref[prefId];
-		if (event.shiftKey == true) {
-			data -= incrementShift;
+		data -= (event.shiftKey == true)?incrementShift:increment;
+	} else if (pref[prefId] == dataFrom) {			// Prevent constant updates simply from non-entry key presses
+		return false;
+	} else if (data>=0) {							// If straight numbers are entered, convert to preference value and update
+		if (prefId == 2){
+			data = fromH(data);
+		} else if (prefId <= 4) {
+			data = fromSV(data);
 		} else {
-			data -= increment;
+			data = fromRGB(data);
 		}
-//		pref[prefId] = data;
-//		event.target.value = pref[prefId];
-//		selectIt(event.target);
+	} else {
+		data = pref[prefId];
+		alert("invalid text field input");
 	}
 
-// If straight numbers are entered, convert to preference value and update
-	if (data>=0 && ((data % 1) >= 0)) {
-		if (data>limit) {
-//			alert("met limit");
-			data = limit;
-			event.target.value = data;
-		}
-//		pref[prefId] = data;
-//	} else {
-//		alert("invalid");
-//		event.target.value = pref[prefId];
+//XXX
+
+	// rollover Hue, or limit to 1.0 floating point value
+	if (prefId == 2) {
+		data = data%360;
+		alert("rollover!");
+	} else if (data > 1) {
+		data = 1.0;
+		alert("clamp 1");
+	} else if (data < 0) {
+		data = 0;
+		alert("clamp 0");
 	}
+
+	alert("data: "+data);
 
 	pref[prefId] = data;
 
@@ -376,7 +382,7 @@ function updateInput(event) {
 
 //	return updateAll();
 	updateAll();
-	return selectIt(event.target);
+//	return selectIt(event.target);
 }
 
 
@@ -385,7 +391,7 @@ function updateInput(event) {
 
 function addLibrary(event) {
 	updateScroll();
-	if (prefGroup.search(/[a-z]/i)<0 || prefName.search(/[a-z]/i)<0) return showAlert();
+	if (prefGroup.search(/[a-z]/i)<0 || prefName.search(/[a-z]/i)<0) return showAlert("add to library error");
 	add = [prefGroup,prefName,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()];
 	processLibrary();
 	showValues();
@@ -463,7 +469,7 @@ function fromLibrary(event) {
 	pref[6] = event[6];
 	pref[7] = event[7];
 	pref[8] = event[8];
-	updateAll("ALL");
+	updateAll();
 }
 
 
@@ -558,7 +564,7 @@ function copy(event,value){
 function copyHSV(event){
 	copyFlashDim(event);
 	var decimal = (prefAccuracy*2)+2;
-	var tempHSV = parseH(this._rowData[rowIndex][2])+" "+parseSV(this._rowData[rowIndex][3])+" "+parseSV(this._rowData[rowIndex][4]);
+	var tempHSV = parseH(pref[2])+" "+parseSV(pref[3])+" "+parseSV(pref[4]);
 	var clipHSV = (prefFormatHSV==3)?(pref[2]).toFixed(decimal)+" "+(pref[3]).toFixed(decimal)+" "+(pref[4]).toFixed(decimal):tempHSV;
 	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHSV + "\"'", null);
 }
@@ -566,7 +572,7 @@ function copyHSV(event){
 function copyRGB(event){
 	copyFlashDim(event);
 	var decimal = (prefAccuracy*2)+2;
-	var tempRGB = parseRGB(this._rowData[rowIndex][5])+" "+parseRGB(this._rowData[rowIndex][6])+" "+parseRGB(this._rowData[rowIndex][7]);
+	var tempRGB = parseRGB(pref[5])+" "+parseRGB(pref[6])+" "+parseRGB(pref[7]);
 	var clipRGB = (prefFormatRGB==3)?(pref[5]).toFixed(decimal)+" "+(pref[6]).toFixed(decimal)+" "+(pref[7]).toFixed(decimal):tempRGB;
 	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipRGB + "\"'", null);
 }
@@ -749,17 +755,17 @@ function RGBtoHSV(r, g, b){
 }
 
 /*
- * Converts an HSV color value to RGB. Conversion formula adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+ * Converts an HSV color value to RGB. Conversion formula adapted from http://en.wikipedia.org/wiki/HSV_color_space
  * Assumes h, s, and v are contained in the set [0, 1] and returns r, g, and b in the set [0, 255].
  * Udpate - modified to use floating point values instead, with 360 degrees for H.
  */
 function HSVtoRGB(h, s, v){
 	// load individual values, or pull from global preference
-	h = h || pref[2]/360;
+	h = h/360 || pref[2]/360;
+alert("h: "+h)
 	s = s || pref[3];
 	v = v || pref[4];
 	var r, g, b;
-
 	var i = Math.floor(h * 6);
 	var f = h * 6 - i;
 	var p = v * (1 - s);
@@ -775,6 +781,9 @@ function HSVtoRGB(h, s, v){
 		case 5: r = v, g = p, b = q; break;
 	}
 
+//XXX
+//alert("Pref hue: "+pref[2]);
+//alert("HSVtoRGB Red: "+r);
 	pref[5] = r;
 	pref[6] = g;
 	pref[7] = b;
@@ -833,32 +842,41 @@ function HEXtoDEC(hex) {
 // Parse values and convert to/from display formats
 
 function parseH(value) {
+//	alert("parseH 0: "+value);
+//	if (value > 360) value = value % 360; // rollover 360 range
 	switch(prefFormatHSV){
 		case 0: value = parseInt(value); break;
 		case 1: value = parseInt((value/360)*255); break;
 		case 2: value = parseInt((value/360)*100); break;
 		case 3: value = (value/360).toFixed(2); break;
 	}
+//	alert("parseH 1: "+value);
 	return value;
 }
 
 function fromH(value) {
+//alert("fromH Original: "+value);
 	switch(prefFormatHSV){
-		case 0: value = parseFloat(value); break;
+		case 0: value = parseInt(value); break;
 		case 1: value = parseFloat((value/255)*360); break;
 		case 2: value = parseFloat((value/100)*360); break;
 		case 3: value = parseFloat(value)*360; break;
 	}
+//	if (value > 360) value = value % 360; // rollover 360 range
+//alert("fromH Modified: "+value);
 	return value;
 }
 
 function parseSV(value) {
+//	alert("parseSV 0: "+value);
+//	if (value > 1) value = 1; // limited 0-1 range
 	switch(prefFormatHSV){
 		case 0: value = parseInt(value*100); break;
 		case 1: value = parseInt(value*255); break;
 		case 2: value = parseInt(value*100); break;
 		case 3: value = value.toFixed(2); break;
 	}
+//	alert("parseSV 1: "+value);
 	return value;
 }
 
@@ -869,15 +887,19 @@ function fromSV(value) {
 		case 2: value = parseFloat(value/100); break;
 		case 3: value = parseFloat(value); break;
 	}
+//	if (value > 1) value = 1; // limited 0-1 range
 	return value;
 }
 
 function parseRGB(value) {
+//	alert("parseRGB 0: "+value);
+//	if (value > 1) value = 1; // limited 0-1 range
 	switch(prefFormatHSV){
 		case 0: value = parseInt(value*255); break;
 		case 1: value = parseInt(value*100); break;
 		case 2: value = value.toFixed(2); break;
 	}
+//	alert("parseRGB 1: "+value);
 	return value;
 }
 
@@ -887,6 +909,7 @@ function fromRGB(value) {
 		case 1: value = parseFloat(value/100); break;
 		case 2: value = parseFloat(value); break;
 	}
+//	if (value > 1) value = 1; // limited 0-1 range
 	return value;
 }
 
