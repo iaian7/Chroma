@@ -141,12 +141,6 @@ prefGroup = loadPref(wid+"group","group");
 prefName = loadPref(wid+"name","name");
 prefScroll = loadPref(wid+"scroll",0);
 
-var add = false;
-var del = false;
-//alert("prefLibrary: "+prefLibrary);
-//var libArray = [["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 2], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "orange", 30, 0.9, 1.0, 1.000000000, 0.549019608, 0.098039216, "FF8C19", 1]];
-
-//updateAll();
 
 
 // Preference Saving
@@ -182,9 +176,9 @@ function updatePrefs() {
 		widget.setPreferenceForKey(prefSort,wid+"library");
 		widget.setPreferenceForKey(prefSort,wid+"sort");
 		widget.setPreferenceForKey(prefShow,wid+"show");
-		widget.setPreferenceForKey(prefSort,wid+"formatHSV");
-		widget.setPreferenceForKey(prefShow,wid+"formatRGB");
-		widget.setPreferenceForKey(prefSort,wid+"accuracy");
+		widget.setPreferenceForKey(prefFormatHSV,wid+"formatHSV");
+		widget.setPreferenceForKey(prefFormatRGB,wid+"formatRGB");
+		widget.setPreferenceForKey(prefAccuracy,wid+"accuracy");
 		widget.setPreferenceForKey(prefGroup,wid+"group");
 		widget.setPreferenceForKey(prefName,wid+"name");
 		widget.setPreferenceForKey(prefScroll,wid+"scroll");
@@ -244,15 +238,15 @@ function updateShow(event) {
 }
 
 function updateFormatHSV(event) {
-	prefSort = document.getElementById("formatHSV").object.getSelectedIndex();
+	prefFormatHSV = document.getElementById("formatHSV").object.getSelectedIndex();
 }
 
 function updateFormatRGB(event) {
-	prefShow = document.getElementById("formatRGB").object.getSelectedIndex();
+	prefFormatRGB = document.getElementById("formatRGB").object.getSelectedIndex();
 }
 
 function updateAccuracy(event) {
-	prefShow = document.getElementById("accuracy").object.getSelectedIndex();
+	prefAccuracy = document.getElementById("accuracy").object.getSelectedIndex();
 }
 
 function updateGroup(event) {
@@ -391,54 +385,25 @@ function updateInput(event) {
 function addLibrary(event) {
 	updateScroll();
 	if (prefGroup.search(/[a-z]/i)<0 || prefName.search(/[a-z]/i)<0) return showAlert("add to library error");
-	add = [prefGroup,prefName,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()];
-	prefLibrary.push(add);
+	prefLibrary.push([prefGroup,prefName,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()]);
 	processLibrary();
-	showValues();
+	return showValues();
 }
 
 function editLibrary(event) {
 	updateScroll();
-	del = event;
+	var del = event;
 	del = arrayMatch(prefLibrary,9,del);
-//	alert("prefLibrary: "+prefLibrary.join(" - "));
-	alert("delete: "+del);
 	if (del) prefLibrary.splice(del,1);
-//	alert("prefLibrary edited: "+prefLibrary.join(" - "));
-	processLibrary();
+	return processLibrary();
 }
 
 function processLibrary(event) {
-	alert("prefLibrary: "+prefLibrary.join(" - "));
+//	alert("Library 1 - prefLibrary:\n"+prefLibrary.join("\n"));
 
 	libArray = arrayClean(prefLibrary);
 
-	alert("libArray: "+libArray.join(" - "));
-
-//	for(var i in libArray) {	// THIS SOMEHOW CORRUPTS DASHCODE'S JAVASCRIPT ENGINE IN 10.6???
-//	for(var i=0; i<libArray.length; i++) {
-//		libArray[i] = libArray[i].replace(",#",",").split(",");	// replace function strips hash tag from hex values of older librarys
-//	}
-
-//	libArray = arrayClean(libArray);
-//	alert("2 = libArray after clean: (last element only) "+libArray[libArray.length-1]);
-
-	if (add) {
-//		libArray.push(add);
-//		if (!libArray[0][1]) {
-//			libArray = [""];
-//			libArray[0] = add;
-//		} else {
-//			libArray.push(add);
-//		}
-		add = false;
-	}
-
-	if (del) {
-//		del = arrayMatch(libArray,9,del);
-//		if (del) libArray.splice(del,1);
-		del = false;
-	}
+//	alert("Library 2 - libArray:\n"+libArray.join("\n"));
 
 	if (libArray[1]) {
 		switch (prefSort) {
@@ -458,10 +423,12 @@ function processLibrary(event) {
 			libArray.sort(sortName);
 		}
 	}
-//	alert("3 = libArray after sorting: "+libArray[libArray.length-1]);
 
-	libArray = arrayGroups(libArray);
-//	alert("4 = libArray after groups: "+libArray[libArray.length-1]);
+	alert("Library 3 - sorted:\n"+libArray.join("\n"));
+
+	libArray = arrayGroup(libArray);
+
+	alert("Library 4 - grouped:\n"+libArray.join("\n"));
 
 	listDataSource._rowData = libArray;
 	list.object.reloadData();
@@ -515,7 +482,20 @@ function arrayClean(arr) {
 	return arr2;
 }
 
-function arrayGroups(arr) {
+function arrayGroup(arr) {
+	var arr2 = [];
+	var hold = "";
+	for(var i=0; i<arr.length; i++) {
+		if (arr[i][0] != hold) {
+			hold = arr[i][0];
+			arr2.push([arr[i][0]]);
+		}
+		arr2.push(arr[i]);
+	}
+	return arr2;
+}
+
+function arrayGroupsOLD(arr) {
 	var arrGroup = [];
 	for(var i=0; i<arr.length; i++) {
 		if (!arraySearch(arrGroup,arr[i][0])) {
@@ -629,7 +609,11 @@ var listDataSource = {
 	prepareRow: function(rowElement, rowIndex, templateElements) {
 		// templateElements contains references to all elements that have an id in the template row.
 		// Ex: set the value of an element with id="label".
+
+		alert("The List row: "+this._rowData[rowIndex]);
+
 		if (!this._rowData[rowIndex][9]) {
+			alert("The List type: title");
 			if (templateElements.label) {
 				templateElements.label.innerText = this._rowData[rowIndex];
 				templateElements.label.style.visibility = "visible";
@@ -647,6 +631,7 @@ var listDataSource = {
 				templateElements.imgDelete.style.visibility = "hidden";
 			}
 		} else {
+			alert("The List type: swatch");
 			if (templateElements.label) {
 				templateElements.label.style.visibility = "hidden";
 				templateElements.listRowTemplate.style.backgroundColor = "rgba(0.1, 0.1, 0.1, 0.0)";
