@@ -161,6 +161,7 @@ function loadPrefs() {
 	document.getElementById("formatHSV").object.setSelectedIndex(prefFormatHSV);
 	document.getElementById("formatRGB").object.setSelectedIndex(prefFormatRGB);
 	document.getElementById("accuracy").object.setSelectedIndex(prefAccuracy);
+	// update displayed values
 	updateAll();
 }
 
@@ -182,6 +183,8 @@ function updatePrefs() {
 		widget.setPreferenceForKey(prefGroup,wid+"group");
 		widget.setPreferenceForKey(prefName,wid+"name");
 		widget.setPreferenceForKey(prefScroll,wid+"scroll");
+		// update displayed values
+		updateAll();
 	}
 }
 
@@ -424,11 +427,11 @@ function processLibrary(event) {
 		}
 	}
 
-	alert("Library 3 - sorted:\n"+libArray.join("\n"));
+//	alert("Library 3 - sorted:\n"+libArray.join("\n"));
 
 	libArray = arrayGroup(libArray);
 
-	alert("Library 4 - grouped:\n"+libArray.join("\n"));
+//	alert("Library 4 - grouped:\n"+libArray.join("\n"));
 
 	listDataSource._rowData = libArray;
 	list.object.reloadData();
@@ -556,16 +559,16 @@ function copy(event,value){
 function copyHSV(event){
 	copyFlashDim(event);
 	var decimal = (prefAccuracy*2)+2;
-	var tempHSV = parseH(pref[2])+" "+parseSV(pref[3])+" "+parseSV(pref[4]);
-	var clipHSV = (prefFormatHSV==3)?(pref[2]).toFixed(decimal)+" "+(pref[3]).toFixed(decimal)+" "+(pref[4]).toFixed(decimal):tempHSV;
+	var tempHSV = parseH(pref[2])+", "+parseSV(pref[3])+", "+parseSV(pref[4]);
+	var clipHSV = (prefFormatHSV==3)?(pref[2]).toFixed(decimal)+", "+(pref[3]).toFixed(decimal)+", "+(pref[4]).toFixed(decimal):tempHSV;
 	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHSV + "\"'", null);
 }
 
 function copyRGB(event){
 	copyFlashDim(event);
 	var decimal = (prefAccuracy*2)+2;
-	var tempRGB = parseRGB(pref[5])+" "+parseRGB(pref[6])+" "+parseRGB(pref[7]);
-	var clipRGB = (prefFormatRGB==3)?(pref[5]).toFixed(decimal)+" "+(pref[6]).toFixed(decimal)+" "+(pref[7]).toFixed(decimal):tempRGB;
+	var tempRGB = parseRGB(pref[5])+", "+parseRGB(pref[6])+", "+parseRGB(pref[7]);
+	var clipRGB = (prefFormatRGB==2)?(pref[5]).toFixed(decimal)+", "+(pref[6]).toFixed(decimal)+", "+(pref[7]).toFixed(decimal):tempRGB;
 	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipRGB + "\"'", null);
 }
 
@@ -610,10 +613,10 @@ var listDataSource = {
 		// templateElements contains references to all elements that have an id in the template row.
 		// Ex: set the value of an element with id="label".
 
-		alert("The List row: "+this._rowData[rowIndex]);
+//		alert("The List row: "+this._rowData[rowIndex]);
 
 		if (!this._rowData[rowIndex][9]) {
-			alert("The List type: title");
+//			alert("The List type: title");
 			if (templateElements.label) {
 				templateElements.label.innerText = this._rowData[rowIndex];
 				templateElements.label.style.visibility = "visible";
@@ -631,7 +634,7 @@ var listDataSource = {
 				templateElements.imgDelete.style.visibility = "hidden";
 			}
 		} else {
-			alert("The List type: swatch");
+//			alert("The List type: swatch");
 			if (templateElements.label) {
 				templateElements.label.style.visibility = "hidden";
 				templateElements.listRowTemplate.style.backgroundColor = "rgba(0.1, 0.1, 0.1, 0.0)";
@@ -657,13 +660,17 @@ var listDataSource = {
 			// create values and clipboard elements
 			var decimal = (prefAccuracy*2)+2;
 			var tempHSV = parseH(this._rowData[rowIndex][2])+" "+parseSV(this._rowData[rowIndex][3])+" "+parseSV(this._rowData[rowIndex][4]);
-			var clipHSV = (prefFormatHSV==3)?(this._rowData[rowIndex][2]).toFixed(decimal)+" "+(this._rowData[rowIndex][3]).toFixed(decimal)+" "+(this._rowData[rowIndex][4]).toFixed(decimal):tempHSV;
+			var clipHSV = (prefFormatHSV==3)?(this._rowData[rowIndex][2]).toFixed(decimal)+", "+(this._rowData[rowIndex][3]).toFixed(decimal)+", "+(this._rowData[rowIndex][4]).toFixed(decimal) : tempHSV.replace(" ",", ");
 
 			var tempRGB = parseRGB(this._rowData[rowIndex][5])+" "+parseRGB(this._rowData[rowIndex][6])+" "+parseRGB(this._rowData[rowIndex][7]);
-			var clipRGB = (prefFormatRGB==3)?(this._rowData[rowIndex][5]).toFixed(decimal)+" "+(this._rowData[rowIndex][6]).toFixed(decimal)+" "+(this._rowData[rowIndex][7]).toFixed(decimal):tempRGB;
+			var clipRGB = (prefFormatRGB==2)?(this._rowData[rowIndex][5]).toFixed(decimal)+", "+(this._rowData[rowIndex][6]).toFixed(decimal)+", "+(this._rowData[rowIndex][7]).toFixed(decimal) : tempRGB.replace(" ",", ");
 
 			var tempHEX = _this._rowData[rowIndex][8];
 			var clipHEX = tempHEX;
+
+//	alert("Row data: accuracy: "+prefAccuracy);
+//	alert("Row data: decimal: "+decimal);
+//	alert("Row data: clipRGB: "+(this._rowData[rowIndex][6]).toFixed(decimal));
 
 			if (prefShow == 0) {
 				if (templateElements.label) {
