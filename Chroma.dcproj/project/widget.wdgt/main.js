@@ -124,14 +124,14 @@ if (window.widget) {
 
 var wid = widget.identifier;
 var pref = [];
-pref[2] = loadPref(wid+"H",30);
-pref[3] = loadPref(wid+"S",0.9);
-pref[4] = loadPref(wid+"V",1.0);
-pref[5] = loadPref(wid+"R",1.000000000);
-pref[6] = loadPref(wid+"G",0.549019608);
-pref[7] = loadPref(wid+"B",0.098039216);
-pref[8] = loadPref(wid+"X","FF8C19");
-prefLibrary = loadPref(wid+"library",[["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 23], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "orange", 30, 0.9, 1.0, 1.000000000, 0.549019608, 0.098039216, "FF8C19", 1]]);
+pref[2] = loadPref(wid+"H",70);
+pref[3] = loadPref(wid+"S",0.8);
+pref[4] = loadPref(wid+"V",0.9);
+pref[5] = loadPref(wid+"R",0.78);
+pref[6] = loadPref(wid+"G",0.90);
+pref[7] = loadPref(wid+"B",0.18);
+pref[8] = loadPref(wid+"X","C6E52D");
+prefLibrary = loadPref(wid+"library",[["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 2], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "grassy green", 70, 0.8, 0.9, 0.78, 0.90, 0.18, "C6E52D", 1]]);
 prefSort = loadPref(wid+"sort",0);
 prefShow = loadPref(wid+"show",0);
 prefFormatHSV = loadPref(wid+"formatHSV",0);
@@ -314,17 +314,16 @@ function updateInput(event) {
 		dataFrom = fromRGB(data);
 		break;
 	default:
+		// process HEX values (paste-only, never incremented via arrow keys)
 		prefId = 8;
 		increment = false;
 		incrementShift = false;
 		data = event.target.value.match(/([0-9a-f]{6})/i);
-//		data = event.target.value.match(/^#?([0-9a-f]{6})$/i);
 		if (data && event.keyCode>40) {
 			pref[8] = data[1].replace("#","").toUpperCase();	// removes hashtag before saving to the preferences
 			if (!data[0].match("#")) event.target.value = "#"+pref[8];	// adds hashtag to display if not included already
 			HEXtoRGB();
 			RGBtoHSV();
-//			return updateAll("HEX");
 			updateAll("HEX");
 			return selectIt(event.target);
 		} else {
@@ -366,17 +365,15 @@ function updateInput(event) {
 
 	pref[prefId] = data;
 
+	// process HSV or RGB values
 	if (prefId <= 4) {
 		HSVtoRGB();
 		RGBtoHEX();
-//		return updateAll("HSV");
 	} else {
 		RGBtoHSV();
 		RGBtoHEX();
-//		return updateAll("RGB");
 	}
 
-//	return updateAll();
 	updateAll();
 //	return selectIt(event.target);
 }
@@ -402,11 +399,7 @@ function editLibrary(event) {
 }
 
 function processLibrary(event) {
-//	alert("Library 1 - prefLibrary:\n"+prefLibrary.join("\n"));
-
 	libArray = arrayClean(prefLibrary);
-
-//	alert("Library 2 - libArray:\n"+libArray.join("\n"));
 
 	if (libArray[1]) {
 		switch (prefSort) {
@@ -427,11 +420,7 @@ function processLibrary(event) {
 		}
 	}
 
-//	alert("Library 3 - sorted:\n"+libArray.join("\n"));
-
 	libArray = arrayGroup(libArray);
-
-//	alert("Library 4 - grouped:\n"+libArray.join("\n"));
 
 	listDataSource._rowData = libArray;
 	list.object.reloadData();
@@ -463,25 +452,13 @@ function arrayMatch(arr,ind,str) {
 	return false;
 }
 
-function arraySearch(arr,str) {
-	for(var i=0; i<arr.length; i++) {
-//		alert("array index == "+i);
-//		alert("array element == "+arr[i]);
-//		if (arr[i] == str) return i;	// THIS CAN CAUSE AN ENDLESS LOOP OR CORRUPTION IN ANOTHER SECTION OF CODE!!!
-		if (arr[i] == str) return true;
-	}
-	return false;
-}
-
 function arrayClean(arr) {
 	var arr2 = [];
-//	alert("array:\n"+arr.join("\n"));
 	for(var i=0; i<arr.length; i++) {
 		if (arr[i][9]) {
 			arr2.push(arr[i]);
 		}
 	}
-//	alert("arrayCleaned:\n"+arr2.join("\n"));
 	return arr2;
 }
 
@@ -496,17 +473,6 @@ function arrayGroup(arr) {
 		arr2.push(arr[i]);
 	}
 	return arr2;
-}
-
-function arrayGroupsOLD(arr) {
-	var arrGroup = [];
-	for(var i=0; i<arr.length; i++) {
-		if (!arraySearch(arrGroup,arr[i][0])) {
-			arrGroup.push(arr[i][0]);
-			arr.push([arr[i][0]]);
-		}
-	}
-	return arr;
 }
 
 
@@ -560,7 +526,7 @@ function copyHSV(event){
 	copyFlashDim(event);
 	var decimal = (prefAccuracy*2)+2;
 	var tempHSV = parseH(pref[2])+", "+parseSV(pref[3])+", "+parseSV(pref[4]);
-	var clipHSV = (prefFormatHSV==3)?(pref[2]).toFixed(decimal)+", "+(pref[3]).toFixed(decimal)+", "+(pref[4]).toFixed(decimal):tempHSV;
+	var clipHSV = (prefFormatHSV==3)?(pref[2]/360).toFixed(decimal)+", "+(pref[3]).toFixed(decimal)+", "+(pref[4]).toFixed(decimal):tempHSV;
 	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHSV + "\"'", null);
 }
 
@@ -616,7 +582,6 @@ var listDataSource = {
 //		alert("The List row: "+this._rowData[rowIndex]);
 
 		if (!this._rowData[rowIndex][9]) {
-//			alert("The List type: title");
 			if (templateElements.label) {
 				templateElements.label.innerText = this._rowData[rowIndex];
 				templateElements.label.style.visibility = "visible";
@@ -634,7 +599,6 @@ var listDataSource = {
 				templateElements.imgDelete.style.visibility = "hidden";
 			}
 		} else {
-//			alert("The List type: swatch");
 			if (templateElements.label) {
 				templateElements.label.style.visibility = "hidden";
 				templateElements.listRowTemplate.style.backgroundColor = "rgba(0.1, 0.1, 0.1, 0.0)";
@@ -655,22 +619,16 @@ var listDataSource = {
 				templateElements.imgDelete.onclick = function(event) { editLibrary(_this._rowData[rowIndex][9]) };
 			}
 
-//	alert("Row data:\n"+this._rowData[rowIndex].join("\n"));
-
 			// create values and clipboard elements
 			var decimal = (prefAccuracy*2)+2;
 			var tempHSV = parseH(this._rowData[rowIndex][2])+" "+parseSV(this._rowData[rowIndex][3])+" "+parseSV(this._rowData[rowIndex][4]);
-			var clipHSV = (prefFormatHSV==3)?(this._rowData[rowIndex][2]).toFixed(decimal)+", "+(this._rowData[rowIndex][3]).toFixed(decimal)+", "+(this._rowData[rowIndex][4]).toFixed(decimal) : tempHSV.replace(" ",", ");
+			var clipHSV = (prefFormatHSV==3)?(this._rowData[rowIndex][2]/360).toFixed(decimal)+", "+(this._rowData[rowIndex][3]).toFixed(decimal)+", "+(this._rowData[rowIndex][4]).toFixed(decimal) : tempHSV.replace(" ",", ");
 
 			var tempRGB = parseRGB(this._rowData[rowIndex][5])+" "+parseRGB(this._rowData[rowIndex][6])+" "+parseRGB(this._rowData[rowIndex][7]);
 			var clipRGB = (prefFormatRGB==2)?(this._rowData[rowIndex][5]).toFixed(decimal)+", "+(this._rowData[rowIndex][6]).toFixed(decimal)+", "+(this._rowData[rowIndex][7]).toFixed(decimal) : tempRGB.replace(" ",", ");
 
 			var tempHEX = _this._rowData[rowIndex][8];
 			var clipHEX = tempHEX;
-
-//	alert("Row data: accuracy: "+prefAccuracy);
-//	alert("Row data: decimal: "+decimal);
-//	alert("Row data: clipRGB: "+(this._rowData[rowIndex][6]).toFixed(decimal));
 
 			if (prefShow == 0) {
 				if (templateElements.label) {
@@ -753,7 +711,6 @@ function RGBtoHSV(r, g, b){
 		h /= 6;
 	}
 
-//	s = s*100, h = (s <= 0.5) ? 0 : h*360, v = v*100;
 	h = (s==0.0)?0:h*360;
 	pref[2] = parseFloat(h);
 	pref[3] = parseFloat(s);
@@ -773,8 +730,6 @@ function HSVtoRGB(h, s, v){
 	v = v || pref[4];
 	var r, g, b;
 
-//alert("HSVtoRGB Source:\n"+h+"\n"+s+"\n"+v);
-
 	var i = Math.floor(h * 6);
 	var f = h * 6 - i;
 	var p = v * (1 - s);
@@ -789,8 +744,6 @@ function HSVtoRGB(h, s, v){
 		case 4: r = t, g = p, b = v; break;
 		case 5: r = v, g = p, b = q; break;
 	}
-
-//alert("HSVtoRGB Output:\n"+r+"\n"+g+"\n"+b);
 
 	pref[5] = parseFloat(r);
 	pref[6] = parseFloat(g);
@@ -927,10 +880,6 @@ function showSuccess(event) {
 
 function showFail(event) {
 	document.getElementById("stack").object.setCurrentView("fail", true, true);
-}
-
-function showTruncated(event) {
-	document.getElementById("stack").object.setCurrentView("truncated", true, true);
 }
 
 function showCreate(event) {
