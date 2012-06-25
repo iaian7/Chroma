@@ -19,10 +19,11 @@
         <img id="frontImg" src="Parts/Images/front.png" alt="">
         <div id="stack"><div id="main">
                 <div id="library">
-                    <div id="scrollArea">
+                    <div id="scrollArea" class="scrollArea">
                         <div id="content" class="content" style="position: absolute; left: 0px; top: -2px; right: 0px; bottom: -2px; overflow-x: hidden; overflow-y: hidden; ">
                             <ul id="list">
                                 <li id="listRowTemplate" class="listRowTemplate_template first" style="">
+                                    <div id="swatchListBox" class="swatchListBox_template swatchListBox1_template"></div>
                                     <div id="swatchList" class="swatchList_template">
                                         <div id="image" class="image_template image1_template"><img class="inner_image_template inner_image1_template" src="Images/button-23px.png" id="inner_image"></div>
                                         <img src="Images/Button-Use.png" id="imgUse" class="imgUse_template" onmouseout="buttonOut(event)" onmouseover="buttonOver(event)">
@@ -35,26 +36,23 @@
                                 </li>
                             </ul>
                         </div></div>
-                    <div id="libraryToggleBox">
-                        <img src="Images/Button-Toggle.png" id="imgToggle" onclick="libraryToggle(event)" onmouseout="buttonOut(event)" onmouseover="buttonOver(event)">
-                    </div>
                 </div>
                 <div id="stack2"><div id="values">
                         <div id="HSV">
-                            <div id="textHSV"></div>
+                            <div id="textHSV" onclick="copyHSV(event)"></div>
                             <input type="text" name="H" value="0" id="H" onkeyup="updateInput(event)" maxlength="3">
                             <input type="text" name="S" value="0" id="S" onkeyup="updateInput(event)" maxlength="3">
                             <input type="text" name="V" value="50" id="V" onkeyup="updateInput(event)" maxlength="3">
                         </div>
                         <div id="RGB">
-                            <div id="textRGB"></div>
+                            <div id="textRGB" onclick="copyRGB(event)"></div>
                             <input type="text" name="R" value="128" id="R" onkeyup="updateInput(event)" maxlength="3">
                             <input type="text" name="G" value="128" id="G" onkeyup="updateInput(event)" maxlength="3">
                             <input type="text" name="B" value="128" id="B" onkeyup="updateInput(event)" maxlength="3">
                         </div>
                         <div id="HEX">
-                            <div id="textHEX"></div>
-                            <input type="text" name="X" value="#808080" id="X" maxlength="7" onkeyup="updateInput(event)">
+                            <div id="textHEX" onclick="copyHEX(event)"></div>
+                            <input type="text" name="X" value="#808080" id="X" maxlength="7" onkeyup="updateInput(event)" onfocus="selectIt(event)">
                         </div>
                         <div id="swatch">
                             <div id="swatchShine"></div>
@@ -76,22 +74,6 @@
                         <div id="saveAlert"></div>
                         <div id="tryButton2"></div>
                     </div></div>
-            </div><div id="success">
-                <div id="successText"></div>
-                <div id="successButton"></div>
-            </div><div id="fail" style="display: block; ">
-                <div id="failText"></div>
-                <div id="failRepeat"></div>
-                <div id="cancelButton"></div>
-                <div id="tryButton"></div>
-            </div><div id="truncated">
-                <div id="truncatedText"></div>
-                <div id="cancelButton1"></div>
-                <div id="tryButton1"></div>
-            </div><div id="create" style="display: block; ">
-                <div id="createText"></div>
-                <div id="setupButton"></div>
-                <div id="createButton"></div>
             </div><div id="update">
                 <div id="new"></div>
                 <div id="newVersion"></div>
@@ -104,12 +86,35 @@
         <img id="backImg" src="Parts/Images/back.png" alt="">
         <div id="sort"></div>
         <div id="show"></div>
-        <div id="locationText"></div>
-        <input type="text" name="location" value="~/Library/Preferences/" id="location" onkeyup="updateLocation(event)" onchange="updateLocation(event)">
-        <div id="explanation"></div>
+        <div id="formatHSVText"></div>
+        <div id="formatHSV"></div>
+        <div id="formatRGBText"></div>
+        <div id="formatRGB"></div>
+        <div id="accuracyText"></div>
+        <div id="accuracy"></div>
+        <div id="preferenceText"></div>
         <div id="iaian7com" onclick="iaian7(event)"></div>
         <div id="text"></div>
         <div id="doneSave"></div>
+        <div id="libraryData"><div id="menu">
+                <div id="libraryMenuText"></div>
+                <div id="libraryMenuExport"></div>
+                <div id="libraryMenuImport"></div>
+            </div><div id="export">
+                <div id="libraryExportSuccessText"></div>
+                <div id="libraryExportSuccess"></div>
+            </div><div id="import">
+                <div id="libraryImportText"></div>
+                <div id="libraryImportReplace"></div>
+                <div id="libraryImportAdd"></div>
+                <div id="libraryImportCancel"></div>
+            </div><div id="fail">
+                <div id="libraryImportFailText"></div>
+                <div id="libraryImportFail"></div>
+            </div><div id="success">
+                <div id="libraryImportSuccessText"></div>
+                <div id="libraryImportSuccess"></div>
+            </div></div>
     </div>
 </body>
 </html>

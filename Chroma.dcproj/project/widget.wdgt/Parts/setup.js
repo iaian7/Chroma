@@ -20,6 +20,20 @@ var dashcodePartSpecs = {
     "labelHEX": { "text": "ItemHEX", "view": "DC.Text" },
     "labelHSV": { "text": "ItemHSV", "view": "DC.Text" },
     "labelRGB": { "text": "ItemRGB", "view": "DC.Text" },
+    "libraryData": { "subviewsTransitions": [{ "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }, { "direction": "right-left", "duration": "", "timing": "ease-in-out", "type": "push" }], "view": "DC.StackLayout" },
+    "libraryExportSuccess": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showLibraryMenu", "rightImageWidth": 5, "text": "libraryExportSuccess", "view": "DC.View" },
+    "libraryExportSuccessText": { "text": "libraryExportSuccessText", "view": "DC.Text" },
+    "libraryImportAdd": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "importLibraryAdd", "rightImageWidth": 5, "text": "libraryImportAdd", "view": "DC.View" },
+    "libraryImportCancel": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "importLibraryCancel", "rightImageWidth": 5, "text": "libraryImportCancel", "view": "DC.View" },
+    "libraryImportFail": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showLibraryMenu2", "rightImageWidth": 5, "text": "libraryImportFail", "view": "DC.View" },
+    "libraryImportFailText": { "text": "libraryImportFailText", "view": "DC.Text" },
+    "libraryImportReplace": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "importLibraryReplace", "rightImageWidth": 5, "text": "libraryImportReplace", "view": "DC.View" },
+    "libraryImportSuccess": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showLibraryMenu2", "rightImageWidth": 5, "text": "libraryImportSuccess", "view": "DC.View" },
+    "libraryImportSuccessText": { "text": "libraryImportSuccessText", "view": "DC.Text" },
+    "libraryImportText": { "text": "libraryImportText", "view": "DC.Text" },
+    "libraryMenuExport": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "exportLibrary", "rightImageWidth": 5, "text": "libraryMenuExport", "view": "DC.View" },
+    "libraryMenuImport": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "importLibrary", "rightImageWidth": 5, "text": "libraryMenuImport", "view": "DC.View" },
+    "libraryMenuText": { "text": "libraryMenuText", "view": "DC.Text" },
     "list": { "allowsEmptySelection": true, "dataArray": ["Item 1", "Item 2", "Item 3"], "dataSourceName": "listDataSource", "labelElementId": "label", "listStyle": "List.EDGE_TO_EDGE", "sampleRows": 3, "selectionEnabled": true, "useDataSource": true, "view": "DC.List" },
     "new": { "text": "newText", "view": "DC.Text" },
     "newVersion": { "text": "newVersion", "view": "DC.Text" },
@@ -40,6 +54,7 @@ var dashcodePartSpecs = {
     "textRGB": { "text": "textRGB\nG\nB", "view": "DC.Text" },
     "tryButton2": { "creationFunction": "CreateButton", "leftImageWidth": 5, "onclick": "showNames2", "rightImageWidth": 5, "text": "tryButton", "view": "DC.View" }
 };
+
 
 
 

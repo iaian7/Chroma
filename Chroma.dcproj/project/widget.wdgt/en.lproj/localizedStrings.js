@@ -24,6 +24,26 @@ var localizedStrings = {
     "formatHSVText": "HSV format",
     "formatRGBText": "RGB format",
     "iaian7com": "For more information, please visit iaian7.com/dashboard/chroma",
+    "libraryExportSuccess": "ok",
+    "libraryExportSuccessText": "library data succesfully written to clipboard.",
+    "libraryExportText": "library data succesfully written to clipboard.",
+    "libraryFailText": "sorry, no library data found in the clipboard.",
+    "libraryImportAdd": "add to data",
+    "libraryImportAdd1": "add to data",
+    "libraryImportCancel": "cancel",
+    "libraryImportFail": "start over",
+    "libraryImportFailText": "sorry, no library data found in the clipboard.",
+    "libraryImportReplace": "replace data",
+    "libraryImportSuccess": "ok",
+    "libraryImportSuccessText": "library processing successful.",
+    "libraryImportText": "import succeeded, how should data be used?",
+    "libraryInputFail": "sorry, no library data found in the clipboard.",
+    "libraryMenuExport": "export",
+    "libraryMenuImport": "import",
+    "libraryMenuText": "exchange library data via the OSX clipboard:",
+    "libraryMenuTryAgain": "start over",
+    "librarySuccessFinished": "awesome",
+    "librarySuccessText": "library processing successful.",
     "locationText": "clipboard accuracy:",
     "mustContain": "group and name fields must\ncontain at least one character each",
     "newText": "new update available!",
@@ -42,6 +62,7 @@ var localizedStrings = {
     "truncatedText": "library input truncated,\ncorruption prevented",
     "tryButton": "try again"
 };
+
 
 
 

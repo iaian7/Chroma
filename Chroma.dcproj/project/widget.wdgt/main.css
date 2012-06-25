@@ -1064,11 +1064,265 @@ body {
     color: rgb(255, 255, 255);
     font-size: 12px;
     left: 20px;
-    min-height: 88px;
     width: 260px;
-    height: 100px;
     text-align: left;
     top: 150px;
+    height: 44px;
+    min-height: 50px;
     margin-right: auto;
     margin-bottom: auto;
+}
+
+#libraryData {
+    overflow: hidden;
+    z-index: 0;
+    position: absolute;
+    margin-top: 0px;
+    right: 0px;
+    bottom: 236px;
+    left: 20px;
+    width: 260px;
+    height: 45px;
+    top: 225px;
+}
+
+#menu {
+    width: 100%;
+    display: none;
+    position: relative;
+    height: auto;
+    min-height: 45px;
+}
+
+#import {
+    width: 100%;
+    display: none;
+    position: relative;
+    min-height: 45px;
+}
+
+#export {
+    width: 100%;
+    display: none;
+    position: relative;
+    min-height: 45px;
+}
+
+#libraryMenuExport {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    left: 0px;
+    margin-right: auto;
+    bottom: 0px;
+    margin-top: auto;
+    width: 127px;
+}
+
+#libraryMenuText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    left: 0px;
+    height: 16px;
+    min-height: 20px;
+    top: 0px;
+    right: 0px;
+    width: auto;
+    margin-bottom: auto;
+    text-align: left;
+}
+
+#libraryMenuImport {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 127px;
+    bottom: 0px;
+    margin-top: auto;
+    right: 0px;
+    margin-left: auto;
+}
+
+#libraryImportReplace {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    left: 0px;
+    margin-right: auto;
+    bottom: 0px;
+    margin-top: auto;
+    width: 95px;
+}
+
+#libraryImportAdd {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 95px;
+    left: 100px;
+    margin-right: auto;
+    bottom: 0px;
+    margin-top: auto;
+}
+
+#libraryImportText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    left: 0px;
+    height: 16px;
+    min-height: 20px;
+    top: 0px;
+    margin-bottom: auto;
+    right: 0px;
+    width: auto;
+    text-align: left;
+}
+
+#fail {
+    width: 100%;
+    min-height: 45px;
+    display: none;
+    position: relative;
+}
+
+#libraryImportFailText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    left: 0px;
+    height: 16px;
+    min-height: 20px;
+    top: 0px;
+    right: 0px;
+    width: auto;
+    margin-bottom: auto;
+    text-align: left;
+}
+
+#libraryImportFail {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 260px;
+    left: 0px;
+    margin-right: auto;
+    bottom: 0px;
+    margin-top: auto;
+}
+
+#libraryExportSuccessText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    left: 0px;
+    height: 16px;
+    min-height: 20px;
+    top: 0px;
+    right: 0px;
+    width: auto;
+    margin-bottom: auto;
+    text-align: left;
+}
+
+#libraryExportSuccess {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 260px;
+    left: 0px;
+    margin-right: auto;
+    bottom: 0px;
+    margin-top: auto;
+}
+
+#libraryImportCancel {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 60px;
+    right: 0px;
+    margin-left: auto;
+    bottom: 0px;
+    margin-top: auto;
+}
+
+#success {
+    width: 100%;
+    min-height: 45px;
+    display: none;
+    position: relative;
+}
+
+#libraryImportSuccessText {
+    font-family: HelveticaNeue;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    left: 0px;
+    height: 16px;
+    min-height: 20px;
+    top: 0px;
+    right: 0px;
+    width: auto;
+    margin-bottom: auto;
+    text-align: left;
+}
+
+#libraryImportSuccess {
+    text-align: center;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    font-size: 14px;
+    height: 25px;
+    font-family: 'Helvetica Neue';
+    width: 260px;
+    left: 0px;
+    margin-right: auto;
+    bottom: 0px;
+    margin-top: auto;
 }

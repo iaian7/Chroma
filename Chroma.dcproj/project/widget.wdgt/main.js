@@ -122,6 +122,7 @@ if (window.widget) {
 
 // Begin app-specific functions
 
+var clipboard = "";
 var wid = widget.identifier;
 var pref = [];
 pref[2] = loadPref(wid+"H",70);
@@ -398,6 +399,58 @@ function editLibrary(event) {
 	return processLibrary();
 }
 
+function exportLibrary(event) {
+	clipboard = widget.system("/usr/bin/pbcopy", exportLibraryEnd);
+	libArray = arrayClean(prefLibrary);
+	for(var i=0; i<libArray.length; i++) {
+		clipboard.write(libArray[i].join(",")+"\n");
+	}
+	clipboard.close();
+//	clipboard = "";
+}
+
+function exportLibraryEnd(event) {
+//	clipboard = "";
+	return showLibraryExport(event);
+}
+
+function importLibrary(event) {
+	clipboard = widget.system("/usr/bin/pbpaste", null).outputString;
+	if (!clipboard || clipboard.length < 24) return showLibraryFail(event);
+	clipboard = clipboard.split("\n");
+	for(var i=0; i<clipboard.length; i++) {
+		clipboard[i] = clipboard[i].split(",");
+	}
+	clipboard = arrayClean(clipboard);
+	if (!clipboard[0][9]) {
+		return showLibraryFail(event);
+	} else if (libraryVersion(clipboard)) {
+		clipboard = libraryConvert(clipboard);
+	}
+	return showLibraryImport(event);
+}
+
+function importLibraryReplace(event) {
+	prefLibrary = clipboard;
+	processLibrary();
+	clipboard = "";
+	return showLibrarySuccess();
+}
+
+function importLibraryAdd(event) {
+//	updateScroll();
+//	prefLibrary.push(clipboard);
+	prefLibrary = prefLibrary.concat(clipboard); 
+	processLibrary();
+	clipboard = "";
+	return showLibrarySuccess();
+}
+
+function importLibraryCancel(event) {
+	clipboard = "";
+	return showLibraryMenu2(event);
+}
+
 function processLibrary(event) {
 	libArray = arrayClean(prefLibrary);
 
@@ -439,6 +492,28 @@ function fromLibrary(event) {
 	pref[7] = event[7];
 	pref[8] = event[8];
 	updateAll();
+}
+
+function libraryVersion(arr) {
+	for(var i=0; i<arr.length; i++) {
+		if (arr[i][3] > 1.0) return true;
+		if (arr[i][4] > 1.0) return true;
+		if (arr[i][5] > 1.0) return true;
+		if (arr[i][6] > 1.0) return true;
+		if (arr[i][7] > 1.0) return true;
+	}
+	return false;
+}
+
+function libraryConvert(arr) {
+	for(var i=0; i<arr.length; i++) {
+		arr[i][3] = arr[i][3]/100;
+		arr[i][4] = arr[i][4]/100;
+		arr[i][5] = arr[i][5]/255;
+		arr[i][6] = arr[i][6]/255;
+		arr[i][7] = arr[i][7]/255;
+	}
+	return arr;
 }
 
 
@@ -519,7 +594,10 @@ function sortDate(a, b){
 
 function copy(event,value){
 	copyFlash(event);
-	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + value + "\"'", null);
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + value + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(value);
+	copier.close();
 }
 
 function copyHSV(event){
@@ -527,7 +605,10 @@ function copyHSV(event){
 	var decimal = (prefAccuracy*2)+2;
 	var tempHSV = parseH(pref[2])+", "+parseSV(pref[3])+", "+parseSV(pref[4]);
 	var clipHSV = (prefFormatHSV==3)?(pref[2]/360).toFixed(decimal)+", "+(pref[3]).toFixed(decimal)+", "+(pref[4]).toFixed(decimal):tempHSV;
-	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHSV + "\"'", null);
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHSV + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(clipHSV);
+	copier.close();
 }
 
 function copyRGB(event){
@@ -535,13 +616,23 @@ function copyRGB(event){
 	var decimal = (prefAccuracy*2)+2;
 	var tempRGB = parseRGB(pref[5])+", "+parseRGB(pref[6])+", "+parseRGB(pref[7]);
 	var clipRGB = (prefFormatRGB==2)?(pref[5]).toFixed(decimal)+", "+(pref[6]).toFixed(decimal)+", "+(pref[7]).toFixed(decimal):tempRGB;
-	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipRGB + "\"'", null);
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipRGB + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(clipRGB);
+	copier.close();
 }
 
 function copyHEX(event){
 	copyFlashDim(event);
 	var clipHEX = pref[8];
-	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHEX + "\"'", null);
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHEX + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(clipHEX);
+	copier.close();
+}
+
+function copyEnd(event) {
+	return true;
 }
 
 
@@ -905,6 +996,34 @@ function showNames2(event) {
 function showAlert(event) {
 	document.getElementById("stack2").object.setCurrentView("alert", false, true);
 }
+
+// library data exchange
+
+function showLibraryMenu(event) {
+	document.getElementById("libraryData").object.setCurrentView("menu", false, true);
+}
+
+function showLibraryMenu2(event) {
+	document.getElementById("libraryData").object.setCurrentView("menu", true, true);
+}
+
+function showLibraryExport(event) {
+	document.getElementById("libraryData").object.setCurrentView("export", true, true);
+}
+
+function showLibraryImport(event) {
+	document.getElementById("libraryData").object.setCurrentView("import", false, true);
+}
+
+function showLibraryFail(event) {
+	document.getElementById("libraryData").object.setCurrentView("fail", false, true);
+}
+
+function showLibrarySuccess(event) {
+	document.getElementById("libraryData").object.setCurrentView("success", false, true);
+}
+
+
 
 // Element animations
 

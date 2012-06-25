@@ -13,13 +13,13 @@
 	<key>CFBundleDisplayName</key>
 	<string>Ratio</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.iaian7.chroma4</string>
+	<string>com.iaian7.chroma</string>
 	<key>CFBundleName</key>
 	<string>Ratio</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.0</string>
+	<string>4.1</string>
 	<key>CFBundleVersion</key>
-	<string>4.0</string>
+	<string>4.1</string>
 	<key>CloseBoxInsetX</key>
 	<integer>15</integer>
 	<key>CloseBoxInsetY</key>

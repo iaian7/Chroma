@@ -13,6 +13,7 @@ function load()
 	dashcode.setupParts();
 	versionCheck();
 	loadPrefs();
+	processLibrary();
 }
 
 //
@@ -45,6 +46,8 @@ function hide()
 function show()
 {
 	// Restart any timers that were stopped on hide
+	updatePrefs();
+//	processLibrary();
 }
 
 //
@@ -99,8 +102,7 @@ function showFront(event)
 	if (window.widget) {
 		widget.prepareForTransition("ToFront");
 		updatePrefs();
-		checkDir();
-//		getLibrary();
+		processLibrary();
 	}
 
 	front.style.display="block";
@@ -120,29 +122,27 @@ if (window.widget) {
 
 // Begin app-specific functions
 
+var clipboard = "";
 var wid = widget.identifier;
 var pref = [];
-pref[2] = loadPref(wid+"H",30);
-pref[3] = loadPref(wid+"S",90);
-pref[4] = loadPref(wid+"V",100);
-pref[5] = loadPref(wid+"R",255);
-pref[6] = loadPref(wid+"G",140);
-pref[7] = loadPref(wid+"B",25);
-pref[8] = loadPref(wid+"HEX","FF8C19");
+pref[2] = loadPref(wid+"H",70);
+pref[3] = loadPref(wid+"S",0.8);
+pref[4] = loadPref(wid+"V",0.9);
+pref[5] = loadPref(wid+"R",0.78);
+pref[6] = loadPref(wid+"G",0.90);
+pref[7] = loadPref(wid+"B",0.18);
+pref[8] = loadPref(wid+"X","C6E52D");
+prefLibrary = loadPref(wid+"library",[["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 2], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "grassy green", 70, 0.8, 0.9, 0.78, 0.90, 0.18, "C6E52D", 1]]);
 prefSort = loadPref(wid+"sort",0);
 prefShow = loadPref(wid+"show",0);
-prefLocation = loadPref(wid+"location","~/Library/Preferences/");
+prefFormatHSV = loadPref(wid+"formatHSV",0);
+prefFormatRGB = loadPref(wid+"formatRGB",0);
+prefAccuracy = loadPref(wid+"accuracy",1);
 prefGroup = loadPref(wid+"group","group");
 prefName = loadPref(wid+"name","name");
 prefScroll = loadPref(wid+"scroll",0);
 
-var busy = false;
-var add = false;
-var del = false;
-var libArray = [["grayscale", "black", 0, 0, 0, 0, 0, 0, "000000", 2], ["grayscale", "gray", 0, 0, 50, 128, 128, 128, "656565", 3], ["grayscale", "white", 0, 0, 100, 255, 255, 255, "FFFFFF", 4], ["group", "orange", 30, 90, 100, 255, 140, 25, "FF8C19", 1]];
 
-//var libString = "0,0,0,0,0,0,000000,grayscale,black,2\n0,0,50,128,128,128,656565,grayscale,gray,3\n0,0,100,255,255,255,FFFFFF,grayscale,white,4\n30,90,100,255,140,25,FF8C19,group,orange,1";
-var libString = "";
 
 // Preference Saving
 
@@ -159,9 +159,11 @@ function loadPref(key,value) {
 function loadPrefs() {
 	document.getElementById("sort").object.setSelectedIndex(prefSort);
 	document.getElementById("show").object.setSelectedIndex(prefShow);
-	document.getElementById("location").value = prefLocation;
-	updateAll("ALL");
-	checkDir();
+	document.getElementById("formatHSV").object.setSelectedIndex(prefFormatHSV);
+	document.getElementById("formatRGB").object.setSelectedIndex(prefFormatRGB);
+	document.getElementById("accuracy").object.setSelectedIndex(prefAccuracy);
+	// update displayed values
+	updateAll();
 }
 
 function updatePrefs() {
@@ -173,12 +175,17 @@ function updatePrefs() {
 		widget.setPreferenceForKey(pref[6],wid+"G");
 		widget.setPreferenceForKey(pref[7],wid+"B");
 		widget.setPreferenceForKey(pref[8],wid+"X");
+		widget.setPreferenceForKey(prefSort,wid+"library");
 		widget.setPreferenceForKey(prefSort,wid+"sort");
 		widget.setPreferenceForKey(prefShow,wid+"show");
-		widget.setPreferenceForKey(prefLocation,wid+"location");
+		widget.setPreferenceForKey(prefFormatHSV,wid+"formatHSV");
+		widget.setPreferenceForKey(prefFormatRGB,wid+"formatRGB");
+		widget.setPreferenceForKey(prefAccuracy,wid+"accuracy");
 		widget.setPreferenceForKey(prefGroup,wid+"group");
 		widget.setPreferenceForKey(prefName,wid+"name");
 		widget.setPreferenceForKey(prefScroll,wid+"scroll");
+		// update displayed values
+		updateAll();
 	}
 }
 
@@ -191,9 +198,12 @@ function erasePrefs() {
 		widget.setPreferenceForKey(null,wid+"G");
 		widget.setPreferenceForKey(null,wid+"B");
 		widget.setPreferenceForKey(null,wid+"X");
+		widget.setPreferenceForKey(null,wid+"library");
 		widget.setPreferenceForKey(null,wid+"sort");
 		widget.setPreferenceForKey(null,wid+"show");
-		widget.setPreferenceForKey(null,wid+"location");
+		widget.setPreferenceForKey(null,wid+"formatHSV");
+		widget.setPreferenceForKey(null,wid+"formatRGB");
+		widget.setPreferenceForKey(null,wid+"accuracy");
 		widget.setPreferenceForKey(null,wid+"group");
 		widget.setPreferenceForKey(null,wid+"name");
 		widget.setPreferenceForKey(null,wid+"scroll");
@@ -204,14 +214,14 @@ function erasePrefs() {
 
 function updateAll(event) {
 	if (event != "HSV") {
-		document.getElementById("H").value = parseInt(pref[2]);
-		document.getElementById("S").value = parseInt(pref[3]);
-		document.getElementById("V").value = parseInt(pref[4]);
+		document.getElementById("H").value = parseH(pref[2]);
+		document.getElementById("S").value = parseSV(pref[3]);
+		document.getElementById("V").value = parseSV(pref[4]);
 	}
 	if (event != "RGB") {
-		document.getElementById("R").value = parseInt(pref[5]);
-		document.getElementById("G").value = parseInt(pref[6]);
-		document.getElementById("B").value = parseInt(pref[7]);
+		document.getElementById("R").value = parseRGB(pref[5]);
+		document.getElementById("G").value = parseRGB(pref[6]);
+		document.getElementById("B").value = parseRGB(pref[7]);
 	}
 	if (event != "HEX") {
 		document.getElementById("X").value = "#"+pref[8];
@@ -231,8 +241,16 @@ function updateShow(event) {
 	prefShow = document.getElementById("show").object.getSelectedIndex();
 }
 
-function updateLocation(event) {
-	prefLocation = document.getElementById("location").value;
+function updateFormatHSV(event) {
+	prefFormatHSV = document.getElementById("formatHSV").object.getSelectedIndex();
+}
+
+function updateFormatRGB(event) {
+	prefFormatRGB = document.getElementById("formatRGB").object.getSelectedIndex();
+}
+
+function updateAccuracy(event) {
+	prefAccuracy = document.getElementById("accuracy").object.getSelectedIndex();
 }
 
 function updateGroup(event) {
@@ -246,197 +264,195 @@ function updateName(event) {
 function updateScroll() {
 	prefScroll = document.getElementById("scrollArea").object.content.scrollTop;
 	widget.setPreferenceForKey(prefScroll,wid+"scroll");
-//	alert("updateScroll = "+prefScroll);
 }
 
 function updateScrollArea() {
-	var scrollArea = document.getElementById("scrollArea").object
+	var scrollArea = document.getElementById("scrollArea").object;
 	scrollArea.refresh();
 	scrollArea.verticalScrollTo(prefScroll);
 }
 
+
+
+// Keyboard input
+
 function updateInput(event) {
 	var data = parseFloat(event.target.value);
-	var limit = 255;
-	var increment = 8;
+	var dataFrom = data;
 	var prefId = 8;
+	var increment = (prefFormatRGB==0)? 0.015625 : 0.01; // 4/256
+	var incrementShift = (prefFormatRGB==0)? 0.0625 : 0.1; // 16/256
 
 	switch (event.target.id) {
 	case "H":
 		prefId = 2;
-		limit = 360;
-		increment = 10;
+		dataFrom = fromH(data);
+		increment = 1;
+		incrementShift = 10;
 		break;
 	case "S":
 		prefId = 3;
-		limit = 100;
-		increment = 10;
+		dataFrom = fromSV(data);
+		increment = (prefFormatHSV==1)? 0.015625 : 0.01;
+		incrementShift = (prefFormatHSV==1)? 0.0625 : 0.1;
 		break;
 	case "V":
 		prefId = 4;
-		limit = 100;
-		increment = 10;
+		dataFrom = fromSV(data);
+		increment = (prefFormatHSV==1)? 0.015625 : 0.01;
+		incrementShift = (prefFormatHSV==1)? 0.0625 : 0.1;
 		break;
 	case "R":
 		prefId = 5;
+		dataFrom = fromRGB(data);
 		break;
 	case "G":
 		prefId = 6;
+		dataFrom = fromRGB(data);
 		break;
 	case "B":
 		prefId = 7;
+		dataFrom = fromRGB(data);
 		break;
 	default:
+		// process HEX values (paste-only, never incremented via arrow keys)
+		prefId = 8;
 		increment = false;
+		incrementShift = false;
 		data = event.target.value.match(/([0-9a-f]{6})/i);
-//		data = event.target.value.match(/^#?([0-9a-f]{6})$/i);
 		if (data && event.keyCode>40) {
 			pref[8] = data[1].replace("#","").toUpperCase();	// removes hashtag before saving to the preferences
-			if (!data[0].match("#")) event.target.value = "#"+pref[8];
+			if (!data[0].match("#")) event.target.value = "#"+pref[8];	// adds hashtag to display if not included already
 			HEXtoRGB();
 			RGBtoHSV();
-			return updateAll("HEX");
+			updateAll("HEX");
+			return selectIt(event.target);
 		} else {
 			return false;
 		}
 	}
 
-	if (event.keyCode == 38 && increment) {
-		if (event.shiftKey == true) {
-			data += increment;
+	if (event.keyCode == 38 && increment) {			// If arrow keys are used, load preference value and adjust accordingly
+		data = pref[prefId];
+		data += (event.shiftKey == true)?incrementShift:increment;
+	} else if (event.keyCode == 40 && increment) {	//
+		data = pref[prefId];
+		data -= (event.shiftKey == true)?incrementShift:increment;
+	} else if (pref[prefId] == dataFrom) {			// Prevent constant updates simply from non-entry key presses
+		return false;
+	} else if (data>=0) {							// If straight numbers are entered, convert to preference value and update
+		if (prefId == 2){
+			data = fromH(data);
+		} else if (prefId <= 4) {
+			data = fromSV(data);
 		} else {
-			data += 1;
+			data = fromRGB(data);
 		}
-		event.target.value = data;
-		selectIt(event.target);
-	} else if (event.keyCode == 40 && increment) {
-		if (event.shiftKey == true) {
-			data -= increment;
-		} else {
-			data -= 1;
-		}
-		event.target.value = data;
-		selectIt(event.target);
-	}
-
-	if (data>=0 && ((data % 1) == 0)) {
-		if (data>limit) {
-//			alert("met limit");
-			data = limit;
-			event.target.value = data;
-		}
-		pref[prefId] = data;
 	} else {
-//		alert("invalid");
-		event.target.value = parseInt(pref[prefId]);
+		data = pref[prefId];
+		alert("invalid text field input");
 	}
 
-	if (increment == 10) {
+	// rollover Hue, or limit to 1.0 floating point value
+	if (prefId == 2) {
+		data = data%360;
+	} else if (data > 1) {
+		data = 1.0;
+	}
+
+	if (data < 0) {
+		data = 0;
+	}
+
+	pref[prefId] = data;
+
+	// process HSV or RGB values
+	if (prefId <= 4) {
 		HSVtoRGB();
 		RGBtoHEX();
-		return updateAll("HSV");
 	} else {
 		RGBtoHSV();
 		RGBtoHEX();
-		return updateAll("RGB");
 	}
-}
 
-
-
-// Library checks
-
-function checkDir(event) {
-	widget.system(prefLocation, checkDirEnd);
-}
-
-function checkDirEnd(event) {
-	if (event.status == 126) {
-		alert("directory exists");
-		return getLibrary();
-	} else {
-		alert("directory does NOT exist: "+event.status);
-		document.getElementById("createText").innerText = "specified directory location\ndoes not exist";
-		return showCreate();
-	}
-}
-
-
-
-// Library management
-
-function addLibrary(event) {
-	updateScroll();
-	if (prefGroup.search(/[a-z]/i)<0 || prefName.search(/[a-z]/i)<0) return showAlert();
-	add = [prefGroup,prefName,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()];
-	getLibrary();
-	showValues();
-}
-
-function editLibrary(event) {
-	updateScroll();
-	del = event;
-	getLibrary();
-}
-
-function getLibrary(event) {
-	libString = "";
-	var myCommand = widget.system("cat "+prefLocation+"chromaLibrary.txt", processLibrary);
-	myCommand.onreadoutput = processLibraryConcat;
-}
-
-function processLibraryConcat(event) {
-//	alert("concat = "+event.length);
-	libString = libString+event;
+	updateAll();
+//	return selectIt(event.target);
 }
 
 
 
 // Library processing
 
-function processLibrary(event) {
-	if (busy == "processing") {
-		return showFail();
-	} else if (busy == "newVersion") {
-		return false;
-	} else if (libString.length == 4096) {
-		return showTruncated();
-	} else if (event.status>0) {
-		document.getElementById("createText").innerText = "chromaLibrary.txt\ndoes not exist";
-		return showCreate();
-	} else {
-		document.getElementById("createText").innerText = "library processing\nin progress";
-	}
+function addLibrary(event) {
+	updateScroll();
+	if (prefGroup.search(/[a-z]/i)<0 || prefName.search(/[a-z]/i)<0) return showAlert("add to library error");
+	prefLibrary.push([prefGroup,prefName,pref[2],pref[3],pref[4],pref[5],pref[6],pref[7],pref[8],new Date().getTime()]);
+	processLibrary();
+	return showValues();
+}
 
-//	alert("1 = libArray before processing: "+libArray[libArray.length-1]);
-	busy = "processing";
-	libArray = libString.split("\n");
-//	for(var i in libArray) {	// THIS SOMEHOW CORRUPTS DASHCODE'S JAVASCRIPT ENGINE???
+function editLibrary(event) {
+	updateScroll();
+	var del = event;
+	del = arrayMatch(prefLibrary,9,del);
+	if (del) prefLibrary.splice(del,1);
+	return processLibrary();
+}
+
+function exportLibrary(event) {
+	clipboard = widget.system("/usr/bin/pbcopy", exportLibraryEnd);
+	libArray = arrayClean(prefLibrary);
 	for(var i=0; i<libArray.length; i++) {
-		libArray[i] = libArray[i].replace(",#",",").split(",");	// replace function strips hash tag from hex values of older librarys
+		clipboard.write(libArray[i].join(",")+"\n");
 	}
+	clipboard.close();
+//	clipboard = "";
+}
 
-	libArray = arrayClean(libArray);
-//	alert("2 = libArray after clean: (last element only) "+libArray[libArray.length-1]);
+function exportLibraryEnd(event) {
+//	clipboard = "";
+	return showLibraryExport(event);
+}
 
-	if (add) {
-		if (!libArray[0][1]) {
-			libArray = [""];
-			libArray[0] = add;
-		} else {
-			libArray.push(add);
-		}
-		add = false;
+function importLibrary(event) {
+	clipboard = widget.system("/usr/bin/pbpaste", null).outputString;
+	if (!clipboard || clipboard.length < 24) return showLibraryFail(event);
+	clipboard = clipboard.split("\n");
+	for(var i=0; i<clipboard.length; i++) {
+		clipboard[i] = clipboard[i].split(",");
 	}
-
-	if (del) {
-		del = arrayMatch(libArray,9,del);
-		if (del) libArray.splice(del,1);
-		del = false;
+	clipboard = arrayClean(clipboard);
+	if (!clipboard[0][9]) {
+		return showLibraryFail(event);
+	} else if (libraryVersion(clipboard)) {
+		clipboard = libraryConvert(clipboard);
 	}
+	return showLibraryImport(event);
+}
 
-	libArray = arrayGroups(libArray);
-//	alert("3 = libArray after groups: "+libArray[libArray.length-1]);
+function importLibraryReplace(event) {
+	prefLibrary = clipboard;
+	processLibrary();
+	clipboard = "";
+	return showLibrarySuccess();
+}
+
+function importLibraryAdd(event) {
+//	updateScroll();
+//	prefLibrary.push(clipboard);
+	prefLibrary = prefLibrary.concat(clipboard); 
+	processLibrary();
+	clipboard = "";
+	return showLibrarySuccess();
+}
+
+function importLibraryCancel(event) {
+	clipboard = "";
+	return showLibraryMenu2(event);
+}
+
+function processLibrary(event) {
+	libArray = arrayClean(prefLibrary);
 
 	if (libArray[1]) {
 		switch (prefSort) {
@@ -457,67 +473,86 @@ function processLibrary(event) {
 		}
 	}
 
-//	alert("4 = libArray after processing: "+libArray[libArray.length-1]);
-	if (busy != "newVersion") showMain();
+	libArray = arrayGroup(libArray);
+
 	listDataSource._rowData = libArray;
 	list.object.reloadData();
-//	document.getElementById("scrollArea").object.refresh();
 	updateScrollArea();
-	busy = false;
-	setLibrary();
+	prefLibrary = libArray;
 }
 
+function fromLibrary(event) {
+	prefGroup = event[0];
+	prefName = event[1];
+	pref[2] = event[2];
+	pref[3] = event[3];
+	pref[4] = event[4];
+	pref[5] = event[5];
+	pref[6] = event[6];
+	pref[7] = event[7];
+	pref[8] = event[8];
+	updateAll();
+}
+
+function libraryVersion(arr) {
+	for(var i=0; i<arr.length; i++) {
+		if (arr[i][3] > 1.0) return true;
+		if (arr[i][4] > 1.0) return true;
+		if (arr[i][5] > 1.0) return true;
+		if (arr[i][6] > 1.0) return true;
+		if (arr[i][7] > 1.0) return true;
+	}
+	return false;
+}
+
+function libraryConvert(arr) {
+	for(var i=0; i<arr.length; i++) {
+		arr[i][3] = arr[i][3]/100;
+		arr[i][4] = arr[i][4]/100;
+		arr[i][5] = arr[i][5]/255;
+		arr[i][6] = arr[i][6]/255;
+		arr[i][7] = arr[i][7]/255;
+	}
+	return arr;
+}
+
+
+
+// Array functions
+
 function arrayMatch(arr,ind,str) {
-//	for(var i in arr) {
 	for(var i=0; i<arr.length; i++) {
 		if (arr[i][ind] == str) return i;
 	}
 	return false;
 }
 
-function arraySearch(arr,str) {
-//	for(var i in arr) {
-	for(var i=0; i<arr.length; i++) {
-//		alert("array index == "+i);
-//		alert("array element == "+arr[i]);
-//		if (arr[i] == str) return i;	// THIS CAN CAUSE AN ENDLESS LOOP OR CORRUPTION IN ANOTHER SECTION OF CODE!!!
-		if (arr[i] == str) return true;
-	}
-	return false;
-}
-
 function arrayClean(arr) {
 	var arr2 = [];
-//	for(var i in arr) {
 	for(var i=0; i<arr.length; i++) {
 		if (arr[i][9]) {
-			if (isFinite(arr[i][0])) {
-				arr[i] = [arr[i][7],arr[i][8],arr[i][0],arr[i][1],arr[i][2],arr[i][3],arr[i][4],arr[i][5],arr[i][6],arr[i][9]];
-				arr2.push(arr[i]);
-			} else {
-				arr2.push(arr[i]);
-			}
+			arr2.push(arr[i]);
 		}
 	}
 	return arr2;
 }
 
-function arrayGroups(arr) {
-	var arrGroup = [];
-//	for(var i in arr) {
+function arrayGroup(arr) {
+	var arr2 = [];
+	var hold = "";
 	for(var i=0; i<arr.length; i++) {
-		if (!arraySearch(arrGroup,arr[i][0])) {
-			arrGroup.push(arr[i][0]);
-			arr.push([arr[i][0]]);
+		if (arr[i][0] != hold) {
+			hold = arr[i][0];
+			arr2.push([arr[i][0]]);
 		}
+		arr2.push(arr[i]);
 	}
-	return arr;
+	return arr2;
 }
 
-function arrayReformat(arr) {
-	if (isFinite(arr[0])) arr = [arr[7],arr[8],arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[9]];
-	return arr;
-}
+
+
+// Array sorting algorithms
 
 function sortName(a, b) {
 	var x = a[0].toLowerCase();
@@ -553,52 +588,51 @@ function sortDate(a, b){
 	return a[9] - b[9];
 }
 
-function setLibrary(event) {
-	if (busy == "setProcessing") return showFail();
-	busy = "setProcessing";
-//	alert("5 = libArray before writing file: "+libArray[libArray.length-1]);
-	var myCommand = widget.system("cat > "+prefLocation+"chromaLibrary.txt", setLibraryEnd);
-//	for(var i in libArray) {
-	for(var i=0; i<libArray.length; i++) {
-		if (i == 0) {
-			myCommand.write(libArray[i].join(","));
-		} else {
-			myCommand.write("\n"+libArray[i].join(","));
-		}
-	}
-	myCommand.close();
-}
 
-function setLibraryEnd(event) {
-//	alert("setLibraryEnd = "+event);
-	busy = false;
-}
-
-function fromLibrary(event) {
-	prefGroup = event[0];
-	prefName = event[1];
-	pref[2] = event[2];
-	pref[3] = event[3];
-	pref[4] = event[4];
-	pref[5] = event[5];
-	pref[6] = event[6];
-	pref[7] = event[7];
-	pref[8] = event[8];
-	updateAll("ALL");
-}
-
-function createLibrary(event) {
-//	alert("createLibrary");
-	setLibrary();
-	getLibrary();
-	showMain();
-}
 
 // Clipboard
 
 function copy(event,value){
 	copyFlash(event);
-	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + value + "\"'", null);
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + value + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(value);
+	copier.close();
+}
+
+function copyHSV(event){
+	copyFlashDim(event);
+	var decimal = (prefAccuracy*2)+2;
+	var tempHSV = parseH(pref[2])+", "+parseSV(pref[3])+", "+parseSV(pref[4]);
+	var clipHSV = (prefFormatHSV==3)?(pref[2]/360).toFixed(decimal)+", "+(pref[3]).toFixed(decimal)+", "+(pref[4]).toFixed(decimal):tempHSV;
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHSV + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(clipHSV);
+	copier.close();
+}
+
+function copyRGB(event){
+	copyFlashDim(event);
+	var decimal = (prefAccuracy*2)+2;
+	var tempRGB = parseRGB(pref[5])+", "+parseRGB(pref[6])+", "+parseRGB(pref[7]);
+	var clipRGB = (prefFormatRGB==2)?(pref[5]).toFixed(decimal)+", "+(pref[6]).toFixed(decimal)+", "+(pref[7]).toFixed(decimal):tempRGB;
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipRGB + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(clipRGB);
+	copier.close();
+}
+
+function copyHEX(event){
+	copyFlashDim(event);
+	var clipHEX = pref[8];
+//	widget.system("/usr/bin/osascript -e 'set the clipboard to \"" + clipHEX + "\"'", null);
+	var copier = widget.system("/usr/bin/pbcopy", copyEnd);
+	copier.write(clipHEX);
+	copier.close();
+}
+
+function copyEnd(event) {
+	return true;
 }
 
 
@@ -635,10 +669,13 @@ var listDataSource = {
 	prepareRow: function(rowElement, rowIndex, templateElements) {
 		// templateElements contains references to all elements that have an id in the template row.
 		// Ex: set the value of an element with id="label".
+
+//		alert("The List row: "+this._rowData[rowIndex]);
+
 		if (!this._rowData[rowIndex][9]) {
 			if (templateElements.label) {
 				templateElements.label.innerText = this._rowData[rowIndex];
-				templateElements.label.style.opacity = 1.0;
+				templateElements.label.style.visibility = "visible";
 				templateElements.listRowTemplate.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
 				templateElements.label.style.left = "6px";
 				templateElements.label.style.right = "6px";
@@ -648,43 +685,57 @@ var listDataSource = {
 				templateElements.labelHSV.innerText = "";
 				templateElements.labelRGB.innerText = "";
 				templateElements.labelHEX.innerText = "";
-				templateElements.swatchList.style.opacity = 0;
-//				templateElements.button.style.opacity = 0;
+				templateElements.swatchList.style.visibility = "hidden";
+				templateElements.swatchListBox.style.visibility = "hidden";
 				templateElements.imgDelete.style.visibility = "hidden";
 			}
 		} else {
+			if (templateElements.label) {
+				templateElements.label.style.visibility = "hidden";
+				templateElements.listRowTemplate.style.backgroundColor = "rgba(0.1, 0.1, 0.1, 0.0)";
+			}
 			if (templateElements.swatchList) {
+				templateElements.swatchList.style.visibility = "visible";
 				templateElements.swatchList.style.backgroundColor = "#"+this._rowData[rowIndex][8];
 			}
-			if (templateElements.imgUse) {
-				templateElements.imgUse.onclick = function(event) { fromLibrary(_this._rowData[rowIndex]) };
+			if (templateElements.swatchListBox) {
+				templateElements.swatchListBox.style.visibility = "visible";
+				templateElements.swatchListBox.style.backgroundColor = "#"+this._rowData[rowIndex][8];
 			}
-//			if (templateElements.button) {
-//				templateElements.button.style.backgroundColor = "#"+this._rowData[rowIndex][8];
-//				templateElements.button.style.imageTopColor = "#"+this._rowData[rowIndex][8];
-//				templateElements.button.style.imageBottomColor = "#"+this._rowData[rowIndex][8];
-//				templateElements.button.onclick = function(event) { fromLibrary(_this._rowData[rowIndex]) };
-//			}
+			if (templateElements.imgUse) {
+				templateElements.imgUse.onmousedown = function(event) { fromLibrary(_this._rowData[rowIndex]) };
+			}
 			if (templateElements.imgDelete) {
+				templateElements.imgDelete.style.visibility = "visible";
 				templateElements.imgDelete.onclick = function(event) { editLibrary(_this._rowData[rowIndex][9]) };
 			}
 
-			var tempHSV = parseInt(this._rowData[rowIndex][2])+" "+parseInt(this._rowData[rowIndex][3])+" "+parseInt(this._rowData[rowIndex][4]);
-			var tempRGB = parseInt(this._rowData[rowIndex][5])+" "+parseInt(this._rowData[rowIndex][6])+" "+parseInt(this._rowData[rowIndex][7]);
+			// create values and clipboard elements
+			var decimal = (prefAccuracy*2)+2;
+			var tempHSV = parseH(this._rowData[rowIndex][2])+" "+parseSV(this._rowData[rowIndex][3])+" "+parseSV(this._rowData[rowIndex][4]);
+			var clipHSV = (prefFormatHSV==3)?(this._rowData[rowIndex][2]/360).toFixed(decimal)+", "+(this._rowData[rowIndex][3]).toFixed(decimal)+", "+(this._rowData[rowIndex][4]).toFixed(decimal) : tempHSV.replace(" ",", ");
+
+			var tempRGB = parseRGB(this._rowData[rowIndex][5])+" "+parseRGB(this._rowData[rowIndex][6])+" "+parseRGB(this._rowData[rowIndex][7]);
+			var clipRGB = (prefFormatRGB==2)?(this._rowData[rowIndex][5]).toFixed(decimal)+", "+(this._rowData[rowIndex][6]).toFixed(decimal)+", "+(this._rowData[rowIndex][7]).toFixed(decimal) : tempRGB.replace(" ",", ");
+
 			var tempHEX = _this._rowData[rowIndex][8];
+			var clipHEX = tempHEX;
 
 			if (prefShow == 0) {
+				if (templateElements.label) {
+					templateElements.label.innerText = "";
+				}
 				if (templateElements.labelHSV) {
 					templateElements.labelHSV.innerText = tempHSV;
-					templateElements.labelHSV.onclick = function(event) { copy(event,tempHSV) };
+					templateElements.labelHSV.onclick = function(event) { copy(event,clipHSV) };
 				}
 				if (templateElements.labelRGB) {
 					templateElements.labelRGB.innerText = tempRGB;
-					templateElements.labelRGB.onclick = function(event) { copy(event,tempRGB) };
+					templateElements.labelRGB.onclick = function(event) { copy(event,clipRGB) };
 				}
 				if (templateElements.labelHEX) {
 					templateElements.labelHEX.innerText = "#"+tempHEX;
-					templateElements.labelHEX.onclick = function(event) { copy(event,tempHEX) };
+					templateElements.labelHEX.onclick = function(event) { copy(event,clipHEX) };
 				}
 			} else {
 				if (templateElements.label) {
@@ -693,18 +744,18 @@ var listDataSource = {
 				if (templateElements.labelHSV) {
 					templateElements.labelHSV.innerText = "";
 				}
-				if (templateElements.labelRGB && templateElements.labelHEX) {
+				if (templateElements.labelRGB) {
 					if (prefShow == 1) {
 						templateElements.labelRGB.innerText = tempHSV;
-						templateElements.labelRGB.onclick = function(event) { copy(event,tempHSV) };
-						templateElements.labelHEX.innerText = "#"+tempHEX;
-						templateElements.labelHEX.onclick = function(event) { copy(event,tempHEX) };
+						templateElements.labelRGB.onclick = function(event) { copy(event,clipHSV) };
 					} else if (prefShow == 2) {
 						templateElements.labelRGB.innerText = tempRGB;
-						templateElements.labelRGB.onclick = function(event) { copy(event,tempRGB) };
-						templateElements.labelHEX.innerText = "#"+tempHEX;
-						templateElements.labelHEX.onclick = function(event) { copy(event,tempHEX) };
+						templateElements.labelRGB.onclick = function(event) { copy(event,clipRGB) };
 					}
+				}
+				if (templateElements.labelHEX) {
+					templateElements.labelHEX.innerText = "#"+tempHEX;
+					templateElements.labelHEX.onclick = function(event) { copy(event,clipHEX) };
 				}
 			}
 		}
@@ -724,18 +775,16 @@ var listDataSource = {
 // Conversion Processes
 
 /*
- * Converts an RGB color value to HSV. Conversion formula
- * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
- * Assumes r, g, and b are contained in the set [0, 255] and
- * returns h, s, and v in the set [0, 1].
- * Changed to return h, s, and v in [0, 360] and [0, 100].
+ * Converts an RGB color value to HSV. Conversion formula adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and returns h, s, and v in the set [0, 1].
+ * Udpate - modified to use floating point values instead, with 360 degrees for H.
  */
 function RGBtoHSV(r, g, b){
+	// load individual values, or pull from global preference
 	r = r || pref[5];
 	g = g || pref[6];
 	b = b || pref[7];
 
-	r = r/255, g = g/255, b = b/255;
 	var max = Math.max(r, g, b), min = Math.min(r, g, b);
 	var h, s, v = max;
 
@@ -753,24 +802,23 @@ function RGBtoHSV(r, g, b){
 		h /= 6;
 	}
 
-//	h = h*360, s = s*100, v = v*100;
-	s = s*100, h = (s <= 0.5) ? 0 : h*360, v = v*100;
-	pref[2] = h;
-	pref[3] = s;
-	pref[4] = v;
+	h = (s==0.0)?0:h*360;
+	pref[2] = parseFloat(h);
+	pref[3] = parseFloat(s);
+	pref[4] = parseFloat(v);
 	return [h, s, v];
 }
 
 /*
- * Converts an HSV color value to RGB. Conversion formula
- * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
- * Assumes h, s, and v are contained in the set [0, 1] and
- * returns r, g, and b in the set [0, 255].
+ * Converts an HSV color value to RGB. Conversion formula adapted from http://en.wikipedia.org/wiki/HSV_color_space
+ * Assumes h, s, and v are contained in the set [0, 1] and returns r, g, and b in the set [0, 255].
+ * Udpate - modified to use floating point values instead, with 360 degrees for H.
  */
 function HSVtoRGB(h, s, v){
+	// load individual values, or pull from global preference
 	h = h || pref[2]/360;
-	s = s || pref[3]/100;
-	v = v || pref[4]/100;
+	s = s || pref[3];
+	v = v || pref[4];
 	var r, g, b;
 
 	var i = Math.floor(h * 6);
@@ -788,19 +836,23 @@ function HSVtoRGB(h, s, v){
 		case 5: r = v, g = p, b = q; break;
 	}
 
-	r = r*255, g = g*255, b = b*255;
-	pref[5] = r;
-	pref[6] = g;
-	pref[7] = b;
+	pref[5] = parseFloat(r);
+	pref[6] = parseFloat(g);
+	pref[7] = parseFloat(b);
 	return [r, g, b];
 }
 
+/*
+ * Converts RGB value to HEX.
+ * Expects floating point values, converts to 255 during processing.
+ */
 function RGBtoHEX(rgb) {
 	rgb = rgb || [pref[5],pref[6],pref[7]];
+
 	var hex = [];
-	hex[0] = DECtoHEX(parseInt(rgb[0]));
-	hex[1] = DECtoHEX(parseInt(rgb[1]));
-	hex[2] = DECtoHEX(parseInt(rgb[2]));
+	hex[0] = DECtoHEX(parseInt(rgb[0]*255));
+	hex[1] = DECtoHEX(parseInt(rgb[1]*255));
+	hex[2] = DECtoHEX(parseInt(rgb[2]*255));
 
 	if (hex[0].length<2) hex[0] = "0"+hex[0];
 	if (hex[1].length<2) hex[1] = "0"+hex[1];
@@ -810,25 +862,99 @@ function RGBtoHEX(rgb) {
 	return hex;
 }
 
+// required for RGBtoHEX
 function DECtoHEX(dec) {
 	return dec.toString(16);
 }
 
+/*
+ * Converts HEX values to RGB.
+ * Output is floating point values.
+ */
 function HEXtoRGB(hex) {
 	hex = hex || pref[8];
 	hex = hex.replace("#","");
-	var r = HEXtoDEC(hex.substring(0,2));
-	var g = HEXtoDEC(hex.substring(2,4));
-	var b = HEXtoDEC(hex.substring(4,6));
+	var r = HEXtoDEC(hex.substring(0,2))/255;
+	var g = HEXtoDEC(hex.substring(2,4))/255;
+	var b = HEXtoDEC(hex.substring(4,6))/255;
 
-	pref[5] = r;
-	pref[6] = g;
-	pref[7] = b;
+	pref[5] = parseFloat(r);
+	pref[6] = parseFloat(g);
+	pref[7] = parseFloat(b);
 	return [r, g, b];
 }
 
+// required for HEXtoRGB
 function HEXtoDEC(hex) {
 	return parseInt(hex, 16);
+}
+
+
+
+// Parse values and convert to/from display formats
+
+function parseH(value) {
+//	if (value > 360) value = value % 360; // rollover 360 range
+	switch(prefFormatHSV){
+		case 0: value = parseInt(value); break;
+		case 1: value = parseInt((value/360)*255); break;
+		case 2: value = parseInt((value/360)*100); break;
+		case 3: value = (value/360).toFixed(2); break;
+	}
+	return value;
+}
+
+function fromH(value) {
+	switch(prefFormatHSV){
+		case 0: value = parseInt(value); break;
+		case 1: value = parseFloat((value/255)*360); break;
+		case 2: value = parseFloat((value/100)*360); break;
+		case 3: value = parseFloat(value)*360; break;
+	}
+//	if (value > 360) value = value % 360; // rollover 360 range
+	return value;
+}
+
+function parseSV(value) {
+//	if (value > 1) value = 1; // limited 0-1 range
+	switch(prefFormatHSV){
+		case 0: value = parseInt(value*100); break;
+		case 1: value = parseInt(value*255); break;
+		case 2: value = parseInt(value*100); break;
+		case 3: value = value.toFixed(2); break;
+	}
+	return value;
+}
+
+function fromSV(value) {
+	switch(prefFormatHSV){
+		case 0: value = parseFloat(value/100); break;
+		case 1: value = parseFloat(value/255); break;
+		case 2: value = parseFloat(value/100); break;
+		case 3: value = parseFloat(value); break;
+	}
+//	if (value > 1) value = 1; // limited 0-1 range
+	return value;
+}
+
+function parseRGB(value) {
+//	if (value > 1) value = 1; // limited 0-1 range
+	switch(prefFormatRGB){
+		case 0: value = parseInt(value*255); break;
+		case 1: value = parseInt(value*100); break;
+		case 2: value = value.toFixed(2); break;
+	}
+	return value;
+}
+
+function fromRGB(value) {
+	switch(prefFormatRGB){
+		case 0: value = parseFloat(value/255); break;
+		case 1: value = parseFloat(value/100); break;
+		case 2: value = parseFloat(value); break;
+	}
+//	if (value > 1) value = 1; // limited 0-1 range
+	return value;
 }
 
 
@@ -845,10 +971,6 @@ function showSuccess(event) {
 
 function showFail(event) {
 	document.getElementById("stack").object.setCurrentView("fail", true, true);
-}
-
-function showTruncated(event) {
-	document.getElementById("stack").object.setCurrentView("truncated", true, true);
 }
 
 function showCreate(event) {
@@ -875,18 +997,54 @@ function showAlert(event) {
 	document.getElementById("stack2").object.setCurrentView("alert", false, true);
 }
 
+// library data exchange
+
+function showLibraryMenu(event) {
+	document.getElementById("libraryData").object.setCurrentView("menu", false, true);
+}
+
+function showLibraryMenu2(event) {
+	document.getElementById("libraryData").object.setCurrentView("menu", true, true);
+}
+
+function showLibraryExport(event) {
+	document.getElementById("libraryData").object.setCurrentView("export", true, true);
+}
+
+function showLibraryImport(event) {
+	document.getElementById("libraryData").object.setCurrentView("import", false, true);
+}
+
+function showLibraryFail(event) {
+	document.getElementById("libraryData").object.setCurrentView("fail", false, true);
+}
+
+function showLibrarySuccess(event) {
+	document.getElementById("libraryData").object.setCurrentView("success", false, true);
+}
+
+
+
 // Element animations
 
 function buttonOver(event) {
 	var itemToFadeIn = event.target;
 	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
-	new AppleAnimator(200, 5, 0.30, 0.70, fadeHandler).start();
+	new AppleAnimator(200, 5, 0.30, 0.90, fadeHandler).start();
 }
 
 function buttonOut(event) {
 	var itemToFadeIn = event.target;
 	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
-	new AppleAnimator(400, 10, 0.70, 0.30, fadeHandler).start();
+	new AppleAnimator(400, 10, 0.90, 0.30, fadeHandler).start();
+}
+
+function backgroundOver(event) {
+	event.target.style.backgroundColor = "rgb(32,32,32)";
+}
+
+function backgroundOut(event) {
+	event.target.style.backgroundColor = "rgb(26,26,26)";
 }
 
 function copyFlash(event) {
@@ -895,25 +1053,11 @@ function copyFlash(event) {
 	new AppleAnimator(600, 15, 0.30, 1, fadeHandler).start();
 }
 
-function libraryToggle(event) {
-	var libraryItem = document.getElementById("library");
-	var libraryToggleItem = document.getElementById("imgToggle");
-	var stackItem = document.getElementById("stack2");
-	var bottomPosition0 = 72;	// actually 70, not 60, some equations may require (c-10) or (c+10)
-	var bottomPosition1 = 10;
-	var originalBottom = parseInt(document.defaultView.getComputedStyle(libraryItem, null).getPropertyValue("bottom"));
-	alert('originalBottom == '+originalBottom);
-	var moveHandler = function(a, c, s, f){ libraryItem.style.bottom = c+"px"; libraryToggleItem.style.top = (-10+((c-10)/6))+"px"; stackItem.style.height = (60*((c-10)/60))+"px"; alert('c == '+c); };
-
-	if (originalBottom <= 10) {
-		var animator = new AppleAnimator(300, 7, originalBottom, bottomPosition0, moveHandler);
-	} else {
-		var animator = new AppleAnimator(300, 7, originalBottom, bottomPosition1, moveHandler);
-	}
-	animator.oncomplete = function() {document.getElementById("scrollArea").object.refresh()};
-	animator.start();
+function copyFlashDim(event) {
+	var itemToFadeIn = event.target;
+	var fadeHandler = function(a, c, s, f){ itemToFadeIn.style.opacity = c; };
+	new AppleAnimator(600, 15, 0.30, 0.6, fadeHandler).start();
 }
-
 
 
 // Get Key Value
@@ -949,7 +1093,6 @@ function versionCheckEnd(request){
 
 		if (websiteVersion > bundleVersion) {
 			document.getElementById("newVersion").innerHTML = "version "+versions[0]+"<br/>"+versions[1];
-			busy = "newVersion";
 			return showUpdate();
 		} else {
 //			alert("you have an up to date version");
@@ -969,8 +1112,8 @@ function versionDownload() {
 // Skip Version
 
 function versionSkip() {
-	busy = false;
 	loadPrefs();
+//	processLibrary();
 }
 
 // Visit the website
