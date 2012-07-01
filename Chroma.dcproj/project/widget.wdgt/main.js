@@ -159,9 +159,7 @@ pref[5] = loadPref(wid+"R",0.78);
 pref[6] = loadPref(wid+"G",0.90);
 pref[7] = loadPref(wid+"B",0.18);
 pref[8] = loadPref(wid+"X","C6E52D");
-//prefLibrary = loadPref("library","grayscale:black:0.0:0.0:0.0:0.0:0.0:0.0:000000:2::grayscale:gray:0.0:0.0:0.5:0.5:0.5:0.5:656565:3::grayscale:white:0.0:0.0:1.0:1.0:1.0:1.0:FFFFFF:4::group:grassy green:70:0.8:0.9:0.78:0.90:0.18:C6E52D:1");
-//prefLibrary = unpackLibrary(prefLibrary);
-prefLibrary = unpackLibrary(loadPref(wid+"library","grayscale:black:0.0:0.0:0.0:0.0:0.0:0.0:000000:2::grayscale:gray:0.0:0.0:0.5:0.5:0.5:0.5:656565:3::grayscale:white:0.0:0.0:1.0:1.0:1.0:1.0:FFFFFF:4::group:grassy green:70:0.8:0.9:0.78:0.90:0.18:C6E52D:1"));
+prefLibrary = unpackLibrary(loadPref("library","grayscale:black:0.0:0.0:0.0:0.0:0.0:0.0:000000:2::grayscale:gray:0.0:0.0:0.5:0.5:0.5:0.5:656565:3::grayscale:white:0.0:0.0:1.0:1.0:1.0:1.0:FFFFFF:4::group:grassy green:70:0.8:0.9:0.78:0.90:0.18:C6E52D:1"));
 
 prefSort = loadPref(wid+"sort",0);
 prefShow = loadPref(wid+"show",0);
@@ -206,7 +204,7 @@ function updatePrefs() {
 		widget.setPreferenceForKey(pref[6],wid+"G");
 		widget.setPreferenceForKey(pref[7],wid+"B");
 		widget.setPreferenceForKey(pref[8],wid+"X");
-		widget.setPreferenceForKey(packLibrary(prefLibrary),wid+"library");
+		widget.setPreferenceForKey(packLibrary(prefLibrary),"library");
 		widget.setPreferenceForKey(prefSort,wid+"sort");
 		widget.setPreferenceForKey(prefShow,wid+"show");
 		widget.setPreferenceForKey(prefFormatHSV,wid+"formatHSV");
@@ -229,7 +227,7 @@ function erasePrefs() {
 		widget.setPreferenceForKey(null,wid+"G");
 		widget.setPreferenceForKey(null,wid+"B");
 		widget.setPreferenceForKey(null,wid+"X");
-		widget.setPreferenceForKey(null,wid+"library");
+		widget.setPreferenceForKey(null,"library");
 		widget.setPreferenceForKey(null,wid+"sort");
 		widget.setPreferenceForKey(null,wid+"show");
 		widget.setPreferenceForKey(null,wid+"formatHSV");

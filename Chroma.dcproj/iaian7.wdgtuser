@@ -14,12 +14,12 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {1435, 327}}</string>
-			<string>{{0, 337}, {1435, 549}}</string>
+			<string>{{0, 0}, {1435, 328}}</string>
+			<string>{{0, 338}, {1435, 549}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
-	<integer>5</integer>
+	<integer>0</integer>
 	<key>Dashboard Widget Prefs</key>
 	<dict>
 		<key>id</key>
@@ -64,12 +64,12 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {244, 907}}</string>
-			<string>{{245, 0}, {1436, 907}}</string>
+			<string>{{0, 0}, {244, 908}}</string>
+			<string>{{245, 0}, {1436, 908}}</string>
 		</array>
 	</dict>
 	<key>MainWindowFrame</key>
-	<string>0 100 1680 928 0 0 1680 1028 </string>
+	<string>0 99 1680 929 0 0 1680 1028 </string>
 	<key>NavigatorSplitViewGeometry</key>
 	<dict>
 		<key>ContentSplitViewConfig</key>
@@ -80,8 +80,8 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {246, 608}}</string>
-			<string>{{0, 618}, {246, 268}}</string>
+			<string>{{0, 0}, {246, 609}}</string>
+			<string>{{0, 619}, {246, 268}}</string>
 		</array>
 	</dict>
 	<key>Objects view expanded items</key>
@@ -483,11 +483,7 @@
 			</array>
 		</array>
 		<key>Objects view last selections</key>
-		<array>
-			<array>
-				<integer>5</integer>
-			</array>
-		</array>
+		<array/>
 		<key>Visible StackLayout Views</key>
 		<array>
 			<string>front</string>
