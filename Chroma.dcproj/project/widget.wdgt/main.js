@@ -204,6 +204,7 @@ function updatePrefs() {
 		widget.setPreferenceForKey(pref[6],wid+"G");
 		widget.setPreferenceForKey(pref[7],wid+"B");
 		widget.setPreferenceForKey(pref[8],wid+"X");
+//		widget.setPreferenceForKey(packLibrary(prefLibrary),wid+"library"); // widget-specific library
 		widget.setPreferenceForKey(packLibrary(prefLibrary),"library");
 		widget.setPreferenceForKey(prefSort,wid+"sort");
 		widget.setPreferenceForKey(prefShow,wid+"show");
@@ -227,7 +228,7 @@ function erasePrefs() {
 		widget.setPreferenceForKey(null,wid+"G");
 		widget.setPreferenceForKey(null,wid+"B");
 		widget.setPreferenceForKey(null,wid+"X");
-		widget.setPreferenceForKey(null,"library");
+//		widget.setPreferenceForKey(null,wid+"library"); // ONLY remove the widget-specific library
 		widget.setPreferenceForKey(null,wid+"sort");
 		widget.setPreferenceForKey(null,wid+"show");
 		widget.setPreferenceForKey(null,wid+"formatHSV");
