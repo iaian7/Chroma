@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CYLastWindowPosition</key>
+	<string>{1093, 313}</string>
 	<key>ContentSplitViewGeometry</key>
 	<dict>
 		<key>ContentSplitViewConfig</key>
@@ -12,12 +14,12 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {1435, 331}}</string>
-			<string>{{0, 341}, {1435, 549}}</string>
+			<string>{{0, 0}, {1435, 327}}</string>
+			<string>{{0, 337}, {1435, 549}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
-	<integer>0</integer>
+	<integer>5</integer>
 	<key>Dashboard Widget Prefs</key>
 	<dict>
 		<key>id</key>
@@ -46,13 +48,13 @@
 	<key>DeploymentOptions</key>
 	<dict>
 		<key>Destination</key>
-		<string>aos.default</string>
+		<string>localhost.default</string>
 		<key>SavePath</key>
-		<string>/Users/iaian7/Dropbox/Documents/Widgets/VF Chroma</string>
+		<string>/Users/iaian7/Desktop/Git/Chroma</string>
 		<key>enableSimulation</key>
 		<true/>
 		<key>simulatedHost</key>
-		<string>web.me.com</string>
+		<string>iaian7macbookpro.local</string>
 	</dict>
 	<key>Design time language</key>
 	<string>en.lproj</string>
@@ -62,12 +64,12 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {244, 911}}</string>
-			<string>{{245, 0}, {1436, 911}}</string>
+			<string>{{0, 0}, {244, 907}}</string>
+			<string>{{245, 0}, {1436, 907}}</string>
 		</array>
 	</dict>
 	<key>MainWindowFrame</key>
-	<string>0 96 1680 932 0 0 1680 1028 </string>
+	<string>0 100 1680 928 0 0 1680 1028 </string>
 	<key>NavigatorSplitViewGeometry</key>
 	<dict>
 		<key>ContentSplitViewConfig</key>
@@ -78,8 +80,8 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {246, 353}}</string>
-			<string>{{0, 363}, {246, 527}}</string>
+			<string>{{0, 0}, {246, 608}}</string>
+			<string>{{0, 618}, {246, 268}}</string>
 		</array>
 	</dict>
 	<key>Objects view expanded items</key>
@@ -411,8 +413,81 @@
 	</array>
 	<key>Widget</key>
 	<dict>
+		<key>Objects view expanded items</key>
+		<array>
+			<array>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+		</array>
 		<key>Objects view last selections</key>
-		<array/>
+		<array>
+			<array>
+				<integer>5</integer>
+			</array>
+		</array>
 		<key>Visible StackLayout Views</key>
 		<array>
 			<string>front</string>

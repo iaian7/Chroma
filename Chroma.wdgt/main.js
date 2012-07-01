@@ -8,8 +8,7 @@
 // Function: load()
 // Called by HTML body element's onload event when the widget is ready to start
 //
-function load()
-{
+function load() {
 	dashcode.setupParts();
 	versionCheck();
 	loadPrefs();
@@ -20,8 +19,7 @@ function load()
 // Function: remove()
 // Called when the widget has been removed from the Dashboard
 //
-function remove()
-{
+function remove() {
 	// Stop any timers to prevent CPU usage
 	// Remove any preferences as needed
 	// widget.setPreferenceForKey(null, dashcode.createInstancePreferenceKey("your-key"));
@@ -32,8 +30,7 @@ function remove()
 // Function: hide()
 // Called when the widget has been hidden
 //
-function hide()
-{
+function hide() {
 	// Stop any timers to prevent CPU usage
 	updateScroll();
 	updatePrefs();
@@ -43,8 +40,7 @@ function hide()
 // Function: show()
 // Called when the widget has been shown
 //
-function show()
-{
+function show() {
 	// Restart any timers that were stopped on hide
 	updatePrefs();
 //	processLibrary();
@@ -54,8 +50,7 @@ function show()
 // Function: sync()
 // Called when the widget has been synchronized with .Mac
 //
-function sync()
-{
+function sync() {
 	// Retrieve any preference values that you need to be synchronized here
 	// Use this for an instance key's value:
 	// instancePreferenceValue = widget.preferenceForKey(null, dashcode.createInstancePreferenceKey("your-key"));
@@ -70,8 +65,7 @@ function sync()
 //
 // event: onClick event from the info button
 //
-function showBack(event)
-{
+function showBack(event) {
 	updateScroll();
 	var front = document.getElementById("front");
 	var back = document.getElementById("back");
@@ -94,8 +88,7 @@ function showBack(event)
 //
 // event: onClick event from the done button
 //
-function showFront(event)
-{
+function showFront(event) {
 	var front = document.getElementById("front");
 	var back = document.getElementById("back");
 
@@ -120,6 +113,40 @@ if (window.widget) {
 	widget.onsync = sync;
 }
 
+
+
+// frontload critical functions
+
+function arrayClean(arr) {
+	var arr2 = [];
+	for(var i=0; i<arr.length; i++) {
+		if (arr[i][9]) {
+			arr2.push(arr[i]);
+		}
+	}
+	return arr2;
+}
+
+function packLibrary(data) {
+	data = arrayClean(data);
+	for(var i=0; i<data.length; i++) {
+		data[i] = data[i].join(":");
+	}
+	data = data.join("::");
+	return data;
+}
+
+function unpackLibrary(data) {
+	data = data.split("::");
+	for(var i=0; i<data.length; i++) {
+		data[i] = data[i].split(":");
+	}
+	data = arrayClean(data);
+	return data;
+}
+
+
+
 // Begin app-specific functions
 
 var clipboard = "";
@@ -132,7 +159,10 @@ pref[5] = loadPref(wid+"R",0.78);
 pref[6] = loadPref(wid+"G",0.90);
 pref[7] = loadPref(wid+"B",0.18);
 pref[8] = loadPref(wid+"X","C6E52D");
-prefLibrary = loadPref(wid+"library",[["grayscale", "black", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "000000", 2], ["grayscale", "gray", 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, "656565", 3], ["grayscale", "white", 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, "FFFFFF", 4], ["group", "grassy green", 70, 0.8, 0.9, 0.78, 0.90, 0.18, "C6E52D", 1]]);
+//prefLibrary = loadPref("library","grayscale:black:0.0:0.0:0.0:0.0:0.0:0.0:000000:2::grayscale:gray:0.0:0.0:0.5:0.5:0.5:0.5:656565:3::grayscale:white:0.0:0.0:1.0:1.0:1.0:1.0:FFFFFF:4::group:grassy green:70:0.8:0.9:0.78:0.90:0.18:C6E52D:1");
+//prefLibrary = unpackLibrary(prefLibrary);
+prefLibrary = unpackLibrary(loadPref(wid+"library","grayscale:black:0.0:0.0:0.0:0.0:0.0:0.0:000000:2::grayscale:gray:0.0:0.0:0.5:0.5:0.5:0.5:656565:3::grayscale:white:0.0:0.0:1.0:1.0:1.0:1.0:FFFFFF:4::group:grassy green:70:0.8:0.9:0.78:0.90:0.18:C6E52D:1"));
+
 prefSort = loadPref(wid+"sort",0);
 prefShow = loadPref(wid+"show",0);
 prefFormatHSV = loadPref(wid+"formatHSV",0);
@@ -148,6 +178,7 @@ prefScroll = loadPref(wid+"scroll",0);
 
 function loadPref(key,value) {
 	var string = widget.preferenceForKey(key);
+//	alert("loadPref:\n"+key+"\n"+value+"\n"+string);
 	if (string != null) {
 		return string;
 	} else {
@@ -175,7 +206,7 @@ function updatePrefs() {
 		widget.setPreferenceForKey(pref[6],wid+"G");
 		widget.setPreferenceForKey(pref[7],wid+"B");
 		widget.setPreferenceForKey(pref[8],wid+"X");
-		widget.setPreferenceForKey(prefSort,wid+"library");
+		widget.setPreferenceForKey(packLibrary(prefLibrary),wid+"library");
 		widget.setPreferenceForKey(prefSort,wid+"sort");
 		widget.setPreferenceForKey(prefShow,wid+"show");
 		widget.setPreferenceForKey(prefFormatHSV,wid+"formatHSV");
@@ -271,8 +302,6 @@ function updateScrollArea() {
 	scrollArea.refresh();
 	scrollArea.verticalScrollTo(prefScroll);
 }
-
-
 
 // Keyboard input
 
@@ -479,6 +508,7 @@ function processLibrary(event) {
 	list.object.reloadData();
 	updateScrollArea();
 	prefLibrary = libArray;
+	updatePrefs();
 }
 
 function fromLibrary(event) {
@@ -525,16 +555,6 @@ function arrayMatch(arr,ind,str) {
 		if (arr[i][ind] == str) return i;
 	}
 	return false;
-}
-
-function arrayClean(arr) {
-	var arr2 = [];
-	for(var i=0; i<arr.length; i++) {
-		if (arr[i][9]) {
-			arr2.push(arr[i]);
-		}
-	}
-	return arr2;
 }
 
 function arrayGroup(arr) {
@@ -1067,8 +1087,9 @@ function getKeyValue(plist, key) {
 	infoPlist.open("GET", plist, false);
 	infoPlist.send(null);
 	infoPlist = infoPlist.responseText.replace(/(<([^>]+)>)/ig,"").replace(/\t/ig,"").split("\n");
-	for (var i=0; i<infoPlist.length; i++)
+	for (var i=0; i<infoPlist.length; i++) {
 		if (infoPlist[i] == key) return infoPlist[i+1];
+	}
 	return false;
 }
 
@@ -1118,7 +1139,6 @@ function versionSkip() {
 
 // Visit the website
 
-function iaian7(event)
-{
+function iaian7(event) {
 	widget.openURL("http://iaian7.com/dashboard/chroma");
 }
