@@ -12,7 +12,7 @@ var localizedStrings = {
     "accuracyText4": "floating point accuracy",
     "cancel": "cancel",
     "cancelButton": "cancel",
-    "copyright": "©2012 John Einselen, Vectorform LLC",
+    "copyright": "©2013 John Einselen, Vectorform LLC",
     "createButton": "create",
     "createText": "does not exist",
     "doneButton": "done",
@@ -62,6 +62,7 @@ var localizedStrings = {
     "truncatedText": "library input truncated,\ncorruption prevented",
     "tryButton": "try again"
 };
+
 
 
 

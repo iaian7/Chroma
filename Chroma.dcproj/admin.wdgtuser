@@ -21,7 +21,7 @@
 		</array>
 	</dict>
 	<key>ContentViewType</key>
-	<integer>0</integer>
+	<integer>5</integer>
 	<key>Dashboard Widget Prefs</key>
 	<dict>
 		<key>id</key>
@@ -50,7 +50,7 @@
 	<key>DeploymentOptions</key>
 	<dict>
 		<key>Destination</key>
-		<string>aos.default</string>
+		<string>localhost.default</string>
 		<key>Save</key>
 		<true/>
 		<key>SavePath</key>
@@ -60,7 +60,7 @@
 		<key>enableSimulation</key>
 		<true/>
 		<key>simulatedHost</key>
-		<string>web.me.com</string>
+		<string>vf-06-decamac.local</string>
 	</dict>
 	<key>Design time language</key>
 	<string>en.lproj</string>
@@ -820,18 +820,55 @@
 				<integer>13</integer>
 				<integer>4</integer>
 			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+			</array>
 		</array>
 		<key>Objects view last selections</key>
-		<array/>
+		<array>
+			<array>
+				<integer>5</integer>
+			</array>
+		</array>
 		<key>Visible StackLayout Views</key>
 		<array>
 			<string>import</string>
-			<string>values</string>
 			<string>view1</string>
 			<string>truncated</string>
 			<string>front</string>
-			<string>main</string>
 			<string>libraryMenu</string>
+			<string>main</string>
+			<string>names</string>
 		</array>
 	</dict>
 </dict>
